@@ -12,8 +12,8 @@ This project is a personal solution built after surveying an active [subreddit /
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/pcos-cycle-tracker.git
-cd pcos-cycle-tracker
+git clone https://github.com/nhat82/pcos-compass.git
+cd pcos-compass
 
 # Create virtual environment
 python3 -m venv venv
