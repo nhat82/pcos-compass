@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask, render_template
 from flask_migrate import Migrate
 from database import db
 from controllers.events_controller import events_bp 
@@ -14,5 +14,9 @@ def create_app():
     
     with app.app_context():
         db.create_all()
+        
+    @app.route("/")
+    def index():
+        return render_template("index.html")
         
     return app
