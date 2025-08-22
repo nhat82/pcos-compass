@@ -1,16 +1,17 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>My Calendar</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <!-- FullCalendar CSS -->
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
 </head>
 <body>
-  <h1>📅 My Calendar</h1>
+  <h1>🍓 Calendar</h1>
   <div id="calendar"></div>
 
-  <!-- Modal for creating/editing events -->
+  <!-- Event Modal -->
   <div id="eventModal" class="modal hidden">
     <div class="modal-content">
       <span id="closeModal">&times;</span>
@@ -27,11 +28,11 @@
         <label>Description:</label><br>
         <textarea id="description"></textarea><br><br>
 
-        <label>Start Date:</label>
-        <input type="date" id="startDate" required><br><br>
+        <label>Start:</label>
+        <input type="datetime-local" id="startDate" required><br><br>
 
-        <label>End Date:</label>
-        <input type="date" id="endDate" required><br><br>
+        <label>End:</label>
+        <input type="datetime-local" id="endDate" required><br><br>
 
         <button type="submit">Save</button>
         <button type="button" id="deleteButton" class="hidden">Delete</button>
@@ -39,19 +40,8 @@
     </div>
   </div>
 
-  <!-- Event details popup -->
-  <div id="eventDetails" class="modal hidden">
-    <div class="modal-content">
-      <span id="closeDetails">&times;</span>
-      <h2 id="eventDetailsTitle"></h2>
-      <p id="eventDetailsType"></p>
-      <p id="eventDetailsDescription"></p>
-      <p id="eventDetailsDates"></p>
-      <button id="editButton">Edit</button>
-      <button id="deleteDetailsButton">Delete</button>
-    </div>
-  </div>
-
+  <!-- FullCalendar JS -->
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

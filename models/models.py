@@ -2,33 +2,17 @@ from datetime import datetime
 from database import db
 from constants import *
 
-
 class Event(db.Model):
     __tablename__ = 'events'
     
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.Enum(EventType), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
-    description = db.Column(db.String)
-    
-    __mapper_args__ = {
-        "polymorphic_on": type, 
-        "polymorphic_identity": "event"
-    }
-    
-    def __repr__(self): 
-        return f"<Event {self.type.name}>"
-    
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "type": self.type.name,
-            "start_date": self.start_date.isoformat(),
-            "end_date": self.end_date.isoformat(),
-            "description": self.description
-        }
-    
+
+    def __repr__(self):
+        return f'<Event {self.type} {self.start_date}>'
 
 class Period(Event): 
     __tablename__ = "periods"
