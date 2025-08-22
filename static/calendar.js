@@ -41,9 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const backgroundColor = getEventColor(event.extendedProps.type);
         
         return {
-          html: `<div style="background-color: ${backgroundColor}; padding: 2px; border-radius: 3px; margin: 1px;">
-                   ${title}
-                 </div>`
+          html: `<div style="background-color: ${backgroundColor}; padding: 2px; border-radius: 3px; margin: 1px;"> ${title}</div>`
         };
       },
       editable: true, // Enable drag and drop
@@ -67,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
       'OVULATION': '#07a5c4ff',
       'NOTE': '#7373baff'
     };
-    return colors[type] || '#000000ff';
+    return colors[type];
   }
 
   // Show modal for selection (drag-to-create)
@@ -218,4 +216,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Initialize the calendar
   initCalendar();
+  
 });

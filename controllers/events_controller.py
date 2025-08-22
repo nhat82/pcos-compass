@@ -3,8 +3,11 @@ from flask import Blueprint, request, jsonify
 from models import Event
 from database import db
 from datetime import datetime
-from sqlalchemy import exc
+from sqlalchemy import asc, exc
 from models.models import *
+from collections import defaultdict
+from models.models import Event, EventType
+
 
 events_bp = Blueprint('events', __name__)
 
@@ -17,14 +20,10 @@ def events():
             for event in events:
                 events_data.append({
                     'id': event.id,
-                    # 'title': event.description or event.type,
                     'start': event.start_date.isoformat(),
                     'end': event.end_date.isoformat(),
-                    'extendedProps': {
-                        'type': event.type,
-                        'description': event.description
-                    },
-                    # 'allDay': True
+                    'type': event.type,
+                    'description': event.description
                 })
             return jsonify(events_data)
         except Exception as e:
@@ -58,10 +57,10 @@ def events():
             
             return jsonify({
                 'id': event.id,
+                'start': event.start_date.isoformat(),
+                'end': event.end_date.isoformat(),
                 'type': event.type,
                 'description': event.description,
-                'start_date': event.start_date.isoformat(),
-                'end_date': event.end_date.isoformat()
             }), 201
             
         except exc.SQLAlchemyError as e:
@@ -82,10 +81,10 @@ def event(event_id):
         if request.method == 'GET':
             return jsonify({
                 'id': event.id,
+                'start': event.start_date.isoformat(),
+                'end': event.end_date.isoformat(),
                 'type': event.type,
-                'description': event.description,
-                'start_date': event.start_date.isoformat(),
-                'end_date': event.end_date.isoformat()
+                'description': event.description
             })
             
         elif request.method == 'PUT':
@@ -112,10 +111,10 @@ def event(event_id):
             
             return jsonify({
                 'id': event.id,
+                'start': event.start_date.isoformat(),
+                'end': event.end_date.isoformat(),
                 'type': event.type,
-                'description': event.description,
-                'start_date': event.start_date.isoformat(),
-                'end_date': event.end_date.isoformat()
+                'description': event.description
             })
             
     except exc.SQLAlchemyError as e:
@@ -182,4 +181,42 @@ def delete_event(event_id):
             
     except Exception as e:
         db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+    
+    
+
+@events_bp.route('/events/cycle-length', methods=['GET'])
+def cycle_length():
+    try:
+        # Fetch all PERIOD events ordered by start_date
+        periods = Event.query.filter(Event.type == 'PERIOD').order_by(Event.start_date.asc()).all()
+
+        if len(periods) < 2:
+            return jsonify({
+                'message': f'Not enough period events to calculate cycle length: this has {len(periods)}',
+                'data': []
+            })
+
+        # Calculate cycle lengths (days between consecutive period starts)
+        cycle_lengths_by_month = {}
+        for i in range(1, len(periods)):
+            prev_start = periods[i - 1].start_date
+            curr_start = periods[i].start_date
+            diff_days = (curr_start - prev_start).days
+
+            month_key = curr_start.strftime("%b")  # Only month name, e.g., "Aug"
+            cycle_lengths_by_month.setdefault(month_key, []).append(diff_days)
+
+        # Average cycle length per month, sorted Jan → Dec
+        months_order = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        result = []
+        for month in months_order:
+            if month in cycle_lengths_by_month:
+                lengths = cycle_lengths_by_month[month]
+                avg_length = round(sum(lengths) / len(lengths))
+                result.append({'month': month, 'avg_cycle_length': avg_length})
+
+        return jsonify(result)
+
+    except Exception as e:
         return jsonify({'error': str(e)}), 500

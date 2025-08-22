@@ -25,6 +25,10 @@ def create_app():
     @app.route("/")
     def index():
         return render_template("index.html")
+    
+    @app.route("/charts")
+    def chart_view():
+        return render_template("chart.html")
         
     return app
 
