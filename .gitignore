@@ -1,0 +1,9 @@
+/venv
+__pycache__/
+.vscode/
+.DS_Store/
+.flaskenv
+/flask_app/__pycache__/
+/flask_app/config.py
+/flask_app/.DS_Store
+todo.md

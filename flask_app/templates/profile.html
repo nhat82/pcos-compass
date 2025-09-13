@@ -1,0 +1,10 @@
+{% extends "header.html" %}
+{% block content %}
+    <div class="profile-container">
+        <h1 class="profile-title">User Profile</h1>
+        <div class="profile-details">
+            <p><strong>Username:</strong> {{ current_user.username }}</p>
+            <p><strong>Email:</strong> {{ current_user.email }}</p>
+        </div>
+    </div>
+{% endblock %}

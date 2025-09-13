@@ -1,0 +1,41 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="register-container">
+    <h2 class="register-title">Register</h2>
+    <form method="POST" action="{{ url_for('users.register') }}" class="register-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-input") }}
+            {% for error in form.username.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-input") }}
+            {% for error in form.email.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {{ form.password(class="form-input") }}
+            {% for error in form.password.errors %} 
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>  
+        <div class="form-group">
+            {{ form.confirm_password.label(class="form-label") }}
+            {{ form.confirm_password(class="form-input") }}
+            {% for error in form.confirm_password.errors %}
+            <span class="error-message">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn-submit") }}
+        </div>
+    </form>
+</div>
+{% endblock %}  
+

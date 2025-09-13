@@ -1,0 +1,7 @@
+{% extends "header.html" %}
+{% block content %}
+    <div class="error-container">
+    <h1 class="error-message">You need an account else you can't do anything here</h1>
+    <a class="back-home" href="{{ url_for('users.register') }}">Make an account</a>
+    </div>
+{% endblock %}
