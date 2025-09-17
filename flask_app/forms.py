@@ -233,3 +233,36 @@ class DeleteAccountForm(FlaskForm):
             raise ValidationError("User not found.")
         return True
     
+class PlaceForm(FlaskForm):
+    name = StringField("Place Name", validators=[InputRequired(), Length(max=100)])
+    address = StringField("Address", validators=[Length(max=200)])
+    link = StringField("Link", validators=[Length(max=200)])
+    latitude = StringField("Latitude", validators=[InputRequired()])
+    longitude = StringField("Longitude", validators=[InputRequired()])
+    submit = SubmitField("Add Place")
+    
+    def validate_latitude(self, field):
+        try:
+            lat = float(field.data)
+            if lat < -90.0 or lat > 90.0:
+                raise ValidationError("Latitude must be between -90 and 90.")
+        except ValueError:
+            raise ValidationError("Invalid latitude format. Please enter a numeric value.")
+    
+    def validate_longitude(self, field):
+        try:
+            lon = float(field.data)
+            if lon < -180.0 or lon > 180.0:
+                raise ValidationError("Longitude must be between -180 and 180.")
+        except ValueError:
+            raise ValidationError("Invalid longitude format. Please enter a numeric value.")
+        
+        
+class ReviewForm(FlaskForm):
+    rating = SelectField(
+        "Rating",
+        choices=[(str(i), i) for i in range(1, 6)],
+        validators=[InputRequired()],
+    )
+    comment = TextAreaField("Comment", validators=[Length(max=1000)])
+    submit = SubmitField("Submit Review")

@@ -6,6 +6,7 @@
     {% if current_user.is_authenticated %}
     <div class="btn_g1">
         <a class="btns" href="{{ url_for('users.profile') }}">User Profile</a>
+        <a class="btns" href="{{ url_for('places.list_places') }}">Places</a>
         <a class="btns" href="{{ url_for('users.logout') }}">Logout</a>
     </div>
     {% else %}

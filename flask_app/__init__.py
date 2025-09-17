@@ -12,6 +12,7 @@ from flask_login import (
 from werkzeug.utils import secure_filename
 from .users.routes import users
 from .logs.routes import logs
+from .places.routes import places
 
 
 def custom_404(e):
@@ -30,6 +31,8 @@ def create_app(test_config=None):
     
     app.register_blueprint(users)
     app.register_blueprint(logs)
+    app.register_blueprint(places)
+    
     app.register_error_handler(404, custom_404)
     
     login_manager.login_view = "user.login"

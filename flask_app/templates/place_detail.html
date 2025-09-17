@@ -1,0 +1,53 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Place Details</h2>
+    <div class="row">
+        <h3>{{place.name}}</h3>
+        <p>{{place.description}}</p>
+        <a href="{{place.link}}" target="_blank">use google maps: {{place.link}}</a>
+        <p>Average Rating: {{place.average_rating}} / 5</p>
+        <p>posted by: {{place.posted_by.username}}</p>
+        <div>Reviews</div>
+        {% for review in place.reviews %}
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                <strong>Rating:</strong> {{ review.rating }} / 5<br>
+                <strong>Comment:</strong> {{ review.comment }}<br>
+                <strong>Reviewed by:</strong> {{ review.user.username }}
+            </div>
+        {% else %}
+            <p>No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container" style="max-width: 400px; margin-top: 50px;">
+    <h2 class="text-center">Add Review</h2>
+    
+    <form method="POST" action="" onsubmit="this.submit(); this.reset(); return false;"
+    >
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group mb-3">
+            {{ form.rating.label(class="form-label") }}
+            {{ form.rating(class="form-control", placeholder="Enter the place's rating 1-5") }}
+            {% for error in form.rating.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group mb-3">
+            {{ form.comment.label(class="form-label") }}
+            {{ form.comment(class="form-control", placeholder="Enter comment") }}
+            {% for error in form.comment.errors %}
+                <div class="text-danger small">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group mb-3">
+            {{ form.submit(class="btn btn-primary w-100") }}
+        </div>
+    </form>
+
+</div>
+{% endblock %}

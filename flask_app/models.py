@@ -29,32 +29,26 @@ class Log(db.Document):
     def __repr__(self):
         return f"<{self.__class__.__name__} {self.id} by {self.user.username}>"
     
+class Place(db.Document):
+    name = db.StringField(required=True)
+    address = db.StringField()
+    link = db.StringField()
+    latitude = db.FloatField(required=True)
+    longitude = db.FloatField(required=True)
+    posted_by = db.ReferenceField(User, required=True)
+    average_rating = db.FloatField(default=0.0)
+    reviews = db.ListField(db.ReferenceField('Review'))
     
-# class PeriodLog(Log):
-#     flow_intensity = db.StringField(required=True, choices=['light', 'medium', 'heavy'])
-#     symptoms = db.ListField(db.StringField(), required=False)
-#     mood = db.StringField(required=False)
-#     pain_level = db.IntField(min_value=0, max_value=10, required=False)
-#     medication_taken = db.ListField(db.StringField(), required=False)
+    def __repr__(self):
+        return f"<Place {self.name}>"
     
-# class OvulationLog(Log):
-#     ovulation_test_result = db.StringField(required=False, choices=['positive', 'negative', 'not_taken'])
-#     symptoms = db.ListField(db.StringField(), required=False)
-#     mood = db.StringField(required=False)
+class Review(db.Document):
+    place = db.ReferenceField(Place, required=True)
+    user = db.ReferenceField(User, required=True)
+    rating = db.IntField(min_value=1, max_value=5, required=True)
+    comment = db.StringField()
+    created_at = db.DateTimeField(required=True)
     
-# class LabLog(Log):
-#     test_name = db.StringField(required=True)
-#     results_summary = db.StringField(required=False)
-#     detailed_report = db.FileField(required=False)
-#     tests = db.ListField(db.ReferenceField('LabTest'), required=False)
+    def __repr__(self):
+        return f"<Review {self.id} for {self.place.name} by {self.user.username}>"
     
-# class MedicationLog(Log):
-#     medication_name = db.StringField(required=True)
-#     dosage = db.StringField(required=True)
-#     frequency = db.StringField(required=True)
-#     notes = db.StringField(required=False)
-    
-# class TemperatureLog(Log):
-#     temperature = db.FloatField(required=True)
-#     time_recorded = db.DateTimeField(default=datetime.utcnow, required=True)
-#     notes = db.StringField(required=False)

@@ -1,4 +1,3 @@
-import base64, io
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, login_required, current_user
 from io import BytesIO
@@ -53,7 +52,7 @@ def login():
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
-    return redirect(url_for('users.login'))
+    return redirect(url_for('users.home'))
 
 @users.route('/profile')
 @login_required
