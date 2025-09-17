@@ -21,14 +21,13 @@ def logs_data():
     for log in user_logs:
         events.append({
             "id": str(log.id),
-            "title": log.description or log.notes or log.type,
+            "title": log.description or log.type,
             "start": log.start_date.isoformat(),
             "end": log.end_date.isoformat() if log.end_date else None,
             "allDay": False,
             "extendedProps": {
                 "type": log.type,
-                "description": log.description,
-                "notes": log.notes
+                "description": log.description
             }
         })
     return jsonify(events)
@@ -48,7 +47,6 @@ def create_log():
             user=current_user,
             type=data.get("type", "PERIOD"),
             description=data.get("description", ""),
-            notes=data.get("description", ""),  # Keep notes for backward compatibility
             start_date=start_date,
             end_date=end_date
         )
@@ -81,7 +79,6 @@ def update_log(log_id):
             log.type = data.get("type")
         if "description" in data:
             log.description = data.get("description")
-            log.notes = data.get("description")  # Keep notes in sync for backward compatibility
         
         log.save()
         return jsonify({"success": True})

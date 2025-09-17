@@ -11,6 +11,10 @@ users = Blueprint('users', __name__)
 
 ''' User Management Views '''
 
+@users.route('/')
+def home():
+    return render_template('home.html')
+
 @users.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()

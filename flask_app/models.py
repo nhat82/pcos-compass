@@ -23,7 +23,6 @@ class Log(db.Document):
     user = db.ReferenceField(User, required=True)
     type = db.StringField(required=True, default='PERIOD') 
     description = db.StringField()
-    notes = db.StringField(required=False)
     start_date = db.DateTimeField(required=True)
     end_date = db.DateTimeField(required=False)
     
