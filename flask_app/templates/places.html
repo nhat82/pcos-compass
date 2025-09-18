@@ -6,7 +6,7 @@
         {%for place in places%}
             <h3>{{place.name}}</h3>
             <p>{{place.description}}</p>
-            <a href="{{ url_for('places.place_detail', place_id=place.id) }}" target="_blank">{{place.link}}</a>
+            <a href="{{ url_for('places.place_detail', place_id=place.id) }}">{{place.link}}</a>
             <p>posted by: {{place.posted_by.username}}</p>
         {%endfor%}
     </div>

@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 from ..extensions import bcrypt 
 from ..forms import * 
 from ..models import * 
+from ..config import GOOGLE_FORM_LINK
 
 users = Blueprint('users', __name__)
 
@@ -13,6 +14,15 @@ users = Blueprint('users', __name__)
 @users.route('/')
 def home():
     return render_template('home.html')
+
+@users.route('/about')
+def about():
+    return render_template('about.html')
+
+@users.route('/contact')
+def contact():
+    return render_template('contact.html', google_form_link=GOOGLE_FORM_LINK)
+
 
 @users.route('/register', methods=['GET', 'POST'])
 def register():

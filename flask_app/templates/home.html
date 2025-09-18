@@ -1,8 +1,14 @@
-{% extends "base.html" %} {% block header %}
-<h1>Welcome to PCOS Compass</h1>
-<p>Your journey to understanding and managing PCOS starts here.</p>
-<div class="home-buttons">
-    <a href="{{ url_for('users.register') }}" class="btn btn-primary">Register</a>
-    <a href="{{ url_for('users.login') }}" class="btn btn-secondary">Login</a>
+{% extends "header.html" %}
+{% block content %}
+<div class="home-container">
+    <h2 class="home-title">F*ck PCOS</h2>
+    <p class="description">Take your healthcare in your own hands.</p>
+    <p class="description">Track symptoms, manage treatments, find caring doctors and connect with a supportive community.</p>
+    <p class="description">You're not alone.</p>
+    {% if current_user.is_authenticated %}
+        <p class="description">Hello, {{ current_user.username }}! Explore your dashboard and track your progress.</p>
+    {% else %}
+        <a href="{{ url_for('users.register') }}" class="home-signup">Sign Up</a>
+    {% endif %}
 </div>
-{% block content %}{% endblock %}{% endblock %}
+{% endblock %}
