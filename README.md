@@ -3,7 +3,11 @@
 ## Description
 A full-stack period and fertility tracking app designed to help women with PCOS predict cycles more accurately and log key reproductive health data.
 
-Techstack: Flask, SQLAlchemy, PostgreSQL.
+Techstack: 
+- Past: 
+    * Java, Spring Boot, PostgreSQL.
+    * Flask, SQLAlchemy, PostgreSQL.
+- Current: Flask, MongoEngine, MongoDB. 
 
 ## 🧐 Why?
 Me and many other women with PCOS often struggle with irregular cycles, making it hard to predict ovulation and fertility windows. Existing apps focus on regular cycles, doesn't provide accurate predictions and effcient tracking.  
