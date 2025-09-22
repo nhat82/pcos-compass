@@ -31,16 +31,20 @@ class Log(db.Document):
     
 class Place(db.Document):
     name = db.StringField(required=True)
-    address = db.StringField()
+    address = db.StringField(required=True)
     link = db.StringField()
-    latitude = db.FloatField(required=True)
-    longitude = db.FloatField(required=True)
+    latitude = db.FloatField()
+    longitude = db.FloatField()
+    description = db.StringField()
     posted_by = db.ReferenceField(User, required=True)
     average_rating = db.FloatField(default=0.0)
     reviews = db.ListField(db.ReferenceField('Review'))
     
+    def get_id(self):
+        return self.name
+        
     def __repr__(self):
-        return f"<Place {self.name}>"
+        return f"<{self.name}>"
     
 class Review(db.Document):
     place = db.ReferenceField(Place, required=True)
@@ -52,3 +56,17 @@ class Review(db.Document):
     def __repr__(self):
         return f"<Review {self.id} for {self.place.name} by {self.user.username}>"
     
+class Treatment(db.Document):
+    start_date = db.DateTimeField(required=True)
+    end_date = db.DateTimeField(required=False)
+    details = db.StringField()  # e.g., dosage, notes
+    effectiveness = db.StringField(
+        choices=["improved", "no_change", "worse", "unknown"], default="unknown"
+    )
+    user = db.ReferenceField(User, required=True)
+
+class Problem(db.Document):
+    name = db.StringField(required=True)      # e.g., "acne", "irregular periods"
+    severity = db.IntField(min_value=1, max_value=5)  # 1 = mild, 5 = severe
+    notes = db.StringField()
+    user = db.ReferenceField(User, required=True)

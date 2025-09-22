@@ -26,6 +26,7 @@ html {
   @apply text-base text-stone-50 hover:text-stone-900; 
 }
 
+
 .description {
   @apply text-center text-lg text-neutral-600 dark:text-neutral-400; 
 }
@@ -50,7 +51,7 @@ html {
   @apply container mx-auto relative flex flex-col gap-2 pt-8;
 }
 
-.register-title {
+.title {
   @apply text-3xl font-bold text-neutral-950 dark:text-pink-500 text-center ;
 }
 
@@ -102,7 +103,7 @@ html {
   @apply container mx-auto relative flex flex-col gap-6 pt-8;
 }
 
-.about-title {
+.title {
   @apply text-3xl font-bold text-neutral-950 dark:text-pink-500 text-center ;
 }
 
@@ -122,14 +123,38 @@ html {
   @apply container mx-auto relative flex flex-col gap-6 pt-8;
 }
 
-.contact-title {
-  @apply text-3xl font-bold text-neutral-950 dark:text-pink-500 text-center ;
-}
-
 .contact-description {
   @apply text-center text-base ; 
 }
 
 .iframe {
   @apply w-full h-[800px] border-0; 
+}
+
+.register-prompt {
+  @apply text-center text-neutral-600 dark:text-neutral-400 mt-4;
+}
+
+.profile-container {
+  @apply container mx-auto relative flex flex-col gap-6 pt-8 items-center;
+}
+
+.profile-details {
+  @apply bg-white p-6 rounded-lg shadow-md w-full max-w-md text-neutral-600;
+}
+
+.places-container {
+  @apply container mx-auto relative flex flex-col gap-6 pt-8;
+}
+
+.place-link {
+  @apply text-blue-600 hover:underline;
+}
+
+.add-place-form {
+  @apply container mx-auto relative flex flex-col gap-2 pt-8 max-w-md;
+}
+
+.place-form-title {
+  @apply text-2xl font-bold text-neutral-950 dark:text-pink-500 text-center mb-4;
 }

@@ -85,143 +85,6 @@ class LogForm(FlaskForm):
     title = StringField("Log Title", validators=[InputRequired()])
     submit = SubmitField("Save")
 
-# class PeriodLogForm(FlaskForm):
-#     start_date = DateTimeLocalField(
-#         "Start Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     end_date = DateTimeLocalField(
-#         "End Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     flow_intensity = StringField(
-#         "Flow Intensity (light, medium, heavy)",
-#         validators=[InputRequired(), Length(max=10)],
-#     )
-#     symptoms = SelectMultipleField(
-#         "Symptoms (hold Ctrl or Cmd to select multiple)",
-#         choices=[
-#             ("cramps", "Cramps"),
-#             ("bloating", "Bloating"),
-#             ("headache", "Headache"),
-#             ("fatigue", "Fatigue"),
-#             ("nausea", "Nausea"),
-#             ("back_pain", "Back Pain"),
-#             ("breast_tenderness", "Breast Tenderness"),
-#             ("mood_swings", "Mood Swings"),
-#             ("acne", "Acne"),
-#             ("other", "Other"),
-#         ],
-#     )
-#     mood = StringField("Mood", validators=[Length(max=50)])
-#     pain_level = StringField("Pain Level (0-10)", validators=[Length(max=2)])
-#     medication_taken = SelectMultipleField(
-#         "Medication Taken (hold Ctrl or Cmd to select multiple)",
-#         choices=[
-#             ("ibuprofen", "Ibuprofen"),
-#             ("acetaminophen", "Acetaminophen"),
-#             ("naproxen", "Naproxen"),
-#             ("other", "Other"),
-#         ],
-#     )
-#     notes = TextAreaField("Additional Notes", validators=[Length(max=500)])
-#     submit = SubmitField("Submit Period Log")
-    
-# class OvulationLogForm(FlaskForm):
-#     start_date = DateTimeLocalField(
-#         "Start Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     end_date = DateTimeLocalField(
-#         "End Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     ovulation_test_result = StringField(
-#         "Ovulation Test Result (positive, negative, not_taken)",
-#         validators=[Length(max=12)],
-#     )
-#     symptoms = SelectMultipleField(
-#         "Symptoms (hold Ctrl or Cmd to select multiple)",
-#         choices=[
-#             ("mittelschmerz", "Mittelschmerz"),
-#             ("increased_cervical_mucus", "Increased Cervical Mucus"),
-#             ("breast_tenderness", "Breast Tenderness"),
-#             ("heightened_senses", "Heightened Senses"),
-#             ("fatigue", "Fatigue"),
-#             ("mood_swings", "Mood Swings"),
-#             ("acne", "Acne"),
-#             ("other", "Other"),
-#         ],
-#     )
-#     mood = StringField("Mood", validators=[Length(max=50)])
-#     notes = TextAreaField("Additional Notes", validators=[Length(max=500)])
-#     submit = SubmitField("Submit Ovulation Log")
-    
-# class LabLogForm(FlaskForm):
-#     start_date = DateTimeLocalField(
-#         "Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     test_name = StringField("Test Name", validators=[InputRequired(), Length(max=100)])
-#     results_summary = TextAreaField("Results Summary", validators=[Length(max=1000)])
-#     detailed_report = FileField(
-#         "Upload Detailed Report (PDF, JPG, PNG)",
-#         validators=[
-#             FileAllowed(['pdf', 'jpg', 'jpeg', 'png'], "Only PDF, JPG, JPEG, and PNG files are allowed"),
-#         ],
-#     )
-#     notes = TextAreaField("Additional Notes", validators=[Length(max=500)])
-#     submit = SubmitField("Submit Lab Log")
-    
-# class MedicationLogForm(FlaskForm):
-#     start_date = DateTimeLocalField(
-#         "Start Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     end_date = DateTimeLocalField(
-#         "End Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     medication_name = StringField("Medication Name", validators=[InputRequired(), Length(max=100)])
-#     dosage = StringField("Dosage", validators=[InputRequired(), Length(max=50)])
-#     frequency = StringField("Frequency", validators=[InputRequired(), Length(max=50)])
-#     notes = TextAreaField("Additional Notes", validators=[Length(max=500)])
-#     submit = SubmitField("Submit Medication Log")
-    
-# class TemperatureLogForm(FlaskForm):
-#     start_date = DateTimeLocalField(
-#         "Date and Time",
-#         format="%Y-%m-%dT%H:%M",
-#         default=datetime.datetime.now,
-#         validators=[InputRequired()],
-#     )
-#     temperature = StringField("Temperature (°F)", validators=[InputRequired(), Length(max=5)])
-#     method = StringField("Method (oral, basal, ear, forehead, armpit)", validators=[Length(max=10)])
-#     notes = TextAreaField("Additional Notes", validators=[Length(max=500)])
-#     submit = SubmitField("Submit Temperature Log")
-    
-# def validate_temperature(form, field):
-#     try:
-#         temp = float(field.data)
-#         if temp < 80.0 or temp > 110.0:
-#             raise ValidationError("Temperature must be between 80.0°F and 110.0°F")
-#     except ValueError:
-#         raise ValidationError("Invalid temperature format. Please enter a numeric value.")
-
 class DeleteAccountForm(FlaskForm):
     submit = SubmitField("Delete Account") 
     
@@ -233,30 +96,12 @@ class DeleteAccountForm(FlaskForm):
             raise ValidationError("User not found.")
         return True
     
-class PlaceForm(FlaskForm):
-    name = StringField("Place Name", validators=[InputRequired(), Length(max=100)])
-    address = StringField("Address", validators=[Length(max=200)])
-    link = StringField("Link", validators=[Length(max=200)])
-    latitude = StringField("Latitude", validators=[InputRequired()])
-    longitude = StringField("Longitude", validators=[InputRequired()])
-    submit = SubmitField("Add Place")
-    
-    def validate_latitude(self, field):
-        try:
-            lat = float(field.data)
-            if lat < -90.0 or lat > 90.0:
-                raise ValidationError("Latitude must be between -90 and 90.")
-        except ValueError:
-            raise ValidationError("Invalid latitude format. Please enter a numeric value.")
-    
-    def validate_longitude(self, field):
-        try:
-            lon = float(field.data)
-            if lon < -180.0 or lon > 180.0:
-                raise ValidationError("Longitude must be between -180 and 180.")
-        except ValueError:
-            raise ValidationError("Invalid longitude format. Please enter a numeric value.")
-        
+
+
+class SearchPlaceForm(FlaskForm):
+    search_query = StringField("Search Place", validators=[InputRequired(), Length(max=100)])
+    submit = SubmitField("Search")
+
         
 class ReviewForm(FlaskForm):
     rating = SelectField(
@@ -266,3 +111,6 @@ class ReviewForm(FlaskForm):
     )
     comment = TextAreaField("Comment", validators=[Length(max=1000)])
     submit = SubmitField("Submit Review")
+    
+    
+    

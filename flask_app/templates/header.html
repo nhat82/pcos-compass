@@ -1,26 +1,23 @@
 {% extends "base.html" %} {% block header %}
 <nav class="navbar">
     <div class="header-left">
-        
-     <a class="header-title" href="{{ url_for('users.home') }}">
-        <span class="block" id="home">PCOS Compass</span>
-    </a>
-    
+        <a class="header-title" href="{{ url_for('users.home') }}">
+            <span class="block" id="home">PCOS Compass</span>
+        </a>
         <a class="subtitle" href="{{ url_for('users.about')}}">About</a>
         <a class="subtitle" href="{{ url_for('users.contact')}}">Contact</a>
-    </div>
-
-    {% if current_user.is_authenticated %}
-    <div class="btn_g1">
-        <!-- <a class="header-button" href="{{ url_for('users.profile') }}">Profile</a>
-         <a class="header-button" href="{{ url_for('places.list_places') }}">Places</a>
-         <a class="header-button" href="{{ url_for('users.logout') }}">Logout</a> -->
-    </div>
-    {% else %}
-    <div class="header-buttons">
-        <a class="header-button" href="{{ url_for('users.login') }}">Login</a>
-        <a class="header-button" href="{{ url_for('users.register') }}">Register</a>
-    </div>
-    {% endif %}
+    
+        {% if current_user.is_authenticated %}
+            <a class="subtitle" href="{{ url_for('places.list_places') }}">Places</a>
+            <a class="subtitle" href="{{ url_for('logs.logs_page') }}">Calendar</a>
+            <a class="subtitle" href="{{ url_for('users.profile') }}">Profile</a>
+            <a class="subtitle" href="{{ url_for('users.logout') }}">Logout</a>
+            
+        {% else %} 
+            <a class="subtitle" href="{{ url_for('users.login') }}">Login</a>
+            <a class="subtitle" href="{{ url_for('users.register') }}">Register</a>
+            
+        {% endif %}
+    
 </nav>
 {% block content %}{% endblock %}{% endblock %}

@@ -15,10 +15,7 @@ Me and many other women with PCOS often struggle with irregular cycles, making i
 This project is a personal solution built after surveying an active [subreddit /PCOS](<https://www.reddit.com/r/PCOS/>). You can track the survey from my post [here](<https://www.reddit.com/r/PCOS/comments/1mq47hb/pcos_tracking_app/>)!
 
 ## 🚧 Current Progress
-
-<video width="320" height="240" controls>
-  <source src="progress.mp4" type="video/mp4">
-</video>
+![](demo.gif)
 
 ## 🚀 Quick Start
 
