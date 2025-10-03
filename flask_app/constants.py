@@ -110,11 +110,11 @@ GOALS = [
 ]
 
 LOG_TYPES = [
-    "PERIOD",
-    "OVULATION",
-    "SEXUAL_ACTIVITY",
-    "TREATMENT",
-    "EVENT",
+    "Period",
+    "Ovulation",
+    "Sexual Activity",
+    "Treatment",
+    "Event",
 ]
 
 

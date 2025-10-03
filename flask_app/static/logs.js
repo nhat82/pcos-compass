@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var modalCloseBtn = document.getElementById('modalCloseBtn'); // X button
     var deleteBtn = document.getElementById('deleteBtn');
     var modalTitle = document.getElementById('modalTitle');
+    var showTreatmentNames = false; 
+    var toggleButton = document.getElementById('toggleLogDisplay');
 
     [cancelBtn, modalCloseBtn].forEach(btn => {
     if (btn) {
@@ -79,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
@@ -86,34 +89,84 @@ document.addEventListener('DOMContentLoaded', function() {
             center: 'title',
             right: 'dayGridMonth'
         },
-        events: '/logs/data',
+        
+        // Modified events function to handle toggle state
+        events: function(fetchInfo, successCallback, failureCallback) {
+            // Pass the current toggle state to the server
+            fetch('/logs/data?show_treatments=' + showTreatmentNames)
+                .then(response => response.json())
+                .then(data => successCallback(data))
+                .catch(error => failureCallback(error));
+        },
+        
         selectable: true,
-        allDay: true, // Calendar is set to handle all events as all-day
+        allDay: true,
         editable: true,
         eventStartEditable: true,
         dragScroll: true,
         eventDurationEditable: true,
-        displayEventTime: false, // Hide event times
+        displayEventTime: false,
 
         // Style events by type
         eventDidMount: function(info) {
             const type = info.event.extendedProps.type;
-            if (type === "PERIOD") {
+            if (type === "Period") {
                 info.el.style.backgroundColor = "#f15b8d";
                 info.el.style.borderColor = "#f15b8d";
-            } else if (type === "OVULATION") {
+            } else if (type === "Ovulation") {
                 info.el.style.backgroundColor = "#42CAFD";
                 info.el.style.borderColor = "#42CAFD";
-            } else if (type === "SEXUAL_ACTIVITY") {
+            } else if (type === "Sexual Activity") {
                 info.el.style.backgroundColor = "#FF6B6B";
                 info.el.style.borderColor = "#FF6B6B";
-            } else if (type === "EVENT") {
+            } else if (type === "Event") {
                 info.el.style.backgroundColor = "#f8d472";
                 info.el.style.borderColor = "#f8d472";
-            } else if (type === "TREATMENT") {
+            } else if (type === "Treatment") {
                 info.el.style.backgroundColor = "#b2e0c3";
                 info.el.style.borderColor = "#b2e0c3";
             }
+        },
+
+        // Custom event content to handle toggle display
+        eventContent: function(arg) {
+            let displayText;
+            const type = arg.event.extendedProps.type;
+            const description = arg.event.extendedProps.description;
+            const treatmentName = arg.event.extendedProps.treatment_name;
+            
+            if (showTreatmentNames) {
+                // When toggle is ON: Show event type + description for ALL events
+                if (type === "Treatment" && treatmentName) {
+                    // For treatment events, show type + treatment name + description
+                    displayText = type + ": " + treatmentName;
+                    if (description && description !== treatmentName) {
+                        displayText += " - " + description;
+                    }
+                } else {
+                    // For all other events, show type + description
+                    displayText = type;
+                    if (description) {
+                        displayText += ": " + description;
+                    }
+                }
+            } else {
+                // When toggle is OFF: Show only description for ALL events
+                if (type === "Treatment" && treatmentName) {
+                    // For treatment events, show treatment name as description
+                    displayText = treatmentName;
+                    if (description && description !== treatmentName) {
+                        displayText += " - " + description;
+                    }
+                } else {
+                    // For all other events, show only description
+                    displayText = description || type; // Fallback to type if no description
+                }
+            }
+            
+            return {
+                html: `<div class="fc-event-title">${displayText}</div>`
+            };
         },
 
         // Edit event - Show form when clicking on existing events
@@ -135,10 +188,45 @@ document.addEventListener('DOMContentLoaded', function() {
         select: function(selectionInfo) {
             showEventForm('create', null, selectionInfo);
         }
-
     });
 
+
     calendar.render();
+
+    // Toggle button functionality
+    if (toggleButton) {
+        toggleButton.addEventListener('click', function() {
+            // 1. Update the internal state
+            showTreatmentNames = !showTreatmentNames;
+            
+            // 2. Update the button's ARIA state for CSS styling (REQUIRED for the visual toggle)
+            this.setAttribute('aria-checked', showTreatmentNames ? 'true' : 'false');
+            
+            // 3. (Optional) Remove the now redundant function call, 
+            //    or keep it if you need to run specific logic there.
+            //    The function below is now modified to update the ARIA status if needed elsewhere.
+            updateToggleButtonState();
+            
+            // 4. Refresh the calendar to re-render event titles based on the new state
+            refreshCalendarEvents();
+        });
+    }
+
+    function updateToggleButtonState() {
+        if (toggleButton) {
+            // 5. Explicitly set the aria-checked state based on the variable
+            toggleButton.setAttribute('aria-checked', showTreatmentNames ? 'true' : 'false');
+            
+            // 6. The textContent is empty in your prompt, so this line is redundant 
+            //    unless you decide to add actual text content later.
+            // toggleButton.textContent = showTreatmentNames ? '' : '';
+        }
+    }
+
+
+    function refreshCalendarEvents() {
+        calendar.refetchEvents();
+    }
 
     // Add event listeners to create log buttons
     createLogBtnSidebar.addEventListener('click', function() {
@@ -177,24 +265,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // // Add the treatment select change listener *outside* of toggleTreatmentFields
-    // const treatmentSelect = document.getElementById('treatmentSelect');
-    // treatmentSelect.addEventListener('change', function() {
-    //     const selectedTreatment = this.value;
-    //     const treatmentDescription = document.getElementById('treatmentDescription');
-    //     const customTreatmentGroup = document.getElementById('customTreatmentGroup');
+    const treatmentSelect = document.getElementById('treatmentSelect');
+    treatmentSelect.addEventListener('change', function() {
+        const selectedTreatment = this.value;
+        const treatmentDescription = document.getElementById('treatmentDescription');
+        const customTreatmentGroup = document.getElementById('customTreatmentGroup');
 
-    //     if (selectedTreatment && selectedTreatment !== 'custom' && TREATMENTS[selectedTreatment]) {
-    //         treatmentDescription.textContent = TREATMENTS[selectedTreatment].description;
-    //         treatmentDescription.style.display = 'block';
-    //         customTreatmentGroup.style.display = 'none';
-    //     } else if (selectedTreatment === 'custom') {
-    //         treatmentDescription.style.display = 'none';
-    //         customTreatmentGroup.style.display = 'block';
-    //     } else {
-    //         treatmentDescription.style.display = 'none';
-    //         customTreatmentGroup.style.display = 'none';
-    //     }
-    // });
+        if (selectedTreatment && selectedTreatment !== 'custom' && TREATMENTS[selectedTreatment]) {
+            treatmentDescription.textContent = TREATMENTS[selectedTreatment].description;
+            treatmentDescription.style.display = 'block';
+            customTreatmentGroup.style.display = 'none';
+        } else if (selectedTreatment === 'custom') {
+            treatmentDescription.style.display = 'none';
+            customTreatmentGroup.style.display = 'block';
+        } else {
+            treatmentDescription.style.display = 'none';
+            customTreatmentGroup.style.display = 'none';
+        }
+    });
 
     // Function to toggle treatment-specific fields
     function toggleTreatmentFields(logType) {
@@ -203,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const treatmentDescription = document.getElementById('treatmentDescription');
         const treatmentSelect = document.getElementById('treatmentSelect');
 
-        if (logType === 'TREATMENT') {
+        if (logType === 'Treatment') {
             treatmentGroup.style.display = 'block';
             
             // Re-populate and reset treatment dropdown
@@ -238,56 +326,147 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to show event form
-    function showEventForm(action, event = null, selectionInfo = null) {
-        modalTitle.textContent = action === 'create' ? 'Create Log' : 'Edit Log';
-        deleteBtn.style.display = action === 'edit' ? 'block' : 'none';
+    // function showEventForm(action, event = null, selectionInfo = null) {
+    //     modalTitle.textContent = action === 'create' ? 'Create Log' : 'Edit Log';
+    //     deleteBtn.style.display = action === 'edit' ? 'block' : 'none';
 
-        document.getElementById('eventId').value = '';
-        document.getElementById('eventType').value = 'PERIOD';
-        document.getElementById('eventDescription').value = '';
+    //     document.getElementById('eventId').value = '';
+    //     document.getElementById('eventType').value = 'Period';
+    //     document.getElementById('eventDescription').value = '';
 
-        if (action === 'create' && selectionInfo) {
-            const startDate = selectionInfo.start;
-            let endDate = selectionInfo.end || selectionInfo.start;
+    //     if (action === 'create' && selectionInfo) {
+    //         const startDate = selectionInfo.start;
+    //         let endDate = selectionInfo.end || selectionInfo.start;
 
-            // FullCalendar's selectionInfo.end is exclusive (+1 day).
-            // Subtract one day to show the actual end day in the form.
-            if (endDate && !isSameDay(startDate, endDate)) {
-                endDate = new Date(endDate);
-                endDate.setDate(endDate.getDate() - 1);
-            } else {
-                endDate = startDate;
-            }
+    //         // FullCalendar's selectionInfo.end is exclusive (+1 day).
+    //         // Subtract one day to show the actual end day in the form.
+    //         if (endDate && !isSameDay(startDate, endDate)) {
+    //             endDate = new Date(endDate);
+    //             endDate.setDate(endDate.getDate() - 1);
+    //         } else {
+    //             endDate = startDate;
+    //         }
 
-            document.getElementById('eventStartDate').value = formatDate(startDate);
-            document.getElementById('eventEndDate').value = formatDate(endDate);
+    //         document.getElementById('eventStartDate').value = formatDate(startDate);
+    //         document.getElementById('eventEndDate').value = formatDate(endDate);
 
-        } else if (action === 'edit' && event) {
-            document.getElementById('eventId').value = event.id;
-            document.getElementById('eventType').value = event.extendedProps.type || 'PERIOD';
-            document.getElementById('eventDescription').value = event.extendedProps.description || '';
+    //     } else if (action === 'edit' && event) {
+    //         document.getElementById('eventId').value = event.id;
+    //         document.getElementById('eventType').value = event.extendedProps.type || 'Period';
+    //         document.getElementById('eventDescription').value = event.extendedProps.description || '';
+    //         const treatmentName = event.extendedProps.treatment_name || '';
+    //         if (treatmentName) { // Check if it's a predefined treatment
+    //             if (TREATMENTS[treatmentName]) {
+    //                 treatmentSelect.value = treatmentName;
+    //                 treatmentDescription.textContent = TREATMENTS[treatmentName].description;
+    //                 treatmentDescription.style.display = 'block';
+    //                 customTreatmentGroup.style.display = 'none';
+    //             } else {
+    //                 // It's a custom treatment
+    //                 treatmentSelect.value = 'custom';
+    //                 customTreatment.value = treatmentName;
+    //                 customTreatmentGroup.style.display = 'block';
+    //                 treatmentDescription.style.display = 'none';
+    //             }
+    //         }
+    //         let displayEndDate = event.end ? new Date(event.end) : new Date(event.start);
+    //         let displayStartDate = new Date(event.start);
 
-            // ⚠️ EDITING LOGIC: Subtract one day from the stored end date
-            let displayEndDate = event.end ? new Date(event.end) : new Date(event.start);
-            let displayStartDate = new Date(event.start);
+    //         // Assuming all logs are "all-day" events where end date is exclusive (end date is stored +1 day)
+    //         // Only subtract 1 day if it's a multi-day event or if start/end are different
+    //         if (!isSameDay(displayStartDate, displayEndDate)) {
+    //             displayEndDate.setDate(displayEndDate.getDate() - 1);
+    //         } else {
+    //             // If it's a single-day event, use the start date as the end date
+    //             displayEndDate = displayStartDate;
+    //         }
 
-            // Assuming all logs are "all-day" events where end date is exclusive (end date is stored +1 day)
-            // Only subtract 1 day if it's a multi-day event or if start/end are different
-            if (!isSameDay(displayStartDate, displayEndDate)) {
-                displayEndDate.setDate(displayEndDate.getDate() - 1);
-            } else {
-                // If it's a single-day event, use the start date as the end date
-                displayEndDate = displayStartDate;
-            }
+    //         document.getElementById('eventStartDate').value = formatDate(displayStartDate);
+    //         document.getElementById('eventEndDate').value = formatDate(displayEndDate);
+    //     }
 
-            document.getElementById('eventStartDate').value = formatDate(displayStartDate);
-            document.getElementById('eventEndDate').value = formatDate(displayEndDate);
+    //     modal.style.display = 'flex';
+    // }
+
+// Function to show event form
+function showEventForm(action, event = null, selectionInfo = null) {
+    modalTitle.textContent = action === 'create' ? 'Create Log' : 'Edit Log';
+    deleteBtn.style.display = action === 'edit' ? 'block' : 'none';
+
+    document.getElementById('eventId').value = '';
+    document.getElementById('eventType').value = 'Period';
+    document.getElementById('eventDescription').value = '';
+    
+    // Reset treatment fields
+    resetTreatmentFields();
+
+    if (action === 'create' && selectionInfo) {
+        const startDate = selectionInfo.start;
+        let endDate = selectionInfo.end || selectionInfo.start;
+
+        if (endDate && !isSameDay(startDate, endDate)) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+        } else {
+            endDate = startDate;
         }
 
-        modal.style.display = 'flex';
+        document.getElementById('eventStartDate').value = formatDate(startDate);
+        document.getElementById('eventEndDate').value = formatDate(endDate);
+
+    } else if (action === 'edit' && event) {
+        document.getElementById('eventId').value = event.id;
+        const eventType = event.extendedProps.type || 'Period';
+        document.getElementById('eventType').value = eventType;
+        document.getElementById('eventDescription').value = event.extendedProps.description || '';
+
+        // ⚠️ EDITING LOGIC: Subtract one day from the stored end date
+        let displayEndDate = event.end ? new Date(event.end) : new Date(event.start);
+        let displayStartDate = new Date(event.start);
+
+        if (!isSameDay(displayStartDate, displayEndDate)) {
+            displayEndDate.setDate(displayEndDate.getDate() - 1);
+        } else {
+            displayEndDate = displayStartDate;
+        }
+
+        document.getElementById('eventStartDate').value = formatDate(displayStartDate);
+        document.getElementById('eventEndDate').value = formatDate(displayEndDate);
     }
 
+    // Show treatment fields if editing a treatment log
+    const eventType = action === 'edit' && event ? event.extendedProps.type : 'Period';
+    toggleTreatmentFields(eventType);
+    
+    // Pre-populate treatment fields if editing a treatment log
+    if (action === 'edit' && event && event.extendedProps.type === 'Treatment') {
+        const treatmentName = event.extendedProps.treatment_name || '';
+        const treatmentSelect = document.getElementById('treatmentSelect');
+        const customTreatment = document.getElementById('customTreatment');
+        const treatmentDescription = document.getElementById('treatmentDescription');
+        const customTreatmentGroup = document.getElementById('customTreatmentGroup');
+        
+        console.log("Editing treatment log:", treatmentName); // Debug log
+        
+        if (treatmentName) {
+            // Check if it's a predefined treatment
+            if (TREATMENTS[treatmentName]) {
+                treatmentSelect.value = treatmentName;
+                treatmentDescription.textContent = TREATMENTS[treatmentName].description;
+                treatmentDescription.style.display = 'block';
+                customTreatmentGroup.style.display = 'none';
+            } else {
+                // It's a custom treatment
+                treatmentSelect.value = 'custom';
+                customTreatment.value = treatmentName;
+                customTreatmentGroup.style.display = 'block';
+                treatmentDescription.style.display = 'none';
+            }
+        }
+    }
 
+    modal.style.display = 'flex';
+}
     // Format date for date input (YYYY-MM-DD)
     function formatDate(date) {
         if (!date) return '';
@@ -310,15 +489,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const startDateInput = document.getElementById('eventStartDate').value;
         const endDateInput = document.getElementById('eventEndDate').value;
 
+        let treatmentName = '';
         // Handle treatment-specific description
-        if (type === 'TREATMENT') {
+        if (type === 'Treatment') {
             const treatmentSelect = document.getElementById('treatmentSelect').value;
             const customTreatment = document.getElementById('customTreatment').value;
 
             if (treatmentSelect === 'custom' && customTreatment.trim()) {
-                description = customTreatment.trim();
+                treatmentName = customTreatment.trim();
             } else if (treatmentSelect && treatmentSelect !== 'custom') {
-                description = treatmentSelect;
+                treatmentName = treatmentSelect;
             } else {
                 alert('Please select or enter a treatment name');
                 return;
@@ -329,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const startDateObj = new Date(startDateInput);
         let endDateObj = new Date(endDateInput);
 
-        // ⚠️ SAVING LOGIC: Add one day to the end date before sending to the backend/FullCalendar
+        
         // This makes the end date exclusive, following the FullCalendar/database convention.
         // This is done because all your events are essentially 'allDay' logs.
         if (!isSameDay(startDateObj, endDateObj)) {
@@ -343,10 +523,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const formData = {
             type: type,
             description: description,
+            treatment_name: treatmentName,
             start_date: startDateObj.toISOString(),
             end_date: endDateObj.toISOString() // This is the adjusted (+1 day) end date
         };
-
+        console.log("Saving event with data:", formData);
         fetch(url, {
             method: method,
             headers: { 'Content-Type': 'application/json' },
@@ -413,6 +594,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const formData = {
                 type: event.extendedProps.type,
+                treatment_name: event.extendedProps.treatment_name || '',
                 description: event.extendedProps.description || '',
                 start_date: startDateObj.toISOString(),
                 end_date: endDateObj.toISOString() // Use the date provided by FullCalendar (which is +1 day)

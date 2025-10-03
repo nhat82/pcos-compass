@@ -11,14 +11,21 @@
                     + Create New Log
                 </button>
                 <div style="font-size: 0.9em; color: #666;">
-                    <p><strong>Tip:</strong> Use the button above to create new logs for:</p>
-                    <ul style="margin: 10px 0; padding-left: 20px;">
-                        <li>Period tracking</li>
-                        <li>Ovulation</li>
-                        <li>Sexual activity</li>
-                        <li>Treatments</li>
-                        <li>Events</li>
-                    </ul>
+                    <p><strong>Tip:</strong> You can drag on the calendar to create an event. You can also move them by picking them up like Google Calendar!</p>
+                    <div class="calendar-controls">
+                      <!-- <button id="toggleLogDisplay" class="btn btn-outline-primary">
+                        Show: Treatment Names
+                      </button> -->
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-bold text-[#181118]">Show Event Type</p>
+                            
+                            <button id="toggleLogDisplay" aria-checked="false" 
+                                    class="toggle-display-btn relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" 
+                                    role="switch">
+                              <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                            </button>
+                        </div>
+</div>
                 </div>
             </div>
             
@@ -73,11 +80,11 @@
       <div class="modal-form-group">
         <label class="modal-form-label">Type:</label>
         <select id="eventType" name="type" class="modal-form-input" required>
-          <option value="PERIOD">Period</option>
-          <option value="OVULATION">Ovulation</option>
-          <option value="SEXUAL_ACTIVITY">Sexual Activity</option>
-          <option value="EVENT">Event</option>
-          <option value="TREATMENT">Treatment</option>
+          <option value="Period">Period</option>
+          <option value="Ovulation">Ovulation</option>
+          <option value="Sexual Activity">Sexual Activity</option>
+          <option value="Event">Event</option>
+          <option value="Treatment">Treatment</option>
         </select>
       </div>
 

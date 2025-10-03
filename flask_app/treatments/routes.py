@@ -40,7 +40,7 @@ def create_treatment():
 
         treatment = treatment(
             user=current_user,
-            type=data.get("type", "PERIOD"),
+            type=data.get("type", "Period"),
             description=data.get("description", ""),
             start_date=start_date,
             end_date=end_date

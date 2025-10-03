@@ -416,7 +416,7 @@ html {
 }
 
 #calendar {
-  @apply pr-20;
+  @apply pr-10;
 }
 
 @media (max-width: 640px) {
@@ -664,4 +664,25 @@ html {
   .calendar-day {
     @apply h-24;
   }
+}
+
+
+.toggle-display-btn[aria-checked="true"] {
+  /* When ON: Button background is purple, span moves right */
+  @apply bg-primary; 
+}
+
+.toggle-display-btn[aria-checked="false"] {
+  /* When OFF: Button background is neutral gray, span stays left */
+  @apply bg-gray-200; 
+}
+
+.toggle-display-btn[aria-checked="true"] > span {
+  /* When ON: Move span right */
+  @apply translate-x-5; 
+}
+
+.toggle-display-btn[aria-checked="false"] > span {
+  /* When OFF: Keep span left */
+  @apply translate-x-0; 
 }

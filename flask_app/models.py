@@ -32,17 +32,26 @@ class Problem(db.Document):
         return f"<Problem {self.name} of {self.user.username}>"
 
 class Log(db.Document):
-    meta = {'allow_inheritance': True}
     user = db.ReferenceField(User, required=True)
-    type = db.StringField(required=True, default='PERIOD') 
+    type = db.StringField(required=True, default='Period') 
     description = db.StringField()
-    problem = db.ReferenceField(('Problem'), required=False)
     start_date = db.DateTimeField(required=True)
     end_date = db.DateTimeField(required=True)
+    treatment_name = db.StringField()
+    problem = db.ReferenceField(('Problem'), required=False)
     
     def __repr__(self):
         return f"<{self.__class__.__name__} {self.id} by {self.user.username}>"
     
+class Treatment(db.Document):
+    name = db.StringField(required=True)
+    start_date = db.DateTimeField(required=True)
+    end_date = db.DateTimeField(required=True)
+    details = db.StringField()
+    user = db.ReferenceField(User, required=True)
+    
+    def __repr__(self):
+        return f"<Treatment {self.name} for {self.user.name}>"
 class Place(db.Document):
     name = db.StringField(required=True)
     address = db.StringField(required=True)
@@ -80,12 +89,3 @@ class Insight(db.Document):
     def __repr__(self):
         return f"<Insight {self.content} by {self.user.username}>"
 
-class Treatment(db.Document):
-    name = db.StringField(required=True)
-    start_date = db.DateTimeField(required=True)
-    end_date = db.DateTimeField(required=True)
-    details = db.StringField()
-    user = db.ReferenceField(User, required=True)
-    
-    def __repr__(self):
-        return f"<Treatment {self.name} for {self.user.name}>"

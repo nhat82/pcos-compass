@@ -35,7 +35,7 @@ def create_app(test_config=None):
     
     app.register_error_handler(404, custom_404)
     
-    login_manager.login_view = "user.login"
+    login_manager.login_view = "users.login"
     
     return app
         

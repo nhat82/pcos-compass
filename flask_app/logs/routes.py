@@ -18,19 +18,47 @@ def logs_page():
 def logs_data():
     user_logs = Log.objects(user=current_user)
     events = []
+    
+    # Check if the request wants treatment names or log types
+    # show_treatments is TRUE when the toggle is ON (showing detail)
+    show_treatments = request.args.get('show_treatments', 'false').lower() == 'true'
+    
     for log in user_logs:
+        # Determine the title based on the toggle state
+        if show_treatments:
+            # 1. TOGGLE ON: Show detailed titles (including treatment name and description)
+            if log.type != "Treatment":
+                # For non-treatment logs, show Type + Description (as title)
+                title = log.type + ": " + log.description if log.description else log.type
+            else:
+                # For treatment logs, prioritize Treatment Name + Description
+                title = log.treatment_name + ": " + log.description if log.description else log.treatment_name
+        
+        else:
+            # 2. TOGGLE OFF: Show concise titles (prioritizing the log type)
+            if log.type != "Treatment":
+                # For non-treatment logs, prioritize the Type (e.g., "Period")
+                title = log.type
+            else:
+                # For treatment logs, show "Treatment" (Type) + Treatment Name
+                title = log.type + ": " + log.treatment_name
+                
+        
         events.append({
             "id": str(log.id),
-            "title": log.description or log.type,
+            "title": title,
             "start": log.start_date.isoformat(),
-            "end": log.end_date.isoformat() if log.end_date else None,
-            "allDay": False,
+            "end": log.end_date.isoformat(),
+            "allDay": True,
             "extendedProps": {
                 "type": log.type,
-                "description": log.description
+                "description": log.description,
+                "treatment_name": log.treatment_name
             }
         })
     return jsonify(events)
+
+
 
 @logs.route("/logs", methods=["POST"])
 @login_required
@@ -42,14 +70,14 @@ def create_log():
         # Parse dates
         start_date = datetime.fromisoformat(data.get("start_date"))
         end_date = datetime.fromisoformat(data.get("end_date")) if data.get("end_date") else None
-
         log = Log(
-            user=current_user,
-            type=data.get("type", "PERIOD"),
-            description=data.get("description", ""),
-            start_date=start_date,
-            end_date=end_date
-        )
+                user=current_user,
+                type=data.get("type", "Period"),
+                description=data.get("description", ""),
+                treatment_name=data.get("treatment_name", ""),
+                start_date=start_date,
+                end_date=end_date
+            )
         log.save()
         current_user.logs.append(log)
         current_user.save()
@@ -79,6 +107,8 @@ def update_log(log_id):
             log.type = data.get("type")
         if "description" in data:
             log.description = data.get("description")
+        if "treatment_name" in data:
+            log.treatment_name = data.get("treatment_name")
         
         log.save()
         return jsonify({"success": True})
