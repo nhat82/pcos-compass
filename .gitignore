@@ -10,3 +10,5 @@ __pycache__/
 todo.md
 node_modules/
 .pytest_cache/
+
+flask_app/.env
