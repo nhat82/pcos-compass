@@ -13,7 +13,6 @@ class User(db.Document, UserMixin):
     password = db.StringField(required=True)
     logs = db.ListField(db.ReferenceField('Log'))
     problems = db.ListField(db.ReferenceField('Problem'))
-    treatments = db.ListField(db.ReferenceField('Treatment'))
     insights = db.ListField(db.ReferenceField('Insight'))
     
     def get_id(self):

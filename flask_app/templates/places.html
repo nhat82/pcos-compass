@@ -1,7 +1,7 @@
 {% extends "header.html" %}
 {% block content %}
 
-<div class="places-page">
+<!-- <div class="places-page">
     <div class="places-container">
         <h2 class="title">Places to look at for PCOS</h2>
 
@@ -43,7 +43,233 @@
         </div>
     </div>
 
+</div> -->
+<!-- 
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden">
+    <div class="layout-container flex h-full grow flex-col">
+
+        <div class="flex flex-1">
+            
+            <div class="flex-1 relative">
+                <div class="h-full w-full">
+                    {{ map_html | safe }}
+                </div>
+            </div>
+
+            <aside class="w-[480px] bg-white border-l border-solid border-l-[#f4f0f4] flex flex-col p-6 overflow-y-auto h-[calc(100vh)]">
+                
+                <div class="flex-grow">
+                    <div class="pb-6 border-b border-solid border-b-[#f4f0f4] mb-6">
+                        <h1 class="text-[#181118] tracking-tight text-3xl font-bold leading-tight font-display">Places to look at for PCOS</h1>
+                        <p class="text-[#876388] text-base font-normal leading-normal pt-1">Find and share local resources and specialists.</p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-[#181118] text-xl font-bold mb-4 font-display">Find a Place</h2>
+                        
+                        <form id="search-form" method="POST" action="">
+                            {{ search_form.hidden_tag() }}
+                            
+                            <label class="flex flex-col flex-1">
+                                <p class="text-[#181118] text-base font-medium leading-normal pb-2 font-display">
+                                    {{ search_form.search_query.label }}
+                                </p>
+                                {{ search_form.search_query(class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#181118] focus:outline-0 focus:ring-0 border border-[#e5dce5] dark:border-gray-600 bg-white dark:bg-background-dark focus:border-primary h-14 placeholder:text-[#876388] dark:placeholder-gray-500 p-[15px] text-base font-normal leading-normal font-display", placeholder="Search for a place") }}
+                                {% for error in search_form.search_query.errors %}
+                                    <span class="text-red-500 text-xs mt-1">{{ error }}</span>
+                                {% endfor %}
+                            </label>
+
+                            <div class="mt-4">
+                                {{ search_form.submit(class="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 flex-1 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] font-display hover:bg-primary/90 transition-colors") }}
+                            </div>
+                        </form>
+                        
+                        <ul id="search-results" class="mt-4 p-3 bg-[#fde8fd] rounded-lg border border-[#f4f0f4]">
+                            <p class="text-sm font-semibold text-[#181118] mb-2">Search Match:</p>
+                            {% if existing_place %}
+                                <li class="text-[#181118] font-normal">{{ existing_place.name }}</li>
+                            {% else %}
+                                <li class="text-[#886388] font-normal">No match</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <h2 class="text-[#181118] text-xl font-bold mb-4 font-display border-t pt-6 border-solid border-t-[#f4f0f4]">User-Submitted Places</h2>
+                    <div class="space-y-4">
+                        {% for place in places %}
+                        <div class="p-4 rounded-xl shadow-sm border border-[#f4f0f4] hover:shadow-md transition duration-150 ease-in-out">
+                            <h3 class="text-[#181118] text-lg font-bold leading-snug">{{ place.name }}</h3>
+                            <p class="text-[#886388] text-sm mt-1 mb-2">{{ place.description }}</p>
+                            <a class="text-primary hover:text-primary/90 text-sm font-medium underline" 
+                               href="{{ url_for('places.place_detail', place_id=place.id) }}" 
+                               target="_blank">
+                               View Details & Reviews
+                            </a>
+                            <p class="text-[#886388] text-xs mt-1">posted by: {{ place.posted_by.username }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div> -->
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PCOS Navigator - Find a Doctor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        :root {
+            --brand-color: #E618E7;
+        }
+    </style>
+</head>
+<body class="bg-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-white group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+
+<div class="flex flex-1">
+<div class="flex-1 relative">
+<div class="bg-cover bg-center flex h-full min-h-[calc(100vh-69px)] flex-1 flex-col justify-between items-center" data-alt="A map showing the location of several clinics" data-location="Anytown" style='background-image: url("");'>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+<div class="absolute w-8 h-8 bg-[var(--brand-color)] rounded-full opacity-30 animate-ping"></div>
+<span class="material-symbols-outlined text-[var(--brand-color)] text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="absolute top-1/3 left-1/4">
+<span class="material-symbols-outlined text-[var(--brand-color)] text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="absolute top-2/3 left-2/3">
+<span class="material-symbols-outlined text-[var(--brand-color)] text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="absolute top-1/4 right-1/4">
+<span class="material-symbols-outlined text-[var(--brand-color)] text-4xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="p-4 w-full flex justify-between items-start">
+<label class="flex flex-col min-w-40 h-12 w-1/3 max-w-lg">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-md">
+<div class="text-[#886388] flex border-none bg-white items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-[#181118] focus:outline-0 focus:ring-0 border-none bg-white focus:border-none h-full placeholder:text-[#886388] px-4 pl-2 text-base font-normal leading-normal" placeholder="Search doctors/clinics by name or location" value=""/>
+</div>
+</label>
+<div class="flex flex-col items-end gap-3">
+<div class="flex flex-col gap-0.5">
+<button class="flex size-10 items-center justify-center rounded-t-lg bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:bg-gray-100">
+<span class="material-symbols-outlined text-[#181118]">add</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-b-lg bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:bg-gray-100">
+<span class="material-symbols-outlined text-[#181118]">remove</span>
+</button>
+</div>
+<button class="flex size-10 items-center justify-center rounded-lg bg-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] hover:bg-gray-100">
+<span class="material-symbols-outlined text-[#181118]">my_location</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<aside class="w-[480px] bg-white border-l border-solid border-l-[#f4f0f4] flex flex-col p-6 overflow-y-auto h-[calc(100vh-69px)]">
+<div class="flex-grow">
+<div class="pb-6 border-b border-solid border-b-[#f4f0f4]">
+<h1 class="text-[#181118] tracking-tight text-2xl font-bold leading-tight">Dr. Eleanor Bennett</h1>
+<p class="text-[#886388] text-base font-normal leading-normal pt-1">PCOS Specialist, Endocrinologist</p>
+<div class="flex items-center gap-1 pt-2">
+<span class="material-symbols-outlined text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-gray-300" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[#886388] text-sm ml-1">(12 Reviews)</span>
+</div>
+<p class="text-[#181118] text-base font-normal leading-normal pt-4">Address: 123 Health St, Wellness City, 12345</p>
+<p class="text-[#181118] text-base font-normal leading-normal pt-2">Phone: <a class="text-[var(--brand-color)] hover:underline" href="tel:555-123-4567">555-123-4567</a></p>
+<p class="text-[#181118] text-base font-normal leading-normal pt-2">Website: <a class="text-[var(--brand-color)] hover:underline" href="#">dreleanorbennett.com</a></p>
+<div class="flex gap-4 pt-6">
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-[var(--brand-color)] text-white font-medium hover:opacity-90">
+<span class="material-symbols-outlined">directions</span>
+                                    Directions
+                                </button>
+<button class="flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg border border-[var(--brand-color)] text-[var(--brand-color)] font-medium hover:bg-pink-50">
+<span class="material-symbols-outlined">edit</span>
+                                    Leave a Review
+                                </button>
+</div>
+</div>
+<div class="py-6">
+<h2 class="text-[#181118] text-xl font-bold">Reviews</h2>
+<div class="mt-4 p-4 bg-[#fde8fd] rounded-lg">
+<h3 class="font-semibold text-[#181118]">Leave your review</h3>
+<div class="flex items-center gap-1 pt-2">
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-yellow-500">star</span>
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-yellow-500">star</span>
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-yellow-500">star</span>
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-yellow-500">star</span>
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-yellow-500">star</span>
+</div>
+<textarea class="form-textarea mt-3 w-full rounded-lg border border-[#f4f0f4] focus:ring-[var(--brand-color)] focus:border-[var(--brand-color)] placeholder:text-[#886388]" placeholder="Share your experience..." rows="3"></textarea>
+<button class="mt-3 py-2 px-6 rounded-lg bg-[var(--brand-color)] text-white font-medium hover:opacity-90">Submit Review</button>
+</div>
+<div class="space-y-6 mt-6">
+<div class="flex gap-4">
+<img alt="User avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnE-jINVHrcxjwO9f4XyD6nO-xaMM8WpBXBLPCmQ_5ChSp-HJN7A182RgeW8qGxMHcwnDLhViyS6dFmFMcxPO3E_IT-K2cgh2U8Ggo1VWXvOX0xLMD50aBTe6F18rUiNOgOOd3NvMDcqEYrGXBy9IrAjnvFHKEWWJU9Ask7hVOqq-SFzblTfnIfWcYrghItW49hRHVtC6TICYlbHlw6CV2zTJCLXEw3hfA2M4Ugvy914makTQBvRpy3wI47NAFmP3-1cdz5CPZRZc"/>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-semibold text-[#181118]">Sarah J.</p>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-[#886388] text-sm">2 days ago</p>
+<p class="text-[#181118] mt-2 text-base">Dr. Bennett was incredibly knowledgeable and compassionate. She took the time to listen to my concerns and created a personalized treatment plan that has made a huge difference.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<img alt="User avatar" class="w-10 h-10 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJLCURMA-CqZ_fa931mzQjYW5F2NsRjTeKxaXFvSpngvz4ATOfPmUE1Lj2e7BFUdHyPLCc_hIq-hc_REp92npbSVOQry_4R4HjyLgJYRPYAROIU_-RscL9P6SyhYD9rA6Dy6aLbnTDJE_jCNdFeIVISa41Z7mQVlkcODGj9rfOn891Wq7kSi5Ss9RKLxWwF0h0ZMZYp715osmZR7AgP-P6TFNqv2tuoGK7JjPaxNQt5LY2OUrxzfiuhPeD7SlQGLoyMJev8tzZbsE"/>
+<div class="flex-1">
+<div class="flex justify-between items-center">
+<p class="font-semibold text-[#181118]">Maria G.</p>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-gray-300 text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-[#886388] text-sm">1 week ago</p>
+<p class="text-[#181118] mt-2 text-base">A very good doctor. The wait times can be a bit long, but it's worth it for the quality of care.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<div class="absolute inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-20">
+<span class="text-white text-5xl font-bold">Coming Soon</span>
+</div>
 </div>
 
-
+</body></html>
 {% endblock %}

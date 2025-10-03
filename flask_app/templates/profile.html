@@ -1,156 +1,176 @@
 {% extends "header.html" %}
 {% block content %}
-<div class="profile-container">
-    <h1 class="page-title">{{current_user.username}} Profile</h1>
-    
-    <!--
-    <div class="profile-details-card">
-        <p><strong>Username:</strong> {{ current_user.username }}</p>
-        <p><strong>Email:</strong> {{ current_user.email }}</p>
-    </div>
-    -->
 
-    <div class="dashboard-grid">
-
-        <div class="info-card">
-            <div class="card-header">
-                <h2 class="card-title">Problems</h2>
-                <button class="btn-add btn-add-problem" data-modal="problemModal">
-                    <span class="material-symbols-outlined icon-small">add</span> 
-                    Add
-                </button>
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden bg-gray-50">
+    <main class="flex-1">
+        <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
+            <div class="px-4 sm:px-0">
+                <h1 class="text-[#E618E7] tracking-tight text-4xl font-bold leading-tight pb-4">
+                    {{current_user.username}}'s Profile
+                </h1>
             </div>
-            
-            <div id="problemModal" class="modal">
-                <div class="modal-content-wrapper">
-                    <span class="modal-close-btn" data-close="problemModal">&times;</span>
-                    <h2 class="modal-title">Add a Problem</h2>
-                    <form method="POST">
-                        {{ problem_form.hidden_tag() }}
 
-                        <h3 class="form-label">Select Symptoms:</h3>
-                        {{ problem_form.symptoms(class="form-input-control") }}
-                        
-                        <h3 class="form-label form-label-mt">And/Or enter a custom symptom:</h3>
-                        {{ problem_form.custom_symptom(class="form-input-control") }} 
-                        
-                        {{ problem_form.submit(class="btn-submit btn-submit-problem") }}
-                    </form>
+            <div class="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2">
+
+                <!-- Problems Card -->
+                <div class="bg-white p-6 rounded-lg shadow-sm min-h-[300px]">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">Problems</h2>
+                        <button class="btn-add flex items-center gap-2 rounded-lg bg-[#E618E7] px-4 py-2 text-sm font-bold text-[#f5f5f5] hover:scale-105 transition-colors" data-modal="problemModal">
+                            <span class="material-symbols-outlined">add</span>
+                            Add
+                        </button>
+                    </div>
+
+                    <!-- Problem Modal -->
+                    <div id="problemModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
+                        <div class="flex items-center justify-center min-h-screen p-4">
+                            <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+                                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
+                                    <h2 class="text-xl font-bold text-gray-800">Add a Problem</h2>
+                                    <span class="modal-close-btn cursor-pointer text-gray-400 hover:text-gray-600 text-2xl" data-close="problemModal">&times;</span>
+                                </div>
+                                <form method="POST" class="mt-4 space-y-4">
+                                    {{ problem_form.hidden_tag() }}
+
+                                    <label class="block">
+                                        <p class="text-gray-800 text-base font-medium leading-normal pb-2">Select Symptoms:</p>
+                                        {{ problem_form.symptoms(class="form-select block w-full rounded-lg border border-gray-300 bg-white focus:border-[#E618E7] focus:ring-[#E618E7]") }}
+                                    </label>
+
+                                    <label class="block">
+                                        <p class="text-gray-800 text-base font-medium leading-normal pb-2 pt-2">And/Or enter a custom symptom:</p>
+                                        {{ problem_form.custom_symptom(class="form-input block w-full rounded-lg text-gray-800 border border-gray-300 bg-white focus:border-[#E618E7] focus:ring-[#E618E7] placeholder:text-gray-500 p-[10px]", placeholder="e.g., Severe fatigue") }}
+                                    </label>
+
+                                    <div class="pt-4">
+                                        {{ problem_form.submit(class="w-full cursor-pointer rounded-lg h-10 px-5 bg-[#E618E7] text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-colors") }}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Problems List -->
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Your Logged Symptoms</h3>
+                        <div class="space-y-4">
+                            {% if user_symptoms %}
+                                {% for prob in user_symptoms %}
+                                    <div class="flex gap-4 py-3 justify-between items-center border-b border-gray-100 last:border-b-0">
+                                        <div class="flex items-start gap-4">
+                                            <div class="text-[#E618E7] flex items-center justify-center rounded-lg bg-[#E618E7]/40 shrink-0 size-12">
+                                                <span class="material-symbols-outlined">error</span>
+                                            </div>
+                                            <div class="flex flex-1 flex-col justify-center">
+                                                <p class="text-gray-800 text-base font-medium leading-normal">{{ prob.name }}</p>
+                                                {% if prob.details %}
+                                                    <p class="text-gray-500 text-sm font-medium leading-normal">{{ prob.details }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-gray-500 text-base">No symptoms logged yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Treatments Card -->
+                <div class="bg-white p-6 rounded-lg shadow-sm min-h-[300px]">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">Treatments</h2>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Your Logged Treatments</h3>
+                        <div class="space-y-4">
+                            {% if user_treatments %}
+                                {% for treat in user_treatments %}
+                                    <div class="flex gap-4 py-3 justify-between items-center border-b border-gray-100 last:border-b-0">
+                                        <div class="flex items-start gap-4">
+                                            <div class="text-[#347474] flex items-center justify-center rounded-lg bg-[#B2E0C3]/40 shrink-0 size-12">
+                                                <span class="material-symbols-outlined">pill</span>
+                                            </div>
+                                            <div class="flex flex-1 flex-col justify-center">
+                                                <p class="text-gray-800 text-base font-medium leading-normal">{{ treat.treatment_name }}</p>
+                                                {% if treat.description %}
+                                                    <p class="text-gray-500 text-sm font-medium leading-normal">{{ treat.description }}</p>
+                                                {% endif %}
+                                                <p class="text-gray-400 text-xs font-medium leading-normal mt-1">
+                                                    {% if treat.start_date %}{{ treat.start_date.strftime('%Y-%m-%d') }}{% endif %}
+                                                    {% if treat.end_date %} to {{ treat.end_date.strftime('%Y-%m-%d') }}{% endif %}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-gray-500 text-base">No treatments logged yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <h3 class="list-heading">Your Logged Symptoms</h3>
-            {% if user_symptoms %}
-                <ul>
-                {% for prob in user_symptoms %}
-                    <li>
-                        {% if prob.solved %}
-                        <div class="log-item log-item-solved">
-                            <s>{{ prob.name }}</s>
-
-                        </div>
-                        {% else %}
-                        <div class="log-item">
-                            {{ prob.name }}
-
-                        </div>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-secondary">No symptoms logged yet.</p>
-            {% endif %}
         </div>
-
-        <div class="info-card">
-            <div class="card-header">
-                <h2 class="card-title">Treatments</h2>
-            </div>
-            <h3 class="list-heading">Your Logged Treatments</h3>
-                    {% if user_symptoms %}
-                    <ul>
-                    {% for prob in user_symptoms %}
-                        <li>
-                            {% if prob.solved %}
-                            <div class="log-item log-item-solved">
-                                <s>{{ prob.name }}</s>
-
-                            </div>
-                            {% else %}
-                            <div class="log-item">
-                                {{ prob.name }}
-
-                            </div>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                    </ul>
-                    {% else %}
-                        <p class="text-secondary">No symptoms logged yet.</p>
-                    {% endif %}
-            </div>
-
-            
-
-
-        </div>
-    </div>
+    </main>
 </div>
 
 <script>
-    // --------------------------------------------------
     // MODAL TOGGLE FUNCTIONS
-    // --------------------------------------------------
-    document.querySelectorAll(".btn-add").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const modalId = btn.getAttribute("data-modal");
-            // Set display to block to show the modal (overriding CSS 'display: none')
-            document.getElementById(modalId).style.display = "block";
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add button functionality
+        document.querySelectorAll(".btn-add").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const modalId = btn.getAttribute("data-modal");
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = "block";
+                }
+            });
         });
-    });
 
-    document.querySelectorAll(".modal-close-btn").forEach(closeBtn => {
-        closeBtn.addEventListener("click", () => {
-            const modalId = closeBtn.getAttribute("data-close");
-            document.getElementById(modalId).style.display = "none";
+        // Close button functionality
+        document.querySelectorAll(".modal-close-btn").forEach(closeBtn => {
+            closeBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                const modalId = closeBtn.getAttribute("data-close");
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = "none";
+                }
+            });
         });
-    });
 
-    window.addEventListener("click", (event) => {
-        document.querySelectorAll(".modal").forEach(modal => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
+        // Close modal when clicking outside
+        window.addEventListener("click", (event) => {
+            document.querySelectorAll(".modal").forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
         });
-    });
 
-    // --------------------------------------------------
-    // END DATE TOGGLE FOR TREATMENTS
-    // --------------------------------------------------
-    document.addEventListener("DOMContentLoaded", function () {
+        // END DATE TOGGLE FOR TREATMENTS (if applicable)
         const ongoingSelect = document.getElementById("ongoingSelect");
         const endDateWrapper = document.getElementById("endDateWrapper");
 
-        // We only proceed if the treatment-specific elements exist on the page
         if (ongoingSelect && endDateWrapper) {
             function toggleEndDate() {
-                // Check against the string value 'True' or 'true' depending on form output
                 if (ongoingSelect.value === "True" || ongoingSelect.value === "true") { 
-                    // Hide if ongoing
                     endDateWrapper.style.display = "none"; 
                 } else {
-                    // Show if not ongoing
                     endDateWrapper.style.display = "block";
                 }
             }
 
-            // Initial load
             toggleEndDate();
-
-            // When user changes selection
             ongoingSelect.addEventListener("change", toggleEndDate);
         }
     });
 </script>
+
 {% endblock %}
