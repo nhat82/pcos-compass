@@ -4,42 +4,45 @@
 <div class="places-page">
     <div class="places-container">
         <h2 class="title">Places to look at for PCOS</h2>
+
+        <div class="search-place-form">
+            <form id="search-form" method="POST" action="">
+                {{ search_form.hidden_tag() }}
+                <div class="form-group">
+                    {{ search_form.search_query.label(class="form-label") }}
+                    {{ search_form.search_query(class="form-input", placeholder="Search for a place") }}
+                    {% for error in search_form.search_query.errors %}
+                        <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {{ search_form.submit(class="btn-submit") }}
+            </form>
+
+            <ul id="search-results" class="search-result-list">
+                {% if existing_place %}
+                    <li>{{ existing_place.name }}</li>
+                {% else %}
+                    <li>No match</li>
+                {% endif %}
+            </ul>
+
+        </div>
+
+        
         <div class="row">
             {% for place in places %}
                 <h3>{{ place.name }}</h3>
                 <p>{{ place.description }}</p>
-                <a class="place-link" href="{{ place.link }}" target="_blank">{{ place.link }}</a>
+                <a class="place-link" href="{{ url_for('places.place_detail', place_id=place.id) }}" target="_blank">{{ place.name }}</a>
                 <p>posted by: {{ place.posted_by.username }}</p>
             {% endfor %}
         </div>
+        
         <div class="map-container">
             {{ map_html | safe }}
         </div>
     </div>
 
-    <div class="search-place-form">
-        <h2 class="place-form-title">Search & Add Place</h2>
-        <form id="search-form" method="POST" action="">
-            {{ search_form.hidden_tag() }}
-            <div class="form-group">
-                {{ search_form.search_query.label(class="form-label") }}
-                {{ search_form.search_query(class="form-input", placeholder="Search for a place") }}
-                {% for error in search_form.search_query.errors %}
-                    <div class="error-message">{{ error }}</div>
-                {% endfor %}
-            </div>
-            {{ search_form.submit(class="btn-submit") }}
-        </form>
-
-        <ul id="search-results" class="search-result-list">
-            {% if existing_place %}
-                <li>{{ existing_place.name }}</li>
-            {% else %}
-                <li>No match</li>
-            {% endif %}
-        </ul>
-
-    </div>
 </div>
 
 

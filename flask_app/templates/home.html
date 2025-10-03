@@ -10,5 +10,32 @@
     {% else %}
         <a href="{{ url_for('users.register') }}" class="home-signup">Sign Up</a>
     {% endif %}
+
+    <div class="about-container">
+        <h2 class="title">About PCOS Compass</h2>
+        <p class="about-description">
+            PCOS Compass is dedicated to empowering individuals with Polycystic Ovary Syndrome (PCOS) by providing a comprehensive platform to track symptoms, manage treatments, find healthcare providers, and connect with a supportive community. The mission is to help you take control of your health and well-being.
+        </p>
+        <h3 class="about-subtitle">Features</h3>
+        <ul class="about-features">
+            <li>Symptom Tracking: Log and monitor your symptoms over time to identify patterns and triggers.</li>
+            <li>Treatment Management: Keep track of medications, supplements, and lifestyle changes.</li>
+            <li>Doctor Finder: Locate healthcare providers who specialize in PCOS.</li>
+            <li>Community Support: Connect with others who understand your journey.</li>
+        </ul>
+        <h3 class="about-subtitle">Developer</h3>
+        <p class="about-description">
+            PCOS Compass is founded and made by Nhat Nguyen, a normal woman with PCOS who is passionate advocate for women's health. She is committed to providing a user-friendly and supportive experience for all users.
+        </p>
+    </div>
+
+    <div class="contact-container">
+        <h2 class="title">Contact Me</h2>
+        <p class="contact-description">
+            I would love to hear from you! Whether you have questions, feedback, or need support, please reach out to me using the form below.
+        </p>
+        <iframe src="{{google_form_link}}" width="640" height="700" marginwidth="0">Loading…</iframe>
+    </div>
 </div>
+
 {% endblock %}

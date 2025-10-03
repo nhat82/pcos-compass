@@ -2,7 +2,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField, SelectMultipleField, DateTimeLocalField, SelectField
+from wtforms import StringField, SubmitField, TextAreaField, PasswordField, SelectMultipleField, DateTimeLocalField, SelectField, widgets, DateField
 from wtforms.validators import (
     InputRequired,
     Length,
@@ -12,6 +12,7 @@ from wtforms.validators import (
 )
 from .models import User, Log
 import datetime 
+from flask_app.constants import SYMPTOMS, TREATMENTS
 
 class RegistrationForm(FlaskForm):
     username = StringField(
@@ -65,7 +66,7 @@ class LoginForm(FlaskForm):
     )
     submit = SubmitField("Login")
 
-class LogForm(FlaskForm):
+class CalendarCreateForm(FlaskForm):
     notes = TextAreaField("Notes", validators=[Length(max=500)])
     start_date = DateTimeLocalField(
         "Start Date and Time",
@@ -79,11 +80,7 @@ class LogForm(FlaskForm):
         default=datetime.datetime.now,
         validators=[InputRequired()],
     )
-    submit = SubmitField("Submit Log")
-
-class LogForm(FlaskForm):
-    title = StringField("Log Title", validators=[InputRequired()])
-    submit = SubmitField("Save")
+    submit = SubmitField("Create")
 
 class DeleteAccountForm(FlaskForm):
     submit = SubmitField("Delete Account") 
@@ -97,12 +94,10 @@ class DeleteAccountForm(FlaskForm):
         return True
     
 
-
 class SearchPlaceForm(FlaskForm):
     search_query = StringField("Search Place", validators=[InputRequired(), Length(max=100)])
     submit = SubmitField("Search")
-
-        
+    
 class ReviewForm(FlaskForm):
     rating = SelectField(
         "Rating",
@@ -111,6 +106,55 @@ class ReviewForm(FlaskForm):
     )
     comment = TextAreaField("Comment", validators=[Length(max=1000)])
     submit = SubmitField("Submit Review")
+      
+class AddPlaceForm(FlaskForm):
+    place_name = StringField("Place Name", validators=[InputRequired(), Length(max=100)])
+    rating = SelectField(
+        "Rating",
+        choices=[(str(i), i) for i in range(1, 6)],
+        validators=[InputRequired()],
+    )
+    comment = TextAreaField("Comment", validators=[Length(max=1000)])
+    submit = SubmitField("Search")
     
+class TreatmentForm(FlaskForm):
+    name = SelectField(
+        "Select Treatment",
+        choices=[(t, t) for t in TREATMENTS],
+        validators=[InputRequired()]
+    )
+    ongoing = SelectField(
+        "Ongoing",
+        choices=[("true", "Yes"), ("false", "No")],
+        default="true",
+        validators=[InputRequired()],
+    )
+    start_date = DateTimeLocalField(
+        "Start Date and Time",
+        format="%Y-%m-%dT%H:%M",
+        default=datetime.datetime.now,
+        validators=[InputRequired()],
+    )
+    end_date = DateTimeLocalField(
+        "End Date and Time",
+        format="%Y-%m-%dT%H:%M",
+        default=datetime.datetime.now,
+        validators=[],
+    )
+    details = TextAreaField("Details", validators=[Length(max=500)])
+    submit = SubmitField("Submit Treatment")
+    
+
+
+class ProblemForm(FlaskForm):
+    symptoms = SelectMultipleField(
+        "Select Symptoms",
+        choices=[(s, s) for s in SYMPTOMS],  # dynamically fill from backend
+        option_widget=widgets.CheckboxInput(),
+        widget=widgets.ListWidget(prefix_label=False)
+    )
+    details = StringField("Details", validators=[Length(max=500)])
+    custom_symptom = StringField("Or enter a custom symptom", validators=[Length(max=100)])
+    submit = SubmitField("Save")
     
     

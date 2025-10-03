@@ -3,14 +3,14 @@ from flask import Blueprint, render_template, request, jsonify
 from flask_login import login_required, current_user
 from ..models import Log
 from datetime import datetime
-from ..forms import LogForm
+from ..forms import CalendarCreateForm
 
 logs = Blueprint("logs", __name__)
 
 @logs.route("/logs")
 @login_required
 def logs_page():
-    form = LogForm()
+    form = CalendarCreateForm()
     return render_template("logs.html", form=form)
 
 @logs.route("/logs/data")

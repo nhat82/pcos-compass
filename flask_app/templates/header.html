@@ -2,22 +2,26 @@
 <nav class="navbar">
     <div class="header-left">
         <a class="header-title" href="{{ url_for('users.home') }}">
-            <span class="block" id="home">PCOS Compass</span>
+            <div class="flex items-center gap-4 text-dark-text">
+                <div class="size-6 text-primary">
+                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold leading-tight tracking-[-0.015em]" id="home">PCOS Compass</span>
+            </div>
         </a>
-        <a class="subtitle" href="{{ url_for('users.about')}}">About</a>
-        <a class="subtitle" href="{{ url_for('users.contact')}}">Contact</a>
     
         {% if current_user.is_authenticated %}
             <a class="subtitle" href="{{ url_for('places.list_places') }}">Places</a>
-            <a class="subtitle" href="{{ url_for('logs.logs_page') }}">Calendar</a>
+            <a class="subtitle {% if request.endpoint == 'logs.logs_page' %}text-dark-text{% else %}text-light-text{% endif %}" href="{{ url_for('logs.logs_page') }}">Calendar</a>
             <a class="subtitle" href="{{ url_for('users.profile') }}">Profile</a>
             <a class="subtitle" href="{{ url_for('users.logout') }}">Logout</a>
-            
         {% else %} 
             <a class="subtitle" href="{{ url_for('users.login') }}">Login</a>
             <a class="subtitle" href="{{ url_for('users.register') }}">Register</a>
-            
         {% endif %}
-    
+    </div>
 </nav>
+
 {% block content %}{% endblock %}{% endblock %}

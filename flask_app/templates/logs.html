@@ -1,55 +1,135 @@
 {% extends "header.html" %}
 {% block content %}
 <div class="container mt-4">
-    <h2 class="title">Your Logs</h2>
-    <div id="calendar"></div>
+    
+    <div style="display: grid; grid-template-columns: 300px 1fr; gap: 20px;">
+        <!-- Sidebar with create button and instructions -->
+        <div class="sidebar">
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <h3 style="margin-top: 0; color: #364051;">Quick Actions</h3>
+                <button id="createLogBtnSidebar" class="btn-submit" style="width: 100%; margin-bottom: 15px;">
+                    + Create New Log
+                </button>
+                <div style="font-size: 0.9em; color: #666;">
+                    <p><strong>Tip:</strong> Use the button above to create new logs for:</p>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Period tracking</li>
+                        <li>Ovulation</li>
+                        <li>Sexual activity</li>
+                        <li>Treatments</li>
+                        <li>Events</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Legend -->
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                <h4 style="margin-top: 0; color: #364051;">Color Legend</h4>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 15px; height: 15px; background: #f15b8d; border-radius: 3px;"></div>
+                        <span style="font-size: 0.9em ;">Period</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 15px; height: 15px; background: #42CAFD; border-radius: 3px;"></div>
+                        <span style="font-size: 0.9em;">Ovulation</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 15px; height: 15px; background: #FF6B6B; border-radius: 3px;"></div>
+                        <span style="font-size: 0.9em;">Sexual Activity</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 15px; height: 15px; background: #b2e0c3; border-radius: 3px;"></div>
+                        <span style="font-size: 0.9em;">Treatment</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 15px; height: 15px; background: #f8d472; border-radius: 3px;"></div>
+                        <span style="font-size: 0.9em;">Event</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calendar -->
+        <div>
+            <div id="calendar"></div>
+        </div>
+    </div>
 </div>
 
 <!-- Create/Edit Event Modal -->
-<div id="eventModal" class="register-container" style="display:none; position:fixed; top:0; left:0;
-    width:100%; height:100%; background:rgba(0,0,0,0.5); 
-    justify-content:center; align-items:center; z-index: 1000;">
-  <div style="background:#fff; padding:20px; border-radius:10px; width:400px;">
-    <h2 class="register-title" id="modalTitle">Create Log</h2>
-    <form id="eventForm" class="register-form">
-        <input type="hidden" id="eventId" name="event_id">
-        
-        <div class="form-group">
-            <label class="form-label">Type:</label>
-            <select id="eventType" name="type" class="form-input" required>
-                <option value="PERIOD">Period</option>
-                <option value="OVULATION">Ovulation</option>
-                <option value="NOTE">Note</option>
-            </select>
-        </div>
+<div id="eventModal" class="modal-overlay">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">Create Log</h3>
+      <button type="button" class="modal-close" id="cancelBtn">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    
+    <form id="eventForm" class="modal-form">
+      <input type="hidden" id="eventId" name="event_id">
+      
+      <div class="modal-form-group">
+        <label class="modal-form-label">Type:</label>
+        <select id="eventType" name="type" class="modal-form-input" required>
+          <option value="PERIOD">Period</option>
+          <option value="OVULATION">Ovulation</option>
+          <option value="SEXUAL_ACTIVITY">Sexual Activity</option>
+          <option value="EVENT">Event</option>
+          <option value="TREATMENT">Treatment</option>
+        </select>
+      </div>
 
-        <div class="form-group">
-            <label class="form-label">Description:</label>
-            <textarea id="eventDescription" name="description" class="form-input" rows="3" 
-                     placeholder="Enter description (optional)"></textarea>
-        </div>
+      <!-- Treatment-specific fields (hidden by default) -->
+      <div id="treatmentGroup" class="modal-form-group" style="display: none;">
+        <label class="modal-form-label">Treatment:</label>
+        <select id="treatmentSelect" class="modal-form-input">
+          <option value="">Select a treatment...</option>
+          <option value="custom">Custom Treatment</option>
+        </select>
+        <div id="treatmentDescription" class="treatment-description" style="display: none;"></div>
+      </div>
 
-        <div class="form-group">
-            <label class="form-label">Start Date:</label>
-            <input type="date" id="eventStartDate" name="start_date" class="form-input" required>
-        </div>
+      <div id="customTreatmentGroup" class="modal-form-group" style="display: none;">
+        <label class="modal-form-label">Custom Treatment Name:</label>
+        <input type="text" id="customTreatment" class="modal-form-input" placeholder="Enter custom treatment name">
+      </div>
 
-        <div class="form-group">
-            <label class="form-label">End Date:</label>
-            <input type="date" id="eventEndDate" name="end_date" class="form-input" required>
-        </div>
+      <div class="modal-form-group">
+        <label class="modal-form-label">Description:</label>
+        <textarea id="eventDescription" name="description" class="modal-form-textarea" rows="3" 
+                 placeholder="Enter description (optional)"></textarea>
+      </div>
 
-        <div class="form-group" style="display:flex; gap:10px;">
-            <button type="submit" class="btn-submit">Save</button>
-            <button type="button" id="cancelBtn" class="btn-submit" style="background:#aaa;">Cancel</button>
-            <button type="button" id="deleteBtn" class="btn-submit" style="background:#ff4444; display:none;">Delete</button>
-        </div>
+      <div class="modal-form-group">
+        <label class="modal-form-label">Start Date:</label>
+        <input type="date" id="eventStartDate" name="start_date" class="modal-form-input" required>
+      </div>
+
+      <div class="modal-form-group">
+        <label class="modal-form-label">End Date:</label>
+        <input type="date" id="eventEndDate" name="end_date" class="modal-form-input" required>
+      </div>
+
+      <!-- Action Buttons - Matching your form example -->
+      <div class="flex items-center justify-end gap-4 pt-6 border-t border-border">
+        <!-- <button type="button" class="modal-btn-secondary" id="cancelBtn">
+          Cancel
+        </button>
+        -->
+        <button type="submit" class="modal-btn-primary">
+          Save Log
+        </button>
+        <button type="button" class="modal-btn-danger" id="deleteBtn" style="display:none;">
+          Delete
+        </button>
+      </div>
     </form>
   </div>
 </div>
 
 <!-- FullCalendar -->
-
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
 <script src="../static/logs.js"></script>
 {% endblock %}

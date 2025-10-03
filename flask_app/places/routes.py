@@ -17,6 +17,8 @@ def list_places():
     all_places = Place.objects()
     
     search_form = SearchPlaceForm()
+    add_form = AddPlaceForm()
+    
     existing_place = None
     
     if search_form.validate_on_submit():
@@ -46,9 +48,9 @@ def list_places():
     if all_places:
         avg_lat = sum(p.latitude for p in all_places) / len(all_places)
         avg_lon = sum(p.longitude for p in all_places) / len(all_places)
-        m = folium.Map(location=[avg_lat, avg_lon], zoom_start=12)
+        m = folium.Map(location=[32.07148197,34.7876717], zoom_start=14, control_scale=True) 
     else:
-        m = folium.Map(location=[20, 0], zoom_start=2) # Default world view if no places exist
+        m = folium.Map(location=[32.07148197,34.7876717], zoom_start=14, control_scale=True) 
 
     # Add a marker for each place
     for place in all_places:

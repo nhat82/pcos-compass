@@ -1,10 +1,156 @@
 {% extends "header.html" %}
 {% block content %}
-    <div class="profile-container">
-        <h1 class="title">User Profile</h1>
-        <div class="profile-details">
-            <p><strong>Username:</strong> {{ current_user.username }}</p>
-            <p><strong>Email:</strong> {{ current_user.email }}</p>
+<div class="profile-container">
+    <h1 class="page-title">{{current_user.username}} Profile</h1>
+    
+    <!--
+    <div class="profile-details-card">
+        <p><strong>Username:</strong> {{ current_user.username }}</p>
+        <p><strong>Email:</strong> {{ current_user.email }}</p>
+    </div>
+    -->
+
+    <div class="dashboard-grid">
+
+        <div class="info-card">
+            <div class="card-header">
+                <h2 class="card-title">Problems</h2>
+                <button class="btn-add btn-add-problem" data-modal="problemModal">
+                    <span class="material-symbols-outlined icon-small">add</span> 
+                    Add
+                </button>
+            </div>
+            
+            <div id="problemModal" class="modal">
+                <div class="modal-content-wrapper">
+                    <span class="modal-close-btn" data-close="problemModal">&times;</span>
+                    <h2 class="modal-title">Add a Problem</h2>
+                    <form method="POST">
+                        {{ problem_form.hidden_tag() }}
+
+                        <h3 class="form-label">Select Symptoms:</h3>
+                        {{ problem_form.symptoms(class="form-input-control") }}
+                        
+                        <h3 class="form-label form-label-mt">And/Or enter a custom symptom:</h3>
+                        {{ problem_form.custom_symptom(class="form-input-control") }} 
+                        
+                        {{ problem_form.submit(class="btn-submit btn-submit-problem") }}
+                    </form>
+                </div>
+            </div>
+
+            <h3 class="list-heading">Your Logged Symptoms</h3>
+            {% if user_symptoms %}
+                <ul>
+                {% for prob in user_symptoms %}
+                    <li>
+                        {% if prob.solved %}
+                        <div class="log-item log-item-solved">
+                            <s>{{ prob.name }}</s>
+
+                        </div>
+                        {% else %}
+                        <div class="log-item">
+                            {{ prob.name }}
+
+                        </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-secondary">No symptoms logged yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="info-card">
+            <div class="card-header">
+                <h2 class="card-title">Treatments</h2>
+            </div>
+            <h3 class="list-heading">Your Logged Treatments</h3>
+                    {% if user_symptoms %}
+                    <ul>
+                    {% for prob in user_symptoms %}
+                        <li>
+                            {% if prob.solved %}
+                            <div class="log-item log-item-solved">
+                                <s>{{ prob.name }}</s>
+
+                            </div>
+                            {% else %}
+                            <div class="log-item">
+                                {{ prob.name }}
+
+                            </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    {% else %}
+                        <p class="text-secondary">No symptoms logged yet.</p>
+                    {% endif %}
+            </div>
+
+            
+
+
         </div>
     </div>
+</div>
+
+<script>
+    // --------------------------------------------------
+    // MODAL TOGGLE FUNCTIONS
+    // --------------------------------------------------
+    document.querySelectorAll(".btn-add").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const modalId = btn.getAttribute("data-modal");
+            // Set display to block to show the modal (overriding CSS 'display: none')
+            document.getElementById(modalId).style.display = "block";
+        });
+    });
+
+    document.querySelectorAll(".modal-close-btn").forEach(closeBtn => {
+        closeBtn.addEventListener("click", () => {
+            const modalId = closeBtn.getAttribute("data-close");
+            document.getElementById(modalId).style.display = "none";
+        });
+    });
+
+    window.addEventListener("click", (event) => {
+        document.querySelectorAll(".modal").forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    // --------------------------------------------------
+    // END DATE TOGGLE FOR TREATMENTS
+    // --------------------------------------------------
+    document.addEventListener("DOMContentLoaded", function () {
+        const ongoingSelect = document.getElementById("ongoingSelect");
+        const endDateWrapper = document.getElementById("endDateWrapper");
+
+        // We only proceed if the treatment-specific elements exist on the page
+        if (ongoingSelect && endDateWrapper) {
+            function toggleEndDate() {
+                // Check against the string value 'True' or 'true' depending on form output
+                if (ongoingSelect.value === "True" || ongoingSelect.value === "true") { 
+                    // Hide if ongoing
+                    endDateWrapper.style.display = "none"; 
+                } else {
+                    // Show if not ongoing
+                    endDateWrapper.style.display = "block";
+                }
+            }
+
+            // Initial load
+            toggleEndDate();
+
+            // When user changes selection
+            ongoingSelect.addEventListener("change", toggleEndDate);
+        }
+    });
+</script>
 {% endblock %}

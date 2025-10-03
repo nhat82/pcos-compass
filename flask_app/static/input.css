@@ -2,37 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  color-scheme: light dark;
-  font-family: sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
 
-  @apply bg-neutral-50 text-neutral-700 overflow-x-hidden w-screen;
+/* Base styles */
+html {
+  @apply bg-background overflow-x-hidden w-screen;
+  font-family: 'Inter', sans-serif;
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+/* ========== EXISTING STYLES ========== */
+
+#home {
+  @apply text-lg font-bold leading-tight tracking-[-0.015em];
+}
+
+.fc-toolbar-title {
+  @apply text-[#364051] text-sm font-bold leading-tight flex-1 text-center
+}
 
 .home-title {
-  @apply text-7xl mx-auto mt-6 text-center mb-1 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-blue-400 w-[30rem] font-bold dark:from-pink-500 dark:to-pink-100;
-}
-
-.header-title {
-  @apply text-2xl font-extrabold tracking-wide;
+  @apply text-7xl mx-auto mt-6 text-center mb-1 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-blue-400 w-[30rem] font-bold;
 }
 
 .header-left {
-  @apply flex items-center gap-8;
+  @apply flex items-center gap-8 flex-1;
+}
+
+.header-title {
+  @apply flex items-center gap-4 no-underline;
+  color: theme('colors.dark-text');
+}
+
+.header-title:hover {
+  @apply no-underline;
 }
 
 .subtitle {
-  @apply text-base text-stone-50 hover:text-stone-900; 
+  @apply text-sm font-medium leading-normal transition-colors duration-200 no-underline;
+  color: theme('colors.light-text');
 }
 
+.subtitle.active {
+  color: theme('colors.dark-text');
+}
+
+
+.subtitle:hover {
+  color: theme('colors.dark-text');
+  @apply no-underline;
+}
+
+
+.old-navbar,
+.old-header-left {
+  @apply hidden;
+}
 
 .description {
   @apply text-center text-lg text-neutral-600 dark:text-neutral-400; 
-}
-
-.header{
-  @apply flex flex-col justify-start items-start;
 }
 
 .header-buttons {
@@ -44,7 +80,8 @@ html {
 }
 
 .navbar {
-  @apply flex items-center justify-between px-8 py-4 bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 text-white shadow-md
+  @apply flex items-center justify-between whitespace-nowrap border-b border-solid px-10 py-3 bg-white;
+  border-color: theme('colors.border');
 }
 
 .register-container {
@@ -52,7 +89,7 @@ html {
 }
 
 .title {
-  @apply text-3xl font-bold text-neutral-950 dark:text-pink-500 text-center ;
+  @apply text-3xl font-bold text-neutral-950 dark:text-pink-500 text-center;
 }
 
 .form {
@@ -68,11 +105,11 @@ html {
 }
 
 .btn-submit {
-  @apply dark:bg-pink-400 text-neutral-950 dark:text-neutral-100 rounded-md px-4 py-2 font-bold hover:scale-105 duration-300 active:duration-75 active:scale-90;
+  @apply dark:bg-primary text-neutral-950 dark:text-neutral-100 rounded-md px-4 py-2 font-bold hover:scale-105 duration-300 active:duration-75 active:scale-90;
 }
 
 .home-container {
-  @apply flex-col justify-center items-center h-screen gap-6;
+  @apply flex flex-col items-center gap-6 min-h-screen; 
 }
 
 .home-signup {
@@ -103,16 +140,12 @@ html {
   @apply container mx-auto relative flex flex-col gap-6 pt-8;
 }
 
-.title {
-  @apply text-3xl font-bold text-neutral-950 dark:text-pink-500 text-center ;
-}
-
 .about-subtitle {
   @apply text-center text-lg text-pink-500; 
 }
 
 .about-description {
-  @apply text-center text-base ; 
+  @apply text-center text-base; 
 }
 
 .about-features {
@@ -120,15 +153,15 @@ html {
 }
 
 .contact-container {
-  @apply container mx-auto relative flex flex-col gap-6 pt-8;
+  @apply container mx-auto relative flex flex-col gap-6 pt-8 items-center; 
 }
 
 .contact-description {
-  @apply text-center text-base ; 
+  @apply text-center text-base; 
 }
 
 .iframe {
-  @apply w-full h-[800px] border-0; 
+   @apply w-[640px] h-[700px] border-0 mx-auto block; 
 }
 
 .register-prompt {
@@ -157,4 +190,478 @@ html {
 
 .place-form-title {
   @apply text-2xl font-bold text-neutral-950 dark:text-pink-500 text-center mb-4;
+}
+
+/* ========== CALENDAR & MODAL STYLES ========== */
+
+/* Header styles */
+.header {
+  @apply flex items-center justify-between whitespace-nowrap border-b border-solid px-10 py-3 bg-surface;
+  border-color: theme('colors.border');
+}
+
+.header-nav a {
+  @apply text-sm font-medium leading-normal;
+}
+
+.header-nav a.active {
+  color: theme('colors.dark-text');
+}
+
+.header-nav a:not(.active) {
+  color: theme('colors.light-text');
+}
+
+.header-button {
+  @apply flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5;
+  background-color: theme('colors.border');
+  color: theme('colors.dark-text');
+}
+
+.header-button:hover {
+  background-color: #e8e0e8;
+}
+
+/* Sidebar styles */
+.sidebar {
+  @apply w-64 flex-shrink-0 border-r border-solid p-6 bg-surface;
+  border-color: theme('colors.border');
+}
+
+.sidebar-button {
+  @apply flex w-full min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 text-base font-bold leading-normal tracking-[0.015em] gap-2;
+  background-color: theme('colors.primary');
+  color: white;
+}
+
+.sidebar-button:hover {
+  background-color: theme('colors.primary-dark');
+}
+
+.mini-calendar {
+  @apply flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5;
+}
+
+.mini-calendar-header {
+  @apply flex items-center p-1 justify-between;
+}
+
+.mini-calendar-day {
+  @apply h-8 w-full text-xs font-medium flex items-center justify-center rounded-full;
+}
+
+.mini-calendar-day.current {
+  @apply text-white;
+  background-color: theme('colors.primary');
+}
+
+.mini-calendar-day:not(.current) {
+  color: theme('colors.dark-text');
+}
+
+.mini-calendar-day.other-month {
+  color: theme('colors.light-text');
+}
+
+/* Event key styles */
+.event-key {
+  @apply p-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2;
+}
+
+.event-key-item {
+  @apply col-start-1 flex items-center;
+}
+
+.event-key-dot {
+  @apply rounded-full;
+  width: 12px;
+  height: 12px;
+}
+
+.event-key-label {
+  @apply text-sm font-normal leading-normal;
+  color: theme('colors.dark-text');
+}
+
+/* Main calendar styles */
+.calendar-grid {
+  @apply grid grid-cols-7 grid-rows-5 gap-px border rounded-lg overflow-hidden;
+  background-color: theme('colors.border-dark');
+  border-color: theme('colors.border-dark');
+}
+
+.calendar-header {
+  @apply text-center py-3 bg-surface text-sm font-bold;
+  color: theme('colors.dark-text');
+}
+
+.calendar-day {
+  @apply h-32 p-2 flex flex-col bg-surface;
+}
+
+.calendar-day.other-month {
+  background-color: theme('colors.gray-light');
+}
+
+.calendar-day-number {
+  @apply text-sm font-medium;
+}
+
+.calendar-day-number.current {
+  @apply flex items-center justify-center size-6 rounded-full text-white;
+  background-color: theme('colors.primary');
+}
+
+.calendar-day-number:not(.current) {
+  color: theme('colors.dark-text');
+}
+
+.calendar-day-number.other-month {
+  color: theme('colors.light-text');
+}
+
+.event-indicator {
+  @apply w-full h-2 rounded-full mt-1;
+}
+
+/* Modal styles */
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden;
+  backdrop-filter: blur(4px);
+}
+
+.modal-container {
+  @apply bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 max-h-[90vh] overflow-auto;
+  border: 1px solid theme('colors.border');
+}
+
+.modal-header {
+  @apply flex justify-between items-center px-6 py-4 border-b border-border;
+}
+
+
+.modal-title {
+  @apply text-xl font-bold text-dark-text;
+}
+
+.modal-close {
+  @apply p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-light-text hover:text-dark-text;
+}
+
+.modal-form {
+  @apply space-y-4 p-6;
+}
+
+.modal-form-group {
+  @apply space-y-2;
+}
+
+.modal-form-label {
+  @apply block text-sm font-medium text-dark-text;
+}
+
+.modal-form-input {
+  @apply w-full rounded-lg border border-border px-4 py-3 text-dark-text bg-white 
+         focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
+         transition-colors duration-200 placeholder-light-text;
+}
+
+
+.modal-form-textarea {
+  @apply w-full rounded-lg border border-border px-4 py-3 text-dark-text bg-white 
+         focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
+         transition-colors duration-200 placeholder-light-text resize-none;
+  min-height: 80px;
+}
+
+
+.modal-actions {
+  @apply flex items-center justify-end gap-4 pt-6 border-t border-border;
+}
+
+.modal-btn-secondary {
+  @apply flex items-center justify-center rounded-lg h-12 bg-gray-200 text-dark-text 
+         gap-2 text-base font-semibold leading-normal px-6 
+         hover:bg-gray-300 transition-colors duration-200 
+         focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+}
+
+.modal-btn-secondary:hover {
+  background-color: #e8e0e8;
+}
+
+.modal-btn-primary {
+  @apply flex items-center justify-center rounded-lg h-12 bg-primary text-white 
+         gap-2 text-base font-semibold leading-normal px-6 
+         hover:bg-primary-dark transition-colors duration-200 
+         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+.modal-btn-danger {
+  @apply flex items-center justify-center rounded-lg h-12 bg-red-500 text-white 
+         gap-2 text-base font-semibold leading-normal px-6 
+         hover:bg-red-600 transition-colors duration-200 
+         focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2;
+}
+
+
+.modal-btn-primary.with-icon,
+.modal-btn-secondary.with-icon,
+.modal-btn-danger.with-icon {
+  @apply px-4;
+}
+
+.modal-btn-primary:hover {
+  background-color: theme('colors.primary-dark');
+}
+
+#calendar {
+  @apply pr-20;
+}
+
+@media (max-width: 640px) {
+  .modal-actions {
+    @apply flex-col gap-3;
+  }
+  
+  .modal-btn-primary,
+  .modal-btn-secondary,
+  .modal-btn-danger {
+    @apply w-full justify-center;
+  }
+}
+
+
+.treatment-description {
+  @apply text-sm text-light-text mt-1 p-2 bg-gray-50 rounded-lg border border-border;
+}
+
+/* FullCalendar customizations */
+.fc-event {
+  @apply border-none rounded px-1 py-0.5 text-xs font-medium;
+}
+
+.fc-event-period {
+  background-color: #E57373 !important;
+  border-color: #E57373 !important;
+}
+
+.fc-event-ovulation {
+  background-color: #FFD54F !important;
+  border-color: #FFD54F !important;
+}
+
+.fc-event-treatment {
+  background-color: #A0D2DB !important;
+  border-color: #A0D2DB !important;
+}
+
+.fc-event-sexual-activity {
+  background-color: #C8E6C9 !important;
+  border-color: #C8E6C9 !important;
+}
+
+/* Focus states for better accessibility */
+.modal-form-input:focus,
+.modal-form-textarea:focus {
+  @apply ring-2 ring-primary ring-opacity-20 border-primary;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .modal-container {
+    @apply mx-2;
+  }
+  
+  .modal-form {
+    @apply p-4;
+  }
+  
+  .modal-actions {
+    @apply flex-col;
+  }
+  
+  .modal-btn-primary,
+  .modal-btn-secondary,
+  .modal-btn-danger {
+    @apply flex-none;
+  }
+}
+
+
+/* Animation for modal appearance */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-container {
+  animation: modalSlideIn 0.2s ease-out;
+}
+
+/* Scrollbar styling for modal content */
+.modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded hover:bg-gray-400;
+}
+
+.fc-event-event {
+  background-color: #E0E0E0 !important;
+  border-color: #E0E0E0 !important;
+}
+
+/* ========== PROFILE & DASHBOARD STYLES ========== */
+
+.profile-container {
+  @apply mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8;
+}
+
+.page-title {
+  @apply text-dark-text tracking-tight text-[32px] font-bold leading-tight text-left pb-2;
+}
+
+.profile-details-card {
+  @apply p-4 bg-surface rounded-lg shadow-sm mb-8;
+}
+
+.dashboard-grid {
+  @apply mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2;
+}
+
+.info-card {
+  @apply bg-surface p-6 rounded-lg shadow-sm;
+}
+
+.card-header {
+  @apply flex justify-center items-center mb-2;
+}
+
+.card-title {
+  @apply text-xl font-bold text-dark-text p-4 text-left;
+}
+
+.icon-small {
+  @apply text-base;
+}
+
+.list-heading {
+  @apply text-lg font-semibold text-dark-text mt-6 mb-3;
+}
+
+.text-secondary {
+  @apply text-light-text text-sm;
+}
+
+/* Button styles */
+.btn-add {
+  /* @apply bg-primary flex items-center gap-1 rounded-lg px-1 py-1 text-sm font-bold; */
+    @apply flex items-center gap-2 rounded-lg px-4 text-sm font-bold text-[#5B21B6] w-20 h-8;
+
+}
+
+.btn-add-problem {
+  @apply text-dark-text bg-primary ;
+}
+
+.btn-add-problem:hover {
+  @apply bg-secondary-lighter;
+}
+
+/* Log item styles */
+.log-item {
+  @apply flex justify-between items-center py-2 border-b border-gray-100 text-dark-text text-base font-medium;
+}
+
+
+.log-status-completed {
+  @apply text-gray-500 text-sm font-semibold;
+}
+
+.log-item-solved {
+  @apply text-light-text line-through;
+}
+
+.btn-item-action {
+  @apply rounded-lg px-3 py-1 text-xs font-medium;
+}
+
+.btn-item-solved {
+  @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+}
+
+.btn-item-readd,
+.btn-item-ongoing {
+  @apply bg-green-100 text-green-700 hover:bg-green-200;
+}
+
+.btn-item-end {
+  @apply bg-red-100 text-red-700 hover:bg-red-200;
+}
+
+/* Modal components */
+.modal {
+  @apply fixed inset-0 z-50 overflow-y-auto bg-gray-600 bg-opacity-50;
+  display: none;
+}
+
+.modal-content-wrapper {
+  @apply relative mx-auto mt-20 max-w-lg rounded-lg bg-surface p-6 shadow-xl;
+}
+
+.modal-close-btn {
+  @apply absolute top-3 right-3 text-2xl font-bold text-gray-500 hover:text-gray-900 cursor-pointer;
+}
+
+/* Form elements */
+.form-label {
+  @apply mb-2 text-sm font-medium text-gray-700;
+}
+
+.form-label-mt {
+  @apply mt-4;
+}
+
+.form-input-control {
+  @apply w-full rounded-md border py-2 px-3 text-gray-700 focus:border-primary focus:ring focus:ring-primary;
+}
+
+/* Submit buttons */
+.btn-submit {
+  @apply w-full text-center rounded-lg py-2 text-sm font-bold mt-6;
+}
+
+.btn-submit-problem {
+  @apply text-secondary bg-primary hover:bg-primary-light;
+}
+
+.btn-submit-treatment {
+  @apply text-primary bg-primary-lighter hover:bg-primary-light;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .sidebar {
+    @apply w-full;
+  }
+  
+  .calendar-grid {
+    @apply grid-rows-6;
+  }
+  
+  .calendar-day {
+    @apply h-24;
+  }
 }

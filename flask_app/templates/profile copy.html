@@ -1,0 +1,175 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="profile-container">
+    <h1 class="title">User Profile</h1>
+    <div class="profile-details">
+        <p><strong>Username:</strong> {{ current_user.username }}</p>
+        <p><strong>Email:</strong> {{ current_user.email }}</p>
+    </div>
+
+    <div class="overview-container">
+
+        <!-- Problems Section -->
+        <div class="problem-container">
+            <div class="card-header-group">
+                <h2 class="section-title">Problems</h2>
+                <button class="btn-add" data-modal="problemModal">+ Add Problem</button>
+            </div>
+            <!-- Problem Modal -->
+            <div id="problemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" data-close="problemModal">&times;</span>
+                    <h2 class="section-title">Add a Problem</h2>
+                    <form method="POST">
+                        {{ problem_form.hidden_tag() }}
+
+                        <h3>Select Symptoms:</h3>
+                        {{ problem_form.symptoms(class="form-multiselect-input") }}
+                        <br></br>
+                        <h3>And/Or enter a custom symptom:</h3>
+                        {{ problem_form.custom_symptom(class="form-input") }} 
+                        <br></br>
+                        {{ problem_form.submit(class="btn-submit") }}
+                    </form>
+                </div>
+            </div>
+
+            <!-- Logged Symptoms -->
+            <h3>Your Logged Symptoms</h3>
+            {% if user_symptoms %}
+                <ul>
+                {% for prob in user_symptoms %}
+                    <li>
+                        {% if prob.solved %}
+                        <div class="problem-item">
+                            <s>{{ prob.name }}</s>
+                            <form action="{{ url_for('users.update_problem_status', problem_id=prob.id) }}" method="POST" style="display:inline;">
+                                <button class="re-add-btn">Re-add</button>
+                            </form>
+                        </div>
+                        {% else %}
+                        <div class="problem-item">
+                            {{ prob.name }}
+                            <form action="{{ url_for('users.update_problem_status', problem_id=prob.id) }}" method="POST" style="display:inline;">
+                                <button class="solved-btn">Solved</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No symptoms logged yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Treatments Section -->
+        <div class="treatment-container">
+            <h2 class="section-title">Treatments</h2>
+            <button class="btn-add" data-modal="treatmentModal">+ Add Treatment</button>
+
+            <!-- Treatment Modal -->
+            <div id="treatmentModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" data-close="treatmentModal">&times;</span>
+                    <h2 class="section-title">Add a Treatment</h2>
+                    <form method="POST" class="treatment-form">
+                        {{ treatment_form.hidden_tag() }}
+                        <h3>Select Treatment</h3>
+                        {{ treatment_form.name(class="form-select-input") }}
+                        
+                        <h3>Ongoing</h3>
+                        {{ treatment_form.ongoing(class="form-input", id="ongoingSelect") }}
+                        
+                        <h3>Start Date and Time</h3>
+                        {{ treatment_form.start_date(class="form-input") }}
+                        
+                        <div id="endDateWrapper">
+                            <h3>End Date and Time</h3>
+                            {{ treatment_form.end_date(class="form-input") }}
+                        </div>
+                        
+                        <h3>Details</h3>
+                        {{ treatment_form.details(class="form-input") }}
+        
+                        <br></br>
+                        {{ treatment_form.submit(class="btn-submit") }}
+                    </form>
+                </div>
+            </div>
+
+            <!-- Logged Treatments -->
+            <h3>Your Logged Treatments</h3>
+            {% if user_treatments %}
+            <ul>
+                {% for treat in user_treatments %}
+                <li>
+                    {% if treat.ongoing %}
+                        <div class="treatmt-item">
+                            {{ treat.name }}
+                            <form action="{{ url_for('users.update_treatment_status', treatment_id=treat.id) }}" method="POST" style="display:inline;">
+                                <button class="re-add-btn">End</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="treatmt-item">
+                            {{ treat.name }}
+                            <form action="{{ url_for('users.update_treatment_status', treatment_id=treat.id) }}" method="POST" style="display:inline;">
+                                <button class="solved-btn">Mark Ongoing</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No treatments logged yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- JS for All Modals -->
+<script>
+document.querySelectorAll(".btn-add").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const modalId = btn.getAttribute("data-modal");
+        document.getElementById(modalId).style.display = "block";
+    });
+});
+
+document.querySelectorAll(".close").forEach(closeBtn => {
+    closeBtn.addEventListener("click", () => {
+        const modalId = closeBtn.getAttribute("data-close");
+        document.getElementById(modalId).style.display = "none";
+    });
+});
+
+window.addEventListener("click", (event) => {
+    document.querySelectorAll(".modal").forEach(modal => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+const ongoingSelect = document.getElementById("ongoingSelect");
+const endDateWrapper = document.getElementById("endDateWrapper");
+
+function toggleEndDate() {
+    if (ongoingSelect.value === "true") {
+        endDateWrapper.style.display = "none";  // hide if ongoing
+    } else {
+        endDateWrapper.style.display = "block"; // show if not ongoing
+    }
+}
+
+// Initial load
+toggleEndDate();
+
+// When user changes selection
+ongoingSelect.addEventListener("change", toggleEndDate);
+});
+</script>
+{% endblock %}
