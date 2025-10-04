@@ -21,6 +21,7 @@ Flask-PyMongo==2.3.0
 Flask-VisJS==0.1.4
 Flask-WTF==1.0.0
 folium==0.20.0
+gunicorn==23.0.0
 idna==3.3
 iniconfig==2.0.0
 ipython==9.4.0
