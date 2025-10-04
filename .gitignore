@@ -5,10 +5,8 @@ __pycache__/
 .DS_Store
 .flaskenv
 /flask_app/__pycache__/
-/flask_app/config.py
 /flask_app/.DS_Store
 todo.md
 node_modules/
 .pytest_cache/
 
-flask_app/.env

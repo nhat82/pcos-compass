@@ -3,7 +3,6 @@ import requests
 from flask_login import login_user, logout_user, login_required, current_user
 from ..forms import * 
 from ..models import *
-from ..config import GOOGLE_API_KEY
 import folium
 
 places = Blueprint('places', __name__)
