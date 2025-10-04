@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from ..extensions import bcrypt 
 from ..forms import RegistrationForm, LoginForm, ProblemForm, TreatmentForm
 from ..models import * 
-from config import GOOGLE_FORM_LINK
+from ..config import GOOGLE_FORM_LINK
 from flask_app.constants import SYMPTOMS, TREATMENTS
 import datetime
 
