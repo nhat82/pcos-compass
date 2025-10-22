@@ -27,9 +27,14 @@ Example of the problems that PCOS women so through on the subreddit:
 
 ![Profile](image-3.png) Profile Page
 
-![Register](image-4.png) Login Page
+![Profile](image-find.png) Community Insights Page
 
-![Login](image-5.png) Register Page
+![Profile](image-map.png) Map Page
+
+
+<!-- ![Register](image-4.png) Login Page -->
+
+<!-- ![Login](image-5.png) Register Page -->
 
 ## 🚀 Quick Start
 
