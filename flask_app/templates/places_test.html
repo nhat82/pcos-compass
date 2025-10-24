@@ -1,0 +1,196 @@
+
+{% extends "header.html" %}
+{% block content %}
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-white group/design-root overflow-x-hidden">
+  <div class="layout-container flex h-full grow flex-col">
+
+    <div class="flex flex-1">
+      <!-- Map Section -->
+      <div class="flex-1 relative">
+        <div class="bg-cover bg-center flex h-full min-h-[calc(100vh-69px)] flex-1 flex-col justify-between items-center">
+          <div id="map" class="absolute inset-0 w-full h-full"></div>
+          <!-- Search Bar -->
+          <div class="absolute top-4 left-1/2 -translate-x-1/2 w-1/3 min-w-[300px] max-w-lg">
+            <form id="search-form" class="flex items-stretch rounded-lg shadow-md bg-white overflow-hidden">
+              <div class="text-[#886388] flex items-center justify-center px-3 border-r border-gray-200">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+              <input type="text" name="address" placeholder="Search places" required
+                class="flex-1 px-3 py-2 text-base text-[#181118] placeholder:text-[#886388] focus:outline-none focus:ring-0">
+              <button type="submit" class="bg-[var(--brand-color)] text-white px-4 py-2 hover:opacity-90">Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Sidebar -->
+      <aside class="w-[480px] bg-white border-l border-l-[#f4f0f4] flex flex-col p-6 overflow-y-auto h-[calc(100vh-69px)]">
+        <div id="results-list" class="flex flex-col gap-6"></div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}"></script>
+<script>
+let map;
+let markers = [];
+
+document.querySelector('#search-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const address = e.target.address.value;
+
+  const res = await fetch('/places/search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ address })
+  });
+
+  const data = await res.json();
+  const resultsList = document.getElementById('results-list');
+  resultsList.innerHTML = '';
+
+  if (!data.results || !data.results.length) return;
+
+  const firstLoc = data.results[0].geometry.location;
+  map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 13,
+    center: { lat: firstLoc.lat, lng: firstLoc.lng },
+  });
+
+  data.results.forEach(place => {
+    const loc = place.geometry.location;
+    const marker = new google.maps.Marker({
+      position: { lat: loc.lat, lng: loc.lng },
+      map: map,
+      title: place.name
+    });
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `<b>${place.name}</b><br>${place.formatted_address}<br>PCOS Rating: ${place.user_rating || "N/A"}<br>Google Rating: ${place.google_rating || "N/A"}`
+    });
+
+    marker.addListener('click', () => infoWindow.open(map, marker));
+    markers.push(marker);
+
+    // Add to sidebar
+    const placeEl = document.createElement('div');
+    placeEl.className = 'p-4 bg-[#fde8fd] rounded-lg shadow-sm cursor-pointer hover:bg-pink-50';
+    placeEl.innerHTML = `
+      <h3 class="text-[#181118] font-bold text-lg">${place.name}</h3>
+      <p class="text-[#886388] text-sm mt-1">${place.formatted_address}</p>
+          <p class="flex items-center gap-2 mt-1">
+            <span class="text-[#181118]">PCOS Rating: ${place.user_rating || 'N/A'}</span>
+            <span class="text-[#886388] text-sm">(${place.user_ratings_total || 0} reviews)</span>
+          </p>
+          <p class="flex items-center gap-2 mt-1">
+            <span class="text-[#181118]">Google Rating: ${place.google_rating || 'N/A'}</span>
+            <span class="text-[#886388] text-sm">(${place.google_user_ratings_total || 0} reviews)</span>
+          </p>
+      <div class="mt-2 flex gap-2">
+        <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" 
+          target="_blank" 
+          class="text-[var(--brand-color)] hover:underline">
+          View on Google Maps
+        </a>
+        <button class="leave-review-btn flex items-center gap-1 px-3 py-1 bg-[var(--brand-color)] text-[#181118] rounded-lg hover:underline">
+          <span class="material-symbols-outlined text-sm">edit</span>
+          Leave a Review
+        </button>
+      </div>
+      <!-- Existing Reviews -->
+      <h3 class="text-md font-semibold mb-2">Reviews</h3>
+      <div id="reviews-list" class="space-y-4">
+        ${place.reviews && place.reviews.length > 0
+          ? place.reviews.map(r => `
+            <div class="p-2 border rounded">
+              <div class="flex justify-between items-center">
+                <span class="font-semibold">${r.user}</span>
+                <span class="text-yellow-500">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+              </div>
+              <p class="text-sm text-gray-600">${r.date}</p>
+              <p class="mt-1">${r.comment}</p>
+            </div>
+          `).join('')
+          : `<p class="text-gray-500">No reviews yet.</p>`
+        }
+      </div>
+    `;
+
+    // Click sidebar card -> pan to marker + open info window
+    placeEl.addEventListener('click', () => {
+      map.panTo(marker.getPosition());
+      map.setZoom(15); // optional: zoom in
+      infoWindow.open(map, marker);
+    });
+    // Leave review button
+    placeEl.querySelector('.leave-review-btn').addEventListener('click', () => {
+      // Create modal container
+      const modal = document.createElement('div');
+      modal.classList.add('fixed', 'inset-0', 'bg-black', 'bg-opacity-50', 'flex', 'items-center', 'justify-center', 'z-50');
+
+      // Modal content
+      modal.innerHTML = `
+        <div class="bg-white p-6 rounded-lg w-96 shadow-lg">
+          <h2 class="text-lg font-bold mb-4">Leave a review for ${place.name}</h2>
+          <label class="block mb-2">Rating (1-5)</label>
+          <input type="number" id="review-rating" min="1" max="5" class="w-full border rounded p-2 mb-4" />
+          <label class="block mb-2">Comment</label>
+          <textarea id="review-comment" rows="4" class="w-full border rounded p-2 mb-4"></textarea>
+          <div class="flex justify-end gap-2">
+            <button id="cancel-btn" class="px-4 py-2 bg-gray-300 rounded">Cancel</button>
+            <button id="submit-btn" class="flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] font-display hover:bg-primary/90 transition-colors">Submit</button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(modal);
+
+      // Cancel button
+      modal.querySelector('#cancel-btn').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+
+      // Submit button
+      modal.querySelector('#submit-btn').addEventListener('click', async () => {
+        const rating = modal.querySelector('#review-rating').value;
+        const comment = modal.querySelector('#review-comment').value;
+
+        if (!rating || !comment) {
+          alert('Please provide both rating and comment.');
+          return;
+        }
+
+        try {
+          const res = await fetch('/places/review', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              place_id: place.place_id,
+              rating: rating,
+              comment: comment
+            })
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert(data.message || 'Review submitted successfully!');
+          } else {
+            alert('Error: ' + (data.error || 'Failed to submit review'));
+          }
+        } catch (err) {
+          alert('Request failed: ' + err.message);
+        } finally {
+          document.body.removeChild(modal);
+        }
+      });
+    });
+
+
+
+    resultsList.appendChild(placeEl);
+  });
+
+});
+</script>
+{% endblock %}

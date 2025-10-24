@@ -1,162 +1,85 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, request, jsonify
+from flask_login import login_required, current_user
 import requests
-from flask_login import login_user, logout_user, login_required, current_user
-from ..forms import * 
-from ..models import *
-import folium
+import os
+from ..forms import ReviewForm
+import boto3
+import json
+from decimal import Decimal
+from ..models import Review
+
+GOOGLE_API_KEY=os.getenv("GOOGLE_API_KEY")
+LAMBDA_API_URL_FIND = os.environ.get('LAMBDA_API_URL_FIND')
+LAMBDA_API_URL_REVIEW = os.environ.get('LAMBDA_API_URL_REVIEW')
 
 places = Blueprint('places', __name__)
 
-''' Place Management Views '''
 
-@places.route('/places', methods=['GET', 'POST'])
-@login_required
-def list_places():
-    # need to limit this to their local area 
-    all_places = Place.objects()
-    
-    search_form = SearchPlaceForm()
-    add_form = AddPlaceForm()
-    
-    existing_place = None
-    
-    if search_form.validate_on_submit():
-        query = search_form.search_query.data
-        # needs to standardize the text format
-        existing_place = Place.objects(name=query).first()
+@places.route('/places')
+def places_home():
+    return render_template('places_test.html', api_key=GOOGLE_API_KEY)
 
-        if existing_place:
-            flash(f"Found a place matching your search: {existing_place.name}", "success")
-        else:
-            # Get place details from Google (after user selects suggestion)
-            # place_details = get_place_details_from_google(query)
-            # if place_details:
-            #     place = Place(
-            #         name=place_details["name"],
-            #         address=place_details["address"],
-            #         link=f"https://www.google.com/maps/place/?q=place_id:{place_details['place_id']}",
-            #         latitude=place_details["lat"],
-            #         longitude=place_details["lng"],
-            #         posted_by=current_user._get_current_object()
-            #     )
-            #     place.save()
-            #     flash('Place added successfully!', 'success')
-            # else:
-                flash(f"No place found with the name '{query}'.", "error")
-                
-    if all_places:
-        avg_lat = sum(p.latitude for p in all_places) / len(all_places)
-        avg_lon = sum(p.longitude for p in all_places) / len(all_places)
-        m = folium.Map(location=[32.07148197,34.7876717], zoom_start=14, control_scale=True) 
-    else:
-        m = folium.Map(location=[32.07148197,34.7876717], zoom_start=14, control_scale=True) 
+@places.route('/places/search', methods=['POST'])
+def search_place():
+    data = request.get_json()
+    address = data.get('address', '').strip()
 
-    # Add a marker for each place
-    for place in all_places:
-        folium.Marker(
-            location=[place.latitude, place.longitude],
-            tooltip=place.name,
-            popup=f"<b>{place.name}</b><br>{place.description}"
-        ).add_to(m)
+    if not address:
+        return jsonify({"error": "Missing address"}), 400
 
-    # Save the map as an HTML file
-    map_html = m._repr_html_()
-    
-    return render_template(
-        'places.html',
-        places=all_places,
-        search_form=search_form, 
-        existing_place = existing_place, 
-        map_html=map_html
-    )
-
-
-# helper functions
-"""Call Google Places Autocomplete + Details to get place info"""
-
-# def get_place_details_from_google(query):    
-#     # Autocomplete to get place_id
-#     autocomplete_url = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
-#     params = {"input": query, "key": GOOGLE_API_KEY}
-#     r = requests.get(autocomplete_url, params=params).json()
-#     predictions = r.get("predictions")
-#     if not predictions:
-#         return None
-
-#     # Take the first prediction (or let user select in frontend)
-#     place_id = predictions[0]["place_id"]
-
-#     # Step 2: Get place details
-#     details_url = "https://maps.googleapis.com/maps/api/place/details/json"
-#     params = {"place_id": place_id, "key": GOOGLE_API_KEY, "fields": "name,geometry,formatted_address"}
-#     r = requests.get(details_url, params=params).json()
-#     result = r.get("result")
-#     if not result:
-#         return None
-
-#     return {
-#         "name": result.get("name"),
-#         "address": result.get("formatted_address"),
-#         "lat": result["geometry"]["location"]["lat"],
-#         "lng": result["geometry"]["location"]["lng"],
-#         "place_id": place_id
-#     }
-
-
-
-@places.route('/places/<place_id>', methods=['GET', 'POST'])
-@login_required
-def place_detail(place_id):
-    place = Place.objects(id=place_id).first()
-    if not place:
-        flash('Place not found.', 'danger')
-        return redirect(url_for('places.list_places'))
-    
-    form = ReviewForm()
-    if form.validate_on_submit():
-        new_review = Review(
-            place=place,
-            user=current_user._get_current_object(),
-            rating=form.rating.data,
-            comment=form.comment.data,
-            created_at=datetime.now()
+    try:
+        # Call Lambda via API Gateway
+        resp = requests.post(
+            f"{LAMBDA_API_URL_FIND}find_places", 
+            json={"reference": address},
+            timeout=10
         )
-        new_review.save()
-        place.reviews.append(new_review)
-        # Update average rating
-        total_rating = sum(review.rating for review in place.reviews)
-        place.average_rating = total_rating / len(place.reviews)
-        place.save()
-        
-        flash('Review added successfully!', 'success')
-    return render_template('place_detail.html', place=place, form=form)
-    
+        resp.raise_for_status()  # raise exception for HTTP errors
 
-@places.route('/places/<place_id>/review', methods=['GET', 'POST'])
+        # Return the Lambda response directly
+        return jsonify(resp.json())
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Failed to call Lambda: {str(e)}"}), 500
+
+
+@places.route('/places/review', methods=['POST'])
 @login_required
-def add_review(place_id):
-    place = Place.objects(id=place_id).first()
-    if not place:
-        flash('Place not found.', 'danger')
-        return redirect(url_for('places.list_places'))
-    
-    form = ReviewForm()
-    if form.validate_on_submit():
-        new_review = Review(
-            place=place,
-            user=current_user._get_current_object(),
-            rating=form.rating.data,
-            comment=form.comment.data,
-            created_at=datetime.datetime.now()
+def review_place():
+    data = request.get_json()
+    place_id = data.get('place_id')
+    rating = data.get('rating')
+    comment = data.get('comment')
+
+    # Validate input
+    if not all([place_id, rating, comment]):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        rating = int(rating)
+        if rating < 1 or rating > 5:
+            return jsonify({"error": "Rating must be between 1 and 5"}), 400
+    except ValueError:
+        return jsonify({"error": "Invalid rating value"}), 400
+
+    # Prepare review data
+    review_data = {
+        "username": current_user.username,
+        "place_id": place_id,
+        "rating": rating,
+        "comment": comment
+    }
+
+    try:
+        # Call Lambda via API Gateway to submit review
+        resp = requests.post(
+            f"{LAMBDA_API_URL_REVIEW}submit_review", 
+            json=review_data,
+            timeout=10
         )
-        new_review.save()
-        place.reviews.append(new_review)
-        # Update average rating
-        total_rating = sum(review.rating for review in place.reviews)
-        place.average_rating = total_rating / len(place.reviews)
-        place.save()
-        
-        flash('Review added successfully!', 'success')
-        return redirect(url_for('places.place_detail', place_id=place_id))
-    
-    return render_template('add_review.html', form=form, place=place)
+        resp.raise_for_status()  # raise exception for HTTP errors
+
+        return jsonify({"message": "Review submitted successfully!"}), 200
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Failed to submit review: {str(e)}"}), 500

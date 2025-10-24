@@ -9,4 +9,7 @@ __pycache__/
 todo.md
 node_modules/
 .pytest_cache/
+.env
+flask_app/static/custom.css
+flask_app/static/input.css
 

@@ -51,22 +51,24 @@ class Treatment(db.Document):
     
     def __repr__(self):
         return f"<Treatment {self.name} for {self.user.name}>"
-class Place(db.Document):
-    name = db.StringField(required=True)
-    address = db.StringField(required=True)
-    link = db.StringField()
-    latitude = db.FloatField()
-    longitude = db.FloatField()
-    description = db.StringField()
-    posted_by = db.ReferenceField(User, required=True)
-    average_rating = db.FloatField(default=0.0)
-    reviews = db.ListField(db.ReferenceField('Review'))
+
+
+# class Place(db.Document):
+#     name = db.StringField(required=True)
+#     address = db.StringField(required=True)
+#     link = db.StringField()
+#     latitude = db.FloatField()
+#     longitude = db.FloatField()
+#     description = db.StringField()
+#     posted_by = db.ReferenceField(User, required=True)
+#     average_rating = db.FloatField(default=0.0)
+#     reviews = db.ListField(db.ReferenceField('Review'))
     
-    def get_id(self):
-        return self.name
+#     def get_id(self):
+#         return self.name
         
-    def __repr__(self):
-        return f"<{self.name}>"
+#     def __repr__(self):
+#         return f"<{self.name}>"
     
 class Review(db.Document):
     place = db.ReferenceField(('Place'), required=True)
