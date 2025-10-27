@@ -618,7 +618,7 @@ html {
 
 /* Submit buttons */
 .btn-submit {
-  @apply w-full text-center rounded-lg py-2 text-sm font-bold mt-6;
+  @apply bg-primary w-full text-center rounded-lg py-2 text-sm font-bold mt-6;
 }
 
 .btn-submit-problem {
