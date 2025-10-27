@@ -17,7 +17,6 @@ users = Blueprint('users', __name__)
 def home():
     return render_template('home.html', google_form_link=GOOGLE_FORM_LINK)
 
-
 @users.route('/community')
 def community():
     return render_template('community.html')

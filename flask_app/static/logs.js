@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var modalCloseBtn = document.getElementById('modalCloseBtn'); // X button
     var deleteBtn = document.getElementById('deleteBtn');
     var modalTitle = document.getElementById('modalTitle');
-    var showTreatmentNames = false; 
+    var showTreatmentNames = true; 
     var toggleButton = document.getElementById('toggleLogDisplay');
 
     [cancelBtn, modalCloseBtn].forEach(btn => {
@@ -110,21 +110,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Style events by type
         eventDidMount: function(info) {
             const type = info.event.extendedProps.type;
+            // info.el.querySelector('.fc-event-title, .fc-event-main')?.style.setProperty('color', '#000', 'important');
+
             if (type === "Period") {
-                info.el.style.backgroundColor = "#f15b8d";
-                info.el.style.borderColor = "#f15b8d";
+                info.el.style.backgroundColor = "#D40101";
+
             } else if (type === "Ovulation") {
-                info.el.style.backgroundColor = "#42CAFD";
-                info.el.style.borderColor = "#42CAFD";
+                info.el.style.backgroundColor = "#049BE5";
+
             } else if (type === "Sexual Activity") {
-                info.el.style.backgroundColor = "#FF6B6B";
-                info.el.style.borderColor = "#FF6B6B";
+                info.el.style.backgroundColor = "#E67C72";
+
             } else if (type === "Event") {
-                info.el.style.backgroundColor = "#f8d472";
-                info.el.style.borderColor = "#f8d472";
+                info.el.style.backgroundColor = "#606060";
+
             } else if (type === "Treatment") {
-                info.el.style.backgroundColor = "#b2e0c3";
-                info.el.style.borderColor = "#b2e0c3";
+                info.el.style.backgroundColor = "#7A85CA";
+
             }
         },
 
@@ -194,7 +196,10 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
 
     // Toggle button functionality
+    updateToggleButtonState();
+    
     if (toggleButton) {
+        
         toggleButton.addEventListener('click', function() {
             // 1. Update the internal state
             showTreatmentNames = !showTreatmentNames;

@@ -26,11 +26,11 @@ html {
 }
 
 .fc-toolbar-title {
-  @apply text-[#364051] text-sm font-bold leading-tight flex-1 text-center
+  @apply text-[#263137] text-sm font-bold leading-tight flex-1 text-center
 }
 
 .home-title {
-  @apply text-primary text-7xl mx-auto mt-6 text-center mb-1 bg-clip-text bg-gradient-to-r  w-[30rem] font-bold;
+  @apply text-[#263137] text-4xl mx-auto mt-6 text-center mb-1 bg-clip-text bg-gradient-to-r  w-[30rem] font-bold p-2;
 }
 
 .header-left {

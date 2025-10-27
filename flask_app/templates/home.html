@@ -3,7 +3,7 @@
 
 <div class="home-container">
     <div class="home-fuck-pcos-box">    
-        <h2 class="home-title">F*ck PCOS</h2>
+        <h2 class="home-title">Your entire PCOS journey. Powered by one profile.</h2>
         <p class="description">Take your healthcare in your own hands.</p>
         <p class="description">Track symptoms, manage treatments, find caring doctors and connect with a supportive community.</p>
         <p class="description">You're not alone.</p>
@@ -13,48 +13,51 @@
 
     <section class="bg-gray-50 py-12 md:py-16">
         <div class="max-w-5xl mx-auto px-4">
-            <h1 class="text-[#181118] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Features</h1>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Features</h1>
+            <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
                     <span class="material-symbols-outlined text-4xl text-pcos-pink">track_changes</span>
-                    <h3 class="font-bold text-lg mt-4 mb-2">Track Problems &amp; Treatments</h3>
+                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Track Problems &amp; Treatments</h3>
                     <p class="text-sm text-gray-600">Effectively monitor your symptoms and the impact of different treatments over time.</p>
                     <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-2.png" alt="Symptom Tracking Screenshot" />
                 </div>
                 
                 <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
                     <span class="material-symbols-outlined text-4xl text-pcos-pink">insights</span>
-                    <h3 class="font-bold text-lg mt-4 mb-2">Identify Patterns &amp; Triggers</h3>
+                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Identify Patterns &amp; Triggers</h3>
                     <p class="text-sm text-gray-600">Log and monitor your symptoms over time to identify patterns and triggers.</p>
                     <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-3.png" alt="Problem Tracking Screenshot" />
                 </div>
         
                 <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
                     <span class="material-symbols-outlined text-4xl text-pcos-pink">medical_services</span>
-                    <h3 class="font-bold text-lg mt-4 mb-2">Find PCOS health care professionals</h3>
+                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Find PCOS health care professionals</h3>
                     <p class="text-sm text-gray-600">Locate and rate healthcare providers who specialize in PCOS.</p>
                     <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-4.png" alt="Places Screenshot" />
                 </div>
 
                 <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
                     <span class="material-symbols-outlined text-4xl text-pcos-pink">group</span>
-                    <h3 class="font-bold text-lg mt-4 mb-2">Community Support</h3>
+                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Community Support</h3>
                     <p class="text-sm text-gray-600">Connect with others who understand the PCOS journey and see what are helping them</p>
                     <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-5.png" alt="Find Treatments Screenshot" />
                 </div>
             </div>
         </div>
+        <div class="text-center mt-12">
+                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-pcos-pink text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-pcos-pink-700 mx-auto">
+                    <a class="" href="{{ url_for('users.register') }}">Start Logging Your Journey</a>
+                </button>
+        </div>
     </section>
 
 
-
-
     <section class="py-12 md:py-16">
-        <h1 class="text-[#181118] tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-8">Team</h1>
+        <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-8">Team</h1>
         <div class="flex flex-wrap justify-center gap-8 md:gap-12">
             <div class="text-center">
                 <img class="w-32 h-32 rounded-full mx-auto object-cover" data-alt="Portrait of Nhat Nguyen" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/pcos-compass-founder.png"/>
-                <h4 class="font-bold mt-4">Nhat Nguyen</h4>
+                <h4 class="text-[#263137] font-bold mt-4">Nhat Nguyen</h4>
                 <p class="text-sm text-gray-600">Founder - Developer - Diagnosed with PCOS last year</p>
         </div>
         
@@ -65,7 +68,7 @@
 
     <section class="bg-pcos-light-pink py-12 md:py-16">
         <div class="max-w-3xl mx-auto px-4">
-            <h1 class="text-[#181118] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Disclaimer &amp; Privacy</h1>
+            <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Disclaimer &amp; Privacy</h1>
             <div class="space-y-4">
                 <details class="group bg-white p-4 rounded-lg shadow-sm">
                     <summary class="flex justify-between items-center font-medium cursor-pointer">
@@ -89,11 +92,6 @@
                 </details>
             </div>
             
-            <div class="text-center mt-12">
-                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-pcos-pink text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-pcos-pink-700 mx-auto">
-                    <a class="" href="{{ url_for('users.register') }}">Start Logging Your Journey</a>
-                </button>
-            </div>
         </div>
     </section>
 
@@ -110,7 +108,7 @@
 <section class="bg-gray-50 py-12 md:py-16">
     <div class="max-w-5xl mx-auto px-4">
         
-        <h1 class="text-[#181118] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Contact Me</h1>
+        <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Contact Me</h1>
         <p class="description text-center">I would love to hear from you! </p>
         <p class="text-center pb-8">Whether you have questions, feedback, or need support, please reach out to me using this form or via <a style="color:#E618E7" href="mailto:nhat.tm.ng@gmail.com">email</a>.</p>
         

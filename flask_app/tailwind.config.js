@@ -10,7 +10,7 @@ module.exports = {
         'pcos-light-pink': '#FCE8FC',     // Equivalent to .bg-pcos-light-pink
 
         // --- Core/System Colors ---
-        'dark-text': '#364051',
+        'dark-text': '#263137',
         'light-text': '#6b7280',
         
         // --- Primary (Treatment) Palette ---
