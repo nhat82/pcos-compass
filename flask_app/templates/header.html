@@ -1,30 +1,80 @@
-{% extends "base.html" %} {% block header %}
-<nav class="navbar">
-    <div class="header-left">
-        <a class="header-title" href="{{ url_for('users.home') }}">
-            <div class="flex items-center gap-4 text-dark-text">
-                <div class="size-6 text-primary">
-                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
-                    </svg>
-                </div>
-                <span class="text-lg font-bold leading-tight tracking-[-0.015em]" id="home">PCOS Compass</span>
-            </div>
-        </a>
-    
+{% extends "base.html" %}
+
+{% block header %}
+<nav class="navbar relative flex items-center justify-between border-b border-border bg-white px-6 py-3">
+    <!-- Logo + Brand -->
+    <a href="{{ url_for('users.home') }}" class="flex items-center gap-3">
+        <div class="navbar-logo text-primary">
+            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
+                <path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+            </svg>
+        </div>
+        <span class="navbar-title text-lg font-bold text-dark-text">PCOS Compass</span>
+    </a>
+
+    <!-- Desktop Links -->
+    <div class="navbar-links hidden md:flex gap-6 items-center">
         {% if current_user.is_authenticated %}
-            
             <a class="subtitle {% if request.endpoint == 'logs.logs_page' %}text-dark-text{% else %}text-light-text{% endif %}" href="{{ url_for('logs.logs_page') }}">Calendar</a>
-            
             <a class="subtitle" href="{{ url_for('users.community') }}">Community</a>
             <a class="subtitle" href="{{ url_for('places.places_home') }}">Places</a>
             <a class="subtitle" href="{{ url_for('users.profile') }}">Profile</a>
             <a class="subtitle" href="{{ url_for('users.logout') }}">Logout</a>
-        {% else %} 
+        {% else %}
             <a class="subtitle" href="{{ url_for('users.login') }}">Login</a>
             <a class="subtitle" href="{{ url_for('users.register') }}">Register</a>
         {% endif %}
     </div>
+
+    <!-- Mobile Hamburger Menu -->
+    <div class="md:hidden relative">
+        <button id="mobile-menu-button"
+            class="inline-flex items-center justify-center rounded-md p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+
+        <!-- Mobile dropdown -->
+        <div id="mobile-menu"
+            class="hidden absolute right-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg flex flex-col z-50">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('logs.logs_page') }}" class="px-4 py-2 hover:bg-gray-100">Calendar</a>
+                <a href="{{ url_for('users.community') }}" class="px-4 py-2 hover:bg-gray-100">Community</a>
+                <a href="{{ url_for('places.places_home') }}" class="px-4 py-2 hover:bg-gray-100">Places</a>
+                <a href="{{ url_for('users.profile') }}" class="px-4 py-2 hover:bg-gray-100">Profile</a>
+                <a href="{{ url_for('users.logout') }}" class="px-4 py-2 hover:bg-gray-100">Logout</a>
+            {% else %}
+                <a href="{{ url_for('users.login') }}" class="px-4 py-2 hover:bg-gray-100">Login</a>
+                <a href="{{ url_for('users.register') }}" class="px-4 py-2 hover:bg-gray-100">Register</a>
+            {% endif %}
+        </div>
+    </div>
 </nav>
 
-{% block content %}{% endblock %}{% endblock %}
+<!-- Script moved to the bottom so elements exist before binding -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const mobileButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    mobileButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+        mobileMenu.classList.toggle("hidden");
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+        if (!mobileButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add("hidden");
+        }
+    });
+
+    // Close menu on Escape
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") mobileMenu.classList.add("hidden");
+    });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

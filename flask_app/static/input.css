@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
 
-/* Base styles */
+/* Base Styles */
 html {
-  @apply bg-background overflow-x-hidden w-screen;
-  font-family: 'Inter', sans-serif;
+  @apply bg-white overflow-x-hidden w-screen font-sans;
 }
 
 .material-symbols-outlined {
@@ -19,317 +19,217 @@ html {
     'opsz' 24;
 }
 
-/* ========== EXISTING STYLES ========== */
+/* Footer */
+.footer-bottom {
+  @apply py-4 text-center text-sm leading-5 text-neutral-400;
+}
 
-#home {
+/* Navbar Header */
+.navbar {
+  @apply flex items-center justify-between whitespace-nowrap border-b border-border bg-white px-10 py-3;
+}
+
+.navbar-left {
+  @apply flex flex-1 items-center gap-8;
+}
+
+.navbar-logo {
+  @apply size-6 text-primary;
+}
+
+.navbar-brand {
+  @apply flex items-center gap-4 text-dark-text no-underline;
+}
+
+.navbar-title {
   @apply text-lg font-bold leading-tight tracking-[-0.015em];
 }
 
-.fc-toolbar-title {
-  @apply text-[#263137] text-sm font-bold leading-tight flex-1 text-center
+/* Hamburger Navbar Mobile */
+.mobile-menu-wrapper {
+  @apply relative;
 }
 
+.mobile-menu-button {
+  /* @apply p-2 rounded-lg bg-red-600 hover:bg-gray-100 transition-colors duration-200 text-light-text hover:text-dark-text; */
+  @apply hidden absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-border py-2 z-50;
+}
+
+.mobile-menu {
+  @apply absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-border py-2 z-50;
+}
+
+.mobile-menu-link {
+  @apply block px-4 py-3 text-dark-text hover:bg-pcos-light-pink transition-colors duration-200 text-sm font-medium;
+}
+
+/* Typography */
 .home-title {
-  @apply text-[#263137] text-4xl mx-auto mt-6 text-center mb-1 bg-clip-text bg-gradient-to-r  w-[30rem] font-bold p-2;
-}
-
-.header-left {
-  @apply flex items-center gap-8 flex-1;
-}
-
-.header-title {
-  @apply flex items-center gap-4 no-underline;
-  color: theme('colors.dark-text');
-}
-
-.header-title:hover {
-  @apply no-underline;
-}
-
-.subtitle {
-  @apply text-sm font-medium leading-normal transition-colors duration-200 no-underline;
-  color: theme('colors.light-text');
-}
-
-.subtitle.active {
-  color: theme('colors.dark-text');
-}
-
-
-.subtitle:hover {
-  color: theme('colors.dark-text');
-  @apply no-underline;
-}
-
-
-.old-navbar,
-.old-header-left {
-  @apply hidden;
+  @apply text-4xl text-dark-text font-bold text-center mx-auto my-4 w-full max-w-xl p-2;
 }
 
 .description {
-  /* @apply text-center text-lg text-neutral-600 dark:text-neutral-400;  */
-  @apply text-dark-text font-normal;
+  @apply text-dark-text text-base font-normal text-center mx-2;
 }
 
-.header-buttons {
-  @apply flex gap-4;
+.subtitle {
+  @apply text-sm font-medium text-dark-text transition-colors duration-200;
 }
 
+.subtitle.active {
+  @apply text-dark-text;
+}
+
+.subtitle:hover {
+  @apply text-dark-text;
+}
+
+/* Buttons */
 .header-button {
-  @apply px-4 py-2 rounded-lg bg-white text-pink-600 font-semibold shadow-md hover:bg-pink-100 transition; 
-}
-
-.navbar {
-  @apply flex items-center justify-between whitespace-nowrap border-b border-solid px-10 py-3 bg-white;
-  border-color: theme('colors.border');
-}
-
-.register-container {
-  @apply container mx-auto relative flex flex-col gap-2 pt-8 text-center mb-8;
-}
-
-.about-title {
-  @apply text-primary text-[32px] font-bold leading-tight px-4 text-center pb-3 pt-6;
-}
-
-.form {
-  @apply flex flex-col gap-4;
-}
-
-.form-group {
-  @apply flex flex-col gap-1;
-}
-
-.form-input {
-  @apply border border-neutral-300 dark:border-neutral-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-pink-400 focus:border-transparent bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100;
+  @apply px-4 py-2 rounded-lg bg-white text-pcos-pink font-semibold shadow-md hover:bg-pink-100 transition;
 }
 
 .btn-submit {
-  @apply dark:bg-primary text-neutral-100 rounded-md px-4 py-2 font-bold hover:scale-105 duration-300 active:duration-75 active:scale-90;
+  @apply bg-pcos-pink w-full text-white rounded-lg py-2 text-center font-bold mt-4 hover:bg-pcos-pink-700 transition;
 }
 
+/* CTA Button from home template */
+.btn-cta {
+  @apply flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-pcos-pink text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-pcos-pink-700 mx-auto;
+}
+
+/* Containers */
 .home-container {
-  @apply flex flex-col gap-2 text-center;
+  @apply flex flex-col gap-4 text-center px-4;
 }
 
 .home-fuck-pcos-box {
-  @apply items-center ;
+  @apply flex flex-col items-center justify-center gap-2;
 }
 
-.home-signup {
-  @apply flex rounded-md py-2 px-4 w-fit mx-auto;
+/* Sections */
+.section-gray {
+  @apply bg-gray-50 py-12 md:py-16;
 }
 
-.home-signup {
-  @apply flex bg-primary rounded-md py-2 px-4 w-fit mx-auto;
+.section-pink {
+  @apply bg-pcos-light-pink py-12 md:py-16;
 }
 
-.error {
-  @apply text-red-500 bg-red-900 border border-red-500 p-4 rounded-md;
+.section-white {
+  @apply py-12 md:py-16;
 }
 
-.navlink {
-  @apply bg-blue-100 text-blue-700 dark:bg-pink-600/20 dark:text-pink-500 w-fit rounded-md py-2 px-4 block;
+.section-title {
+  @apply text-dark-text text-[32px] font-bold leading-tight text-center pb-8;
 }
 
-.error-container {
-  @apply flex flex-col justify-center items-center h-screen gap-6;
+.section-container {
+  @apply max-w-5xl mx-auto px-4;
 }
 
-.error-message {
-  @apply text-4xl text-pink-500 font-bold;
+.section-container-medium {
+  @apply max-w-3xl mx-auto px-4;
 }
 
-.footer-bottom {
-  @apply text-center text-sm text-neutral-500 dark:text-neutral-400 py-4;
+/* Grid Features Section */
+.grid-feature {
+  @apply text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink;
 }
 
-
-
-.iframe {
-   @apply w-[640px] h-[700px] border-0 mx-auto block; 
+.grid-feature img {
+  @apply mx-auto mt-4 max-w-full h-auto;
 }
 
-.register-title {
-  @apply text-[#181118] text-4xl font-black leading-tight tracking-[-0.033em];
+.grid-feature-icon {
+  @apply text-4xl text-pcos-pink;
 }
 
-.register-prompt {
-  @apply text-center text-neutral-600 dark:text-neutral-400 mt-4;
+.grid-feature-title {
+  @apply text-dark-text font-bold text-lg mt-4 mb-2;
 }
 
-.profile-container {
-  @apply container mx-auto relative flex flex-col gap-6 pt-8 items-center;
+.grid-feature-description {
+  @apply text-sm text-light-text;
 }
 
-.profile-details {
-  @apply bg-white p-6 rounded-lg shadow-md w-full max-w-md text-neutral-600;
+/* Features Grid Layout */
+.features-grid {
+  @apply grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8;
 }
 
-.places-container {
-  @apply container mx-auto relative flex flex-col gap-6 pt-8;
+/* Team Section */
+.team-member {
+  @apply text-center flex flex-col items-center gap-2;
 }
 
-.place-link {
-  @apply text-blue-600 hover:underline;
+.team-member img {
+  @apply w-32 h-32 rounded-full object-cover mx-auto;
 }
 
-.add-place-form {
-  @apply container mx-auto relative flex flex-col gap-2 pt-8 max-w-md;
+.team-member h4 {
+  @apply text-dark-text font-bold mt-2;
 }
 
-.place-form-title {
-  @apply text-2xl font-bold text-neutral-950 dark:text-pink-500 text-center mb-4;
+.team-member p {
+  @apply text-sm text-light-text;
 }
 
-/* ========== CALENDAR & MODAL STYLES ========== */
-
-/* Header styles */
-.header {
-  @apply flex items-center justify-between whitespace-nowrap border-b border-solid px-10 py-3 bg-surface;
-  border-color: theme('colors.border');
+.team-grid {
+  @apply flex flex-wrap justify-center gap-8 md:gap-12;
 }
 
-.header-nav a {
-  @apply text-sm font-medium leading-normal;
+/* ✅ Fixed Disclaimer & Privacy Section */
+details {
+  @apply bg-white p-4 rounded-lg shadow-sm;
 }
 
-.header-nav a.active {
-  color: theme('colors.dark-text');
+details summary {
+  @apply flex justify-between items-center font-medium cursor-pointer;
 }
 
-.header-nav a:not(.active) {
-  color: theme('colors.light-text');
+details[open] summary span:last-child {
+  @apply rotate-180;
 }
 
-.header-button {
-  @apply flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5;
-  background-color: theme('colors.border');
-  color: theme('colors.dark-text');
+summary span:last-child {
+  @apply transition-transform duration-300;
 }
 
-.header-button:hover {
-  background-color: #e8e0e8;
+details div {
+  @apply mt-3 text-sm text-light-text;
 }
 
-/* Sidebar styles */
-.sidebar {
-  @apply w-64 flex-shrink-0 border-r border-solid p-6 bg-surface;
-  border-color: theme('colors.border');
+.disclaimer-grid {
+  @apply space-y-4;
 }
 
-.sidebar-button {
-  @apply flex w-full min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 text-base font-bold leading-normal tracking-[0.015em] gap-2;
-  background-color: theme('colors.primary');
-  color: white;
+/* Contact Section */
+.contact-iframe {
+  @apply w-full md:w-[640px] h-[700px] border-0 mx-auto block;
 }
 
-.sidebar-button:hover {
-  background-color: theme('colors.primary-dark');
+.contact-container {
+  @apply flex justify-center;
 }
 
-.mini-calendar {
-  @apply flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5;
+.contact-description {
+  @apply text-center pb-8;
 }
 
-.mini-calendar-header {
-  @apply flex items-center p-1 justify-between;
-}
-
-.mini-calendar-day {
-  @apply h-8 w-full text-xs font-medium flex items-center justify-center rounded-full;
-}
-
-.mini-calendar-day.current {
-  @apply text-white;
-  background-color: theme('colors.primary');
-}
-
-.mini-calendar-day:not(.current) {
-  color: theme('colors.dark-text');
-}
-
-.mini-calendar-day.other-month {
-  color: theme('colors.light-text');
-}
-
-/* Event key styles */
-.event-key {
-  @apply p-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-2;
-}
-
-.event-key-item {
-  @apply col-start-1 flex items-center;
-}
-
-.event-key-dot {
-  @apply rounded-full;
-  width: 12px;
-  height: 12px;
-}
-
-.event-key-label {
-  @apply text-sm font-normal leading-normal;
-  color: theme('colors.dark-text');
-}
-
-/* Main calendar styles */
-.calendar-grid {
-  @apply grid grid-cols-7 grid-rows-5 gap-px border rounded-lg overflow-hidden;
-  background-color: theme('colors.border-dark');
-  border-color: theme('colors.border-dark');
-}
-
-.calendar-header {
-  @apply text-center py-3 bg-surface text-sm font-bold;
-  color: theme('colors.dark-text');
-}
-
-.calendar-day {
-  @apply h-32 p-2 flex flex-col bg-surface;
-}
-
-.calendar-day.other-month {
-  background-color: theme('colors.gray-light');
-}
-
-.calendar-day-number {
-  @apply text-sm font-medium;
-}
-
-.calendar-day-number.current {
-  @apply flex items-center justify-center size-6 rounded-full text-white;
-  background-color: theme('colors.primary');
-}
-
-.calendar-day-number:not(.current) {
-  color: theme('colors.dark-text');
-}
-
-.calendar-day-number.other-month {
-  color: theme('colors.light-text');
-}
-
-.event-indicator {
-  @apply w-full h-2 rounded-full mt-1;
-}
-
-/* Modal styles */
+/* Modal */
 .modal-overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden;
-  backdrop-filter: blur(4px);
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden backdrop-blur-sm;
 }
 
 .modal-container {
   @apply bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 max-h-[90vh] overflow-auto;
-  border: 1px solid theme('colors.border');
+  animation: modalSlideIn 0.2s ease-out;
 }
 
 .modal-header {
-  @apply flex justify-between items-center px-6 py-4 border-b border-border;
+  @apply flex justify-between items-center px-6 py-4 border-b border-gray-200;
 }
-
 
 .modal-title {
   @apply text-xl font-bold text-dark-text;
@@ -343,144 +243,71 @@ html {
   @apply space-y-4 p-6;
 }
 
-.modal-form-group {
-  @apply space-y-2;
-}
-
-.modal-form-label {
-  @apply block text-sm font-medium text-dark-text;
-}
-
-.modal-form-input {
-  @apply w-full rounded-lg border border-border px-4 py-3 text-dark-text bg-white 
-         focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-         transition-colors duration-200 placeholder-light-text;
-}
-
-
+.modal-form-input,
 .modal-form-textarea {
-  @apply w-full rounded-lg border border-border px-4 py-3 text-dark-text bg-white 
-         focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
-         transition-colors duration-200 placeholder-light-text resize-none;
-  min-height: 80px;
+  @apply w-full rounded-lg border border-gray-300 px-4 py-3 text-dark-text bg-white focus:outline-none focus:ring-2 focus:ring-pcos-pink focus:border-pcos-pink transition-colors duration-200 placeholder-light-text;
 }
-
 
 .modal-actions {
-  @apply flex items-center justify-end gap-4 pt-6 border-t border-border;
-}
-
-.modal-btn-secondary {
-  @apply flex items-center justify-center rounded-lg h-12 bg-gray-200 text-dark-text 
-         gap-2 text-base font-semibold leading-normal px-6 
-         hover:bg-gray-300 transition-colors duration-200 
-         focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
-}
-
-.modal-btn-secondary:hover {
-  background-color: #e8e0e8;
+  @apply flex items-center justify-end gap-4 pt-6 border-t border-gray-200;
 }
 
 .modal-btn-primary {
-  @apply flex items-center justify-center rounded-lg h-12 bg-primary text-white 
-         gap-2 text-base font-semibold leading-normal px-6 
-         hover:bg-primary-dark transition-colors duration-200 
-         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  @apply flex items-center justify-center rounded-lg h-12 bg-pcos-pink text-white gap-2 text-base font-semibold px-6 hover:bg-pcos-pink-700 transition-colors duration-200;
+}
+
+.modal-btn-secondary {
+  @apply flex items-center justify-center rounded-lg h-12 bg-gray-200 text-dark-text gap-2 text-base font-semibold px-6 hover:bg-gray-300 transition-colors duration-200;
 }
 
 .modal-btn-danger {
-  @apply flex items-center justify-center rounded-lg h-12 bg-red-500 text-white 
-         gap-2 text-base font-semibold leading-normal px-6 
-         hover:bg-red-600 transition-colors duration-200 
-         focus:outline-none focus:ring-2 focus:ring-red-300 focus:ring-offset-2;
+  @apply flex items-center justify-center rounded-lg h-12 bg-red-500 text-white gap-2 text-base font-semibold px-6 hover:bg-red-600 transition-colors duration-200;
 }
 
-
-.modal-btn-primary.with-icon,
-.modal-btn-secondary.with-icon,
-.modal-btn-danger.with-icon {
-  @apply px-4;
+/* Disclaimer Section Specific Styles */
+.disclaimer-item {
+  @apply bg-white p-4 rounded-lg shadow-sm;
 }
 
-.modal-btn-primary:hover {
-  background-color: theme('colors.primary-dark');
+.disclaimer-summary {
+  @apply flex justify-between items-center font-medium cursor-pointer;
 }
 
-#calendar {
-  @apply pr-10;
+.disclaimer-icon {
+  @apply transition-transform duration-300;
 }
 
-@media (max-width: 640px) {
-  .modal-actions {
-    @apply flex-col gap-3;
-  }
-  
-  .modal-btn-primary,
-  .modal-btn-secondary,
-  .modal-btn-danger {
-    @apply w-full justify-center;
-  }
+.disclaimer-item[open] .disclaimer-icon {
+  @apply rotate-180;
 }
 
-
-.treatment-description {
-  @apply text-sm text-light-text mt-1 p-2 bg-gray-50 rounded-lg border border-border;
+.disclaimer-content {
+  @apply mt-3 text-sm text-light-text;
 }
 
-/* FullCalendar customizations */
-.fc-event {
-  @apply border-none rounded px-1 py-0.5 text-xs font-medium;
+/* Team Member Specific Styles */
+.team-member-img {
+  @apply w-32 h-32 rounded-full object-cover mx-auto;
 }
 
-.fc-event-period {
-  background-color: #E57373 !important;
-  border-color: #E57373 !important;
+.team-member-name {
+  @apply text-dark-text font-bold mt-2;
 }
 
-.fc-event-ovulation {
-  background-color: #FFD54F !important;
-  border-color: #FFD54F !important;
+.team-member-role {
+  @apply text-sm text-light-text;
 }
 
-.fc-event-treatment {
-  background-color: #A0D2DB !important;
-  border-color: #A0D2DB !important;
+/* Contact Link Styles */
+/* .text-pcos-pink {
+  @apply text-pcos-pink;
+} */
+
+.hover\:underline:hover {
+  @apply underline;
 }
 
-.fc-event-sexual-activity {
-  background-color: #C8E6C9 !important;
-  border-color: #C8E6C9 !important;
-}
-
-/* Focus states for better accessibility */
-.modal-form-input:focus,
-.modal-form-textarea:focus {
-  @apply ring-2 ring-primary ring-opacity-20 border-primary;
-}
-
-/* Responsive design */
-@media (max-width: 640px) {
-  .modal-container {
-    @apply mx-2;
-  }
-  
-  .modal-form {
-    @apply p-4;
-  }
-  
-  .modal-actions {
-    @apply flex-col;
-  }
-  
-  .modal-btn-primary,
-  .modal-btn-secondary,
-  .modal-btn-danger {
-    @apply flex-none;
-  }
-}
-
-
-/* Animation for modal appearance */
+/* Animations */
 @keyframes modalSlideIn {
   from {
     opacity: 0;
@@ -492,175 +319,63 @@ html {
   }
 }
 
-.modal-container {
-  animation: modalSlideIn 0.2s ease-out;
-}
-
-/* Scrollbar styling for modal content */
-.modal-container::-webkit-scrollbar {
-  width: 6px;
-}
-
-.modal-container::-webkit-scrollbar-track {
-  @apply bg-gray-100 rounded;
-}
-
-.modal-container::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded hover:bg-gray-400;
-}
-
-.fc-event-event {
-  background-color: #E0E0E0 !important;
-  border-color: #E0E0E0 !important;
-}
-
-/* ========== PROFILE & DASHBOARD STYLES ========== */
-
-.profile-container {
-  @apply mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8;
-}
-
-.page-title {
-  @apply text-dark-text tracking-tight text-[32px] font-bold leading-tight text-left pb-2;
-}
-
-.profile-details-card {
-  @apply p-4 bg-surface rounded-lg shadow-sm mb-8;
-}
-
-.dashboard-grid {
-  @apply mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2;
-}
-
-.info-card {
-  @apply bg-surface p-6 rounded-lg shadow-sm;
-}
-
-.card-header {
-  @apply flex justify-center items-center mb-2;
-}
-
-.card-title {
-  @apply text-xl font-bold text-dark-text p-4 text-left;
-}
-
-.icon-small {
-  @apply text-base;
-}
-
-.list-heading {
-  @apply text-lg font-semibold text-dark-text mt-6 mb-3;
-}
-
-.text-secondary {
-  @apply text-light-text text-sm;
-}
-
-/* Button styles */
-
-/* Log item styles */
-.log-item {
-  @apply flex justify-between items-center py-2 border-b border-gray-100 text-dark-text text-base font-medium;
-}
-
-
-.log-status-completed {
-  @apply text-gray-500 text-sm font-semibold;
-}
-
-.log-item-solved {
-  @apply text-light-text line-through;
-}
-
-.btn-item-action {
-  @apply rounded-lg px-3 py-1 text-xs font-medium;
-}
-
-.btn-item-solved {
-  @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
-}
-
-.btn-item-readd,
-.btn-item-ongoing {
-  @apply bg-green-100 text-green-700 hover:bg-green-200;
-}
-
-.btn-item-end {
-  @apply bg-red-100 text-red-700 hover:bg-red-200;
-}
-
-/* Modal components */
-.modal {
-  @apply fixed inset-0 z-50 overflow-y-auto bg-gray-600 bg-opacity-50;
-  display: none;
-}
-
-.modal-content-wrapper {
-  @apply relative mx-auto mt-20 max-w-lg rounded-lg bg-surface p-6 shadow-xl;
-}
-
-.modal-close-btn {
-  @apply absolute top-3 right-3 text-2xl font-bold text-gray-500 hover:text-gray-900 cursor-pointer;
-}
-
-/* Form elements */
-.form-label {
-  @apply mb-2 text-sm font-medium text-gray-700;
-}
-
-.form-label-mt {
-  @apply mt-4;
-}
-
-.form-input-control {
-  @apply w-full rounded-md border py-2 px-3 text-gray-700 focus:border-primary focus:ring focus:ring-primary;
-}
-
-/* Submit buttons */
-.btn-submit {
-  @apply bg-primary w-full text-center rounded-lg py-2 text-sm font-bold mt-6;
-}
-
-.btn-submit-problem {
-  @apply text-secondary bg-primary hover:bg-primary-light;
-}
-
-.btn-submit-treatment {
-  @apply text-primary bg-primary-lighter hover:bg-primary-light;
-}
-
-/* Responsive design */
+/* Responsive Styles */
+/* Mobile Overrides */
 @media (max-width: 768px) {
-  .sidebar {
+  /* Feature grid: 1 per row on mobile */
+  .features-grid {
+    @apply grid-cols-1;
+  }
+
+  .grid-feature {
     @apply w-full;
   }
-  
-  .calendar-grid {
-    @apply grid-rows-6;
+
+  /* Titles and text scaling */
+  .home-title {
+    @apply text-2xl px-2;
+  }
+
+  .description {
+    @apply text-sm px-2;
+  }
+
+  .section-title {
+    @apply text-2xl px-2;
+  }
+
+  /* CTA button full width */
+  .btn-cta {
+    @apply min-w-full;
+  }
+
+  /* Team section: smaller images */
+  .team-member img {
+    @apply w-24 h-24;
+  }
+
+  .team-member-name {
+    @apply text-lg;
+  }
+
+  .team-member-role {
+    @apply text-sm;
+  }
+
+  /* Modal adjustments */
+  .modal-container {
+    @apply mx-2;
+  }
+
+  .modal-form {
+    @apply p-4;
+  }
+
+  .modal-actions {
+    @apply flex-col gap-3;
   }
   
-  .calendar-day {
-    @apply h-24;
+  .mobile-menu-wrapper {
+    @apply hidden;
   }
-}
-
-
-.toggle-display-btn[aria-checked="true"] {
-  /* When ON: Button background is purple, span moves right */
-  @apply bg-primary; 
-}
-
-.toggle-display-btn[aria-checked="false"] {
-  /* When OFF: Button background is neutral gray, span stays left */
-  @apply bg-gray-200; 
-}
-
-.toggle-display-btn[aria-checked="true"] > span {
-  /* When ON: Move span right */
-  @apply translate-x-5; 
-}
-
-.toggle-display-btn[aria-checked="false"] > span {
-  /* When OFF: Keep span left */
-  @apply translate-x-0; 
 }

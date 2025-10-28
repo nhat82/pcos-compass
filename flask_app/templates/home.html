@@ -3,127 +3,104 @@
 
 <div class="home-container">
     <div class="home-fuck-pcos-box">    
-        <h2 class="home-title">Your entire PCOS journey. Powered by one profile.</h2>
+        <h2 class="home-title">Your entire PCOS journey. All by one profile.</h2>
         <p class="description">Take your healthcare in your own hands.</p>
         <p class="description">Track symptoms, manage treatments, find caring doctors and connect with a supportive community.</p>
         <p class="description">You're not alone.</p>
     </div>
-
-
-
-    <section class="bg-gray-50 py-12 md:py-16">
-        <div class="max-w-5xl mx-auto px-4">
-            <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Features</h1>
-            <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
-                    <span class="material-symbols-outlined text-4xl text-pcos-pink">track_changes</span>
-                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Track Problems &amp; Treatments</h3>
-                    <p class="text-sm text-gray-600">Effectively monitor your symptoms and the impact of different treatments over time.</p>
-                    <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-2.png" alt="Symptom Tracking Screenshot" />
+    
+    <section class="section-gray">
+        <div class="section-container">
+            <h1 class="section-title">Features</h1>
+            <div class="features-grid">
+                <div class="grid-feature">
+                    <span class="material-symbols-outlined grid-feature-icon">track_changes</span>
+                    <h3 class="grid-feature-title">Track Problems &amp; Treatments</h3>
+                    <p class="grid-feature-description">Effectively monitor your symptoms and the impact of different treatments over time.</p>
+                    <img class="grid-feature-img" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-2.png" alt="Symptom Tracking Screenshot" />
                 </div>
                 
-                <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
-                    <span class="material-symbols-outlined text-4xl text-pcos-pink">insights</span>
-                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Identify Patterns &amp; Triggers</h3>
-                    <p class="text-sm text-gray-600">Log and monitor your symptoms over time to identify patterns and triggers.</p>
-                    <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-3.png" alt="Problem Tracking Screenshot" />
+                <div class="grid-feature">
+                    <span class="material-symbols-outlined grid-feature-icon">insights</span>
+                    <h3 class="grid-feature-title">Identify Patterns &amp; Triggers</h3>
+                    <p class="grid-feature-description">Log and monitor your symptoms over time to identify patterns and triggers.</p>
+                    <img class="grid-feature-img" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-3.png" alt="Problem Tracking Screenshot" />
                 </div>
         
-                <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
-                    <span class="material-symbols-outlined text-4xl text-pcos-pink">medical_services</span>
-                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Find PCOS health care professionals</h3>
-                    <p class="text-sm text-gray-600">Locate and rate healthcare providers who specialize in PCOS.</p>
-                    <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-4.png" alt="Places Screenshot" />
+                <div class="grid-feature">
+                    <span class="material-symbols-outlined grid-feature-icon">medical_services</span>
+                    <h3 class="grid-feature-title">Find PCOS health care professionals</h3>
+                    <p class="grid-feature-description">Locate and rate healthcare providers who specialize in PCOS.</p>
+                    <img class="grid-feature-img" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-4.png" alt="Places Screenshot" />
                 </div>
 
-                <div class="text-center p-6 bg-white rounded-lg shadow-md border-t-4 border-pcos-pink">
-                    <span class="material-symbols-outlined text-4xl text-pcos-pink">group</span>
-                    <h3 class="text-[#263137] font-bold text-lg mt-4 mb-2">Community Support</h3>
-                    <p class="text-sm text-gray-600">Connect with others who understand the PCOS journey and see what are helping them</p>
-                    <img class="mx-auto mt-4" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-5.png" alt="Find Treatments Screenshot" />
+                <div class="grid-feature">
+                    <span class="material-symbols-outlined grid-feature-icon">group</span>
+                    <h3 class="grid-feature-title">Community Support</h3>
+                    <p class="grid-feature-description">Connect with others who understand the PCOS journey and see what are helping them</p>
+                    <img class="grid-feature-img" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/image-5.png" alt="Find Treatments Screenshot" />
                 </div>
             </div>
         </div>
         <div class="text-center mt-12">
-                <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-pcos-pink text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-pcos-pink-700 mx-auto">
-                    <a class="" href="{{ url_for('users.register') }}">Start Logging Your Journey</a>
-                </button>
+            <button class="btn-cta">
+                <a href="{{ url_for('users.register') }}">Start Logging Your Journey</a>
+            </button>
         </div>
     </section>
 
-
-    <section class="py-12 md:py-16">
-        <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-8">Team</h1>
-        <div class="flex flex-wrap justify-center gap-8 md:gap-12">
-            <div class="text-center">
-                <img class="w-32 h-32 rounded-full mx-auto object-cover" data-alt="Portrait of Nhat Nguyen" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/pcos-compass-founder.png"/>
-                <h4 class="text-[#263137] font-bold mt-4">Nhat Nguyen</h4>
-                <p class="text-sm text-gray-600">Founder - Developer - Diagnosed with PCOS last year</p>
+    <section class="section-white">
+        <h1 class="section-title">Team</h1>
+        <div class="team-grid">
+            <div class="team-member">
+                <img class="team-member-img" data-alt="Portrait of Nhat Nguyen" src="https://pcos-static-files.s3.us-east-2.amazonaws.com/pcos-compass-founder.png"/>
+                <h4 class="team-member-name">Nhat Nguyen</h4>
+                <p class="team-member-role">Founder - Developer - Diagnosed with PCOS last year</p>
+            </div>
         </div>
-        
     </section>
 
-
-
-
-    <section class="bg-pcos-light-pink py-12 md:py-16">
-        <div class="max-w-3xl mx-auto px-4">
-            <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Disclaimer &amp; Privacy</h1>
-            <div class="space-y-4">
-                <details class="group bg-white p-4 rounded-lg shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+    <section class="section-pink">
+        <div class="section-container-medium">
+            <h1 class="section-title">Disclaimer &amp; Privacy</h1>
+            <div class="disclaimer-grid">
+                <details class="disclaimer-item">
+                    <summary class="disclaimer-summary">
                         <span>Medical Disclaimer</span>
-                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
+                        <span class="material-symbols-outlined disclaimer-icon">expand_more</span>
                     </summary>
-                    <div class="mt-3 text-sm text-gray-600">
+                    <div class="disclaimer-content">
                         <p>This website is intended for informational and tracking purposes only. The content provided here is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
                     </div>
                 </details>
                 
-                <details class="group bg-white p-4 rounded-lg shadow-sm">
-                    <summary class="flex justify-between items-center font-medium cursor-pointer">
+                <details class="disclaimer-item">
+                    <summary class="disclaimer-summary">
                         <span>Privacy Policy</span>
-                        <span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180">expand_more</span>
+                        <span class="material-symbols-outlined disclaimer-icon">expand_more</span>
                     </summary>
-                    <div class="mt-3 text-sm text-gray-600">
-                        <!-- <p>I am committed to protecting your privacy. Your data is yours. I do not sell your personal information to third parties. I use industry-standard security measures to protect your data. For more details, please read our full <a class="text-pcos-pink underline" href="#">Privacy Policy</a>.</p> -->
-                         <p>I am committed to protecting your privacy. Your data is yours. I do not sell your personal information to third parties. I use industry-standard security measures to protect your data.</p>
+                    <div class="disclaimer-content">
+                        <p>I am committed to protecting your privacy. Your data is yours. I do not sell your personal information to third parties. I use industry-standard security measures to protect your data.</p>
                     </div>
                 </details>
             </div>
-            
         </div>
     </section>
 
-
-    <!-- <div class="contact-container">
-        <h2 class="title">Contact Me</h2>
-        <p class="contact-description">
-            I would love to hear from you! Whether you have questions, feedback, or need support, please reach out to me using the form below.
-        </p>
-        <iframe src="{{google_form_link}}" width="640" height="700" marginwidth="0">Loading…</iframe>
-    </div> -->
-
-
-<section class="bg-gray-50 py-12 md:py-16">
-    <div class="max-w-5xl mx-auto px-4">
-        
-        <h1 class="text-[#263137] tracking-light text-[32px] font-bold leading-tight text-center pb-8">Contact Me</h1>
-        <p class="description text-center">I would love to hear from you! </p>
-        <p class="text-center pb-8">Whether you have questions, feedback, or need support, please reach out to me using this form or via <a style="color:#E618E7" href="mailto:nhat.tm.ng@gmail.com">email</a>.</p>
-        
-        <div class="flex justify-center">
-            <iframe src="{{google_form_link}}" 
-                    class="w-full md:w-[640px] h-[700px]" 
-                    height="700" 
-                    marginwidth="0" 
-                    padding=""
-                    frameborder="0"
-                    >Loading…</iframe>
+    <section class="section-gray">
+        <div class="section-container">
+            <h1 class="section-title">Contact Me</h1>
+            <p class="description">I would love to hear from you!</p>
+            <p class="contact-description">Whether you have questions, feedback, or need support, please reach out to me using this form or via <a class="text-pcos-pink hover:underline" href="mailto:nhat.tm.ng@gmail.com">email</a>.</p>
+            
+            <div class="contact-container">
+                <iframe src="{{google_form_link}}" 
+                        class="contact-iframe" 
+                        marginwidth="0" 
+                        frameborder="0">Loading…</iframe>
+            </div>
         </div>
-    </div>
-</section>
-
+    </section>
 </div>
 
 {% endblock %}

@@ -1,20 +1,29 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-       <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{url_for('static',filename='custom.css')}}">
+    <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://pcos-static-files.s3.us-east-2.amazonaws.com/custom.css"> -->
+    <title>PCOS Compass</title>
 </head>
 <body>
     {% block header %}
-    <h1>Overrideable Content</h1>
+    <!-- Default header content can go here, or leave empty for templates to override -->
     {% endblock %}
+    
+    <main>
+        {% block content %}
+        <!-- This is where your page content will go -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 PCOS Compass. Made by Nhat Nguyen. All Rights Reserved.</p>
+        </div>
+    </footer>
 </body>
-<footer>
-    <div class="footer-bottom">
-        <p>&copy; 2025 PCOS Compass. Made by Nhat Nguyen. All Rights Reserved.</p>
-    </div>
-</footer>
 </html>

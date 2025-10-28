@@ -33,7 +33,6 @@ module.exports = {
         'gray-light': '#faf7fa',
       },
       fontFamily: {
-        // You only need 'inter' here since 'sans-serif' is the fallback
         'inter': ['Inter', 'sans-serif'],
       },
     },
