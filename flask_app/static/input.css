@@ -429,25 +429,25 @@ details div {
   }
 }
 
-/* Enhanced Responsive Styles */
-@media (max-width: 640px) {
+/* Unified responsive behavior */
+@media (max-width: 1024px) {
   .home-container {
-    @apply px-2;
+    @apply max-w-full px-2;
   }
-  
+
   .section-container,
   .section-container-medium {
-    @apply px-3;
+    @apply max-w-full px-3;
   }
-  
+
   .features-grid {
-    @apply grid grid-cols-1 gap-4 md:gap-6 lg:gap-8;
+    @apply grid grid-cols-1 gap-4;
   }
-    
+
   .grid-feature {
     @apply p-3;
   }
-  
+
   .btn-cta {
     @apply h-12 text-sm;
   }
@@ -460,8 +460,7 @@ details div {
   .calendar-legend {
     @apply p-2;
   }
-  
-  
+
   .calendar-main {
     @apply p-1 h-full mx-auto;
   }
@@ -470,360 +469,39 @@ details div {
     @apply hidden;
   }
 
-  /* Mobile-specific legend styles */
-  .legend-items {
-    /* @apply flex-row flex-wrap gap-3; */
-    @apply hidden;
-  }
-
-  .legend-item {
-    /* @apply flex-col gap-1 text-center flex-1 min-w-[60px]; */
-    @apply hidden;
-  }
-
-  .legend-color {
-    /* @apply w-6 h-6 mx-auto; */
-    @apply hidden;
-  }
-
+  .legend-items,
+  .legend-item,
+  .legend-color,
   .legend-label {
-    /* @apply text-xs; */
     @apply hidden;
   }
-}
 
-
-/* Profile Page Styles */
-.profile-container {
-  @apply relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-gray-50;
-}
-
-.profile-main {
-  @apply flex-1;
-}
-
-.profile-content {
-  @apply mx-auto max-w-7xl py-10 sm:px-6 lg:px-8;
-}
-
-.profile-header {
-  @apply px-4 sm:px-0;
-}
-
-.profile-title {
-  @apply text-pcos-pink tracking-tight text-4xl font-bold leading-tight pb-4;
-}
-
-.profile-grid {
-  @apply mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2;
-}
-
-/* Profile Cards */
-.profile-card {
-  @apply bg-white p-6 rounded-lg shadow-sm min-h-[300px];
-}
-
-.profile-card-header {
-  @apply flex justify-between items-center mb-4;
-}
-
-.profile-card-title {
-  @apply text-xl font-bold text-dark-text;
-}
-
-.btn-add {
-  @apply flex items-center gap-2 rounded-lg bg-pcos-pink px-4 py-2 text-sm font-bold text-white hover:scale-105 transition-all duration-200;
-}
-
-/* Modal Styles */
-.profile-modal {
-  @apply fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50;
-}
-
-.profile-modal-container {
-  @apply flex items-center justify-center min-h-screen p-4;
-}
-
-.profile-modal-content {
-  @apply bg-white rounded-lg shadow-xl w-full max-w-md p-6;
-}
-
-.profile-modal-header {
-  @apply flex justify-between items-center pb-3 border-b border-gray-200;
-}
-
-.profile-modal-title {
-  @apply text-xl font-bold text-dark-text;
-}
-
-.modal-close-btn {
-  @apply cursor-pointer text-light-text hover:text-dark-text text-2xl transition-colors duration-200;
-}
-
-/* Form Styles */
-.profile-form {
-  @apply mt-4 space-y-4;
-}
-
-.form-group {
-  @apply block;
-}
-
-.form-label {
-  @apply text-dark-text text-base font-medium leading-normal pb-2;
-}
-
-.form-select {
-  @apply block w-full rounded-lg border border-gray-300 bg-white focus:border-pcos-pink focus:ring-pcos-pink text-dark-text;
-}
-
-.form-input {
-  @apply block w-full rounded-lg border border-gray-300 bg-white focus:border-pcos-pink focus:ring-pcos-pink text-dark-text placeholder-light-text p-[10px];
-}
-
-.form-submit {
-  @apply w-full cursor-pointer rounded-lg h-10 px-5 bg-pcos-pink text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-pcos-pink-700 transition-colors duration-200;
-}
-
-/* List Styles */
-.profile-list {
-  @apply mt-6;
-}
-
-.profile-list-title {
-  @apply text-lg font-semibold text-dark-text mb-3;
-}
-
-.profile-list-items {
-  @apply space-y-4;
-}
-
-.profile-list-item {
-  @apply flex gap-4 py-3 justify-between items-center border-b border-gray-100 last:border-b-0;
-}
-
-.profile-item-content {
-  @apply flex items-start gap-4;
-}
-
-.profile-item-icon {
-  @apply flex items-center justify-center rounded-lg shrink-0 size-12;
-}
-
-.profile-item-icon-problem {
-  @apply text-pcos-pink bg-pcos-light-pink;
-}
-
-.profile-item-icon-treatment {
-  @apply text-[#347474] bg-[#B2E0C3]/40;
-}
-
-.profile-item-details {
-  @apply flex flex-1 flex-col justify-center;
-}
-
-.profile-item-name {
-  @apply text-dark-text text-base font-medium leading-normal;
-}
-
-.profile-item-description {
-  @apply text-light-text text-sm font-medium leading-normal;
-}
-
-.profile-item-date {
-  @apply text-gray-400 text-xs font-medium leading-normal mt-1;
-}
-
-.profile-empty-state {
-  @apply text-light-text text-base;
-}
-
-/* Places */
-/* Critical Map Container Styles */
-.places-map-section {
-  @apply flex-1 relative min-h-[500px];
-}
-
-.places-map {
-  @apply absolute inset-0 w-full h-full min-h-[500px];
-}
-
-/* Ensure the map container has proper dimensions */
-#map {
-  @apply w-full h-full;
-}
-
-/* Layout container should use flex */
-.places-layout-container {
-  @apply flex h-full;
-}
-
-/* Search form styles */
-.places-search-form {
-  @apply flex items-stretch rounded-lg shadow-md bg-white overflow-hidden;
-}
-
-/* Make sure the container has proper positioning */
-.places-container {
-  @apply relative flex h-auto min-h-screen w-full flex-col bg-white overflow-x-hidden;
-}
-
-/* Place Card Styles */
-.place-card {
-  @apply p-4 bg-pcos-light-pink rounded-lg shadow-sm cursor-pointer hover:bg-pink-50 transition-colors duration-200;
-}
-
-.place-name {
-  @apply text-dark-text font-bold text-lg;
-}
-
-.place-address {
-  @apply text-primary-text text-sm mt-1;
-}
-
-.place-rating-row {
-  @apply flex items-center gap-2 mt-1;
-}
-
-.place-rating-label {
-  @apply text-dark-text;
-}
-
-.place-rating-count {
-  @apply text-primary-text text-sm;
-}
-
-.place-actions {
-  @apply mt-2 flex gap-2;
-}
-
-.place-map-link {
-  @apply text-primary hover:underline transition-colors duration-200;
-}
-
-.place-review-button {
-  @apply flex items-center gap-1 px-3 py-1 bg-primary text-dark-text rounded-lg hover:bg-primary-light transition-colors duration-200;
-}
-
-.place-review-icon {
-  @apply text-sm;
-}
-
-.place-reviews-title {
-  @apply text-sm font-semibold mb-2 mt-3 text-dark-text;
-}
-
-.place-reviews-list {
-  @apply space-y-4;
-}
-
-.place-review-item {
-  @apply p-2 border border-gray-200 rounded;
-}
-
-.place-review-header {
-  @apply flex justify-between items-center;
-}
-
-.place-review-user {
-  @apply font-semibold text-dark-text;
-}
-
-.place-review-stars {
-  @apply text-yellow-500;
-}
-
-.place-review-date {
-  @apply text-sm text-light-text;
-}
-
-.place-review-comment {
-  @apply mt-1 text-dark-text;
-}
-
-.place-no-reviews {
-  @apply text-light-text;
-}
-
-/* Review Modal Styles */
-.review-modal {
-  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
-}
-
-.review-modal-content {
-  @apply bg-white p-6 rounded-lg w-96 shadow-lg;
-}
-
-.review-modal-title {
-  @apply text-lg font-bold mb-4 text-dark-text;
-}
-
-.review-modal-label {
-  @apply block mb-2 text-dark-text;
-}
-
-.review-modal-input {
-  @apply w-full border border-gray-300 rounded p-2 mb-4 text-dark-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
-}
-
-.review-modal-textarea {
-  @apply w-full border border-gray-300 rounded p-2 mb-4 text-dark-text focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none;
-}
-
-.review-modal-actions {
-  @apply flex justify-end gap-2;
-}
-
-.review-modal-cancel {
-  @apply px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition-colors duration-200 text-dark-text;
-}
-
-.review-modal-submit {
-  @apply flex cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark transition-colors duration-200;
-}
-
-
-
-/* Responsive Styles */
-@media (max-width: 768px) {
   .profile-content {
     @apply py-6;
   }
-  
+
   .profile-title {
     @apply text-3xl;
   }
-  
+
   .profile-grid {
     @apply gap-6;
   }
-  
+
   .profile-card {
     @apply p-4;
   }
-  
-  .profile-card-title {
-    @apply text-lg;
-  }
-  
-  .btn-add {
-    @apply px-3 py-1.5 text-xs;
-  }
-}
 
-@media (max-width: 480px) {
-  .navbar-title {
-    @apply text-sm;
+  .btn-add {
+    @apply px-3 py-1.5 text-xs bg-[#E618E7];
   }
-  
-  .home-title {
-    @apply text-xl;
-  }
-  
+
+  .navbar-title,
+  .home-title,
   .section-title {
     @apply text-xl;
   }
-  
+
   .team-member-img {
     @apply w-20 h-20;
   }
@@ -831,37 +509,5 @@ details div {
   .calendar-actions-title,
   .legend-title {
     @apply text-base;
-  }
-
-  /* Extra small screens */
-  .legend-items {
-    @apply gap-2;
-  }
-
-  .legend-item {
-    @apply min-w-[50px];
-  }
-
-  .legend-color {
-    @apply w-5 h-5;
-  }
-
-  .legend-label {
-    @apply text-[10px] leading-tight;
-  }
-}
-
-/* Tablet specific adjustments */
-@media (min-width: 641px) and (max-width: 1024px) {
-  .section-container {
-    @apply px-6;
-  }
-  
-  .features-grid {
-    @apply gap-6;
-  }
-
-  .calendar-layout {
-    @apply gap-4;
   }
 }
