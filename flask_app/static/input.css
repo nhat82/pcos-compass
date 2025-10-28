@@ -137,7 +137,7 @@ html {
 
 /* Features Grid Layout - Mobile Responsive */
 .features-grid {
-  @apply grid grid-cols-1 gap-4 md:gap-6 lg:gap-8;
+  @apply grid grid-cols-2 gap-4 md:gap-6 lg:gap-8;
 }
 
 /* Team Section - Mobile Responsive */
@@ -303,11 +303,11 @@ details div {
 }
 
 .calendar-sidebar {
-  @apply space-y-5;
+  @apply space-y-5 ml-5;
 }
 
 .calendar-actions {
-  @apply bg-gray-50 p-5 rounded-lg mb-5;
+  @apply bg-gray-50 p-5 rounded-lg;
 }
 
 .calendar-actions-title {
@@ -441,9 +441,9 @@ details div {
   }
   
   .features-grid {
-    @apply gap-3;
+    @apply grid grid-cols-1 gap-4 md:gap-6 lg:gap-8;
   }
-  
+    
   .grid-feature {
     @apply p-3;
   }
