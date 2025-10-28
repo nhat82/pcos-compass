@@ -81,7 +81,7 @@ document.querySelector('#search-form').addEventListener('submit', async (e) => {
 
     // Choose URL based on device
     const mapsUrl = isMobile
-    ? `geo:0,0?q=place_id:${place.place_id}`  // Opens app on mobile
+    ? `geo:0,0?q=place_id:${place.name}`  // Opens app on mobile
     : `https://www.google.com/maps/place/?q=place_id:${place.place_id}`; // Opens web on desktop
 
     // Add to sidebar
