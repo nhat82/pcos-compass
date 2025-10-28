@@ -1,64 +1,59 @@
 {% extends "header.html" %}
 {% block content %}
-<div class="container mt-4">
-    
-    <div style="display: grid; grid-template-columns: 300px 1fr; gap: 20px;">
+<div class="calendar-container">
+    <div class="calendar-layout">
         <!-- Sidebar with create button and instructions -->
-        <div class="sidebar">
-            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                <h3 style="margin-top: 0; color: #364051;">Quick Actions</h3>
-                <button id="createLogBtnSidebar" class="btn-submit" style="width: 100%; margin-bottom: 15px;">
+        <div class="calendar-sidebar">
+            <div class="calendar-actions">
+                <h3 class="calendar-actions-title">Quick Actions</h3>
+                <button id="createLogBtnSidebar" class="btn-submit">
                     + Create New Log
                 </button>
-                <div style="font-size: 0.9em; color: #666;">
+                <div class="calendar-tip">
                     <p><strong>Tip:</strong> You can drag on the calendar to create an event. You can also move them by picking them up or extend/shrink the event by dragging right/left the end of the event!</p>
                     <div class="calendar-controls">
-                      <!-- <button id="toggleLogDisplay" class="btn btn-outline-primary">
-                        Show: Treatment Names
-                      </button> -->
                         <div class="flex items-center justify-between">
-                            <p class="text-sm font-bold text-[#181118]">Show Event Type</p>
-                            
+                            <p class="text-sm font-bold text-dark-text">Show Event Type</p>
                             <button id="toggleLogDisplay" aria-checked="false" 
-                                    class="toggle-display-btn relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" 
+                                    class="toggle-display-btn" 
                                     role="switch">
-                              <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                              <span class="toggle-display-handle"></span>
                             </button>
                         </div>
-</div>
+                    </div>
                 </div>
             </div>
             
             <!-- Legend -->
-            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
-                <h4 style="margin-top: 0; color: #364051;">Color Legend</h4>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 15px; height: 15px; background: #D40101; border-radius: 3px;"></div>
-                        <span style="font-size: 0.9em ;">Period</span>
+            <div class="calendar-legend">
+                <h4 class="legend-title">Color Legend</h4>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-color legend-period"></div>
+                        <span class="legend-label">Period</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 15px; height: 15px; background: #049BE5; border-radius: 3px;"></div>
-                        <span style="font-size: 0.9em;">Ovulation</span>
+                    <div class="legend-item">
+                        <div class="legend-color legend-ovulation"></div>
+                        <span class="legend-label">Ovulation</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 15px; height: 15px; background: #E67C72; border-radius: 3px;"></div>
-                        <span style="font-size: 0.9em;">Sexual Activity</span>
+                    <div class="legend-item">
+                        <div class="legend-color legend-sexual-activity"></div>
+                        <span class="legend-label">Sexual Activity</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 15px; height: 15px; background: #7A85CA; border-radius: 3px;"></div>
-                        <span style="font-size: 0.9em;">Treatment</span>
+                    <div class="legend-item">
+                        <div class="legend-color legend-treatment"></div>
+                        <span class="legend-label">Treatment</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 15px; height: 15px; background: #606060; border-radius: 3px;"></div>
-                        <span style="font-size: 0.9em;">Event</span>
+                    <div class="legend-item">
+                        <div class="legend-color legend-event"></div>
+                        <span class="legend-label">Event</span>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Calendar -->
-        <div>
+        <div class="calendar-main">
             <div id="calendar"></div>
         </div>
     </div>
@@ -89,16 +84,16 @@
       </div>
 
       <!-- Treatment-specific fields (hidden by default) -->
-      <div id="treatmentGroup" class="modal-form-group" style="display: none;">
+      <div id="treatmentGroup" class="modal-form-group hidden">
         <label class="modal-form-label">Treatment:</label>
         <select id="treatmentSelect" class="modal-form-input">
           <option value="">Select a treatment...</option>
           <option value="custom">Custom Treatment</option>
         </select>
-        <div id="treatmentDescription" class="treatment-description" style="display: none;"></div>
+        <div id="treatmentDescription" class="treatment-description hidden"></div>
       </div>
 
-      <div id="customTreatmentGroup" class="modal-form-group" style="display: none;">
+      <div id="customTreatmentGroup" class="modal-form-group hidden">
         <label class="modal-form-label">Custom Treatment Name:</label>
         <input type="text" id="customTreatment" class="modal-form-input" placeholder="Enter custom treatment name">
       </div>
@@ -119,16 +114,12 @@
         <input type="date" id="eventEndDate" name="end_date" class="modal-form-input" required>
       </div>
 
-      <!-- Action Buttons - Matching your form example -->
-      <div class="flex items-center justify-end gap-4 pt-6 border-t border-border">
-        <!-- <button type="button" class="modal-btn-secondary" id="cancelBtn">
-          Cancel
-        </button>
-        -->
+      <!-- Action Buttons -->
+      <div class="modal-actions">
         <button type="submit" class="modal-btn-primary">
           Save Log
         </button>
-        <button type="button" class="modal-btn-danger" id="deleteBtn" style="display:none;">
+        <button type="button" class="modal-btn-danger hidden" id="deleteBtn">
           Delete
         </button>
       </div>
