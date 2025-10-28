@@ -75,73 +75,82 @@ document.querySelector('#search-form').addEventListener('submit', async (e) => {
     marker.addListener('click', () => infoWindow.open(map, marker));
     markers.push(marker);
 
+    
+    // Check device
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    // Choose URL based on device
+    const mapsUrl = isMobile
+    ? `geo:0,0?q=place_id:${place.place_id}`  // Opens app on mobile
+    : `https://www.google.com/maps/place/?q=place_id:${place.place_id}`; // Opens web on desktop
+
     // Add to sidebar
-const placeEl = document.createElement('div');
-placeEl.className = `
-  bg-white border border-[#f4dff4] rounded-2xl p-5 mb-5 shadow-sm 
-  hover:shadow-md hover:border-[var(--brand-color)] transition-all duration-200 cursor-pointer
-`;
+    const placeEl = document.createElement('div');
+    placeEl.className = `
+      bg-white border border-[#f4dff4] rounded-2xl p-5 mb-5 shadow-sm 
+      hover:shadow-md hover:border-[var(--brand-color)] transition-all duration-200 cursor-pointer
+    `;
 
-placeEl.innerHTML = `
-  <div class="flex flex-col gap-2">
-    <h3 class="text-lg font-semibold text-[#181118] leading-snug">${place.name}</h3>
-    <p class="text-sm text-[#886388]">${place.formatted_address}</p>
+    placeEl.innerHTML = `
+      <div class="flex flex-col gap-2">
+        <h3 class="text-lg font-semibold text-[#181118] leading-snug">${place.name}</h3>
+        <p class="text-sm text-[#886388]">${place.formatted_address}</p>
 
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2 gap-1">
-      <div class="flex flex-wrap gap-4 text-sm">
-        <span class="text-[#181118]">
-          <strong>PCOS Rating:</strong> ${place.user_rating || 'N/A'}
-          <span class="text-[#886388]">(${place.user_ratings_total || 0} reviews)</span>
-        </span>
-        <span class="text-[#181118]">
-          <strong>Google Rating:</strong> ${place.google_rating || 'N/A'}
-          <span class="text-[#886388]">(${place.google_user_ratings_total || 0} reviews)</span>
-        </span>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2 gap-1">
+          <div class="flex flex-wrap gap-4 text-sm">
+            <span class="text-[#181118]">
+              <strong>PCOS Rating:</strong> ${place.user_rating || 'N/A'}
+              <span class="text-[#886388]">(${place.user_ratings_total || 0} reviews)</span>
+            </span>
+            <span class="text-[#181118]">
+              <strong>Google Rating:</strong> ${place.google_rating || 'N/A'}
+              <span class="text-[#886388]">(${place.google_user_ratings_total || 0} reviews)</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 mt-3">
+          <a 
+                href="${mapsUrl}" 
+                target="_blank" 
+                class="underline font-medium hover:underline"
+              >
+                View on Google Maps
+              </a>
+          <button 
+            class="leave-review-btn flex items-center gap-1 px-4 py-1.5 rounded-full 
+            bg-[#E618E7] text-white font-medium text-sm shadow-sm 
+            hover:opacity-90 transition-all duration-150"
+          >
+            <span class="material-symbols-outlined text-sm">edit</span>
+            Leave Review
+          </button>
+        </div>
+
+        <div class="mt-4 border-t border-[#f4f0f4] pt-3">
+          <h3 class="text-md font-semibold text-[#181118] mb-2">Reviews</h3>
+          <div id="reviews-list" class="space-y-3">
+            ${
+              place.reviews && place.reviews.length > 0
+                ? place.reviews
+                    .map(
+                      (r) => `
+                  <div class="p-3 border border-gray-200 rounded-lg bg-[#fdf9fd]">
+                    <div class="flex justify-between items-center">
+                      <span class="font-semibold text-[#181118]">${r.user}</span>
+                      <span class="text-yellow-500 text-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                    </div>
+                    <p class="text-xs text-[#886388]">${r.date}</p>
+                    <p class="mt-1 text-sm text-[#181118]">${r.comment}</p>
+                  </div>`
+                    )
+                    .join('')
+                : `<p class="text-sm text-[#886388] italic">No reviews yet.</p>`
+            }
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="flex flex-wrap items-center gap-3 mt-3">
-      <a 
-        href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" 
-        target="_blank" 
-        class="underline font-medium hover:underline"
-      >
-        View on Google Maps
-      </a>
-      <button 
-        class="leave-review-btn flex items-center gap-1 px-4 py-1.5 rounded-full 
-        bg-[#E618E7] text-white font-medium text-sm shadow-sm 
-        hover:opacity-90 transition-all duration-150"
-      >
-        <span class="material-symbols-outlined text-sm">edit</span>
-        Leave Review
-      </button>
-    </div>
-
-    <div class="mt-4 border-t border-[#f4f0f4] pt-3">
-      <h3 class="text-md font-semibold text-[#181118] mb-2">Reviews</h3>
-      <div id="reviews-list" class="space-y-3">
-        ${
-          place.reviews && place.reviews.length > 0
-            ? place.reviews
-                .map(
-                  (r) => `
-              <div class="p-3 border border-gray-200 rounded-lg bg-[#fdf9fd]">
-                <div class="flex justify-between items-center">
-                  <span class="font-semibold text-[#181118]">${r.user}</span>
-                  <span class="text-yellow-500 text-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
-                </div>
-                <p class="text-xs text-[#886388]">${r.date}</p>
-                <p class="mt-1 text-sm text-[#181118]">${r.comment}</p>
-              </div>`
-                )
-                .join('')
-            : `<p class="text-sm text-[#886388] italic">No reviews yet.</p>`
-        }
-      </div>
-    </div>
-  </div>
-`;
+    `;
 
 
     // Click sidebar card -> pan to marker + open info window

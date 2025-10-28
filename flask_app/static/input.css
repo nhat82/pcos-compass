@@ -417,6 +417,153 @@ details div {
 }
 
 
+/* Profile */
+
+.profile-container {
+  @apply relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden bg-gray-50;
+}
+
+.profile-main {
+  @apply flex-1;
+}
+
+.profile-content {
+  @apply mx-auto max-w-7xl py-10 sm:px-6 lg:px-8;
+}
+
+.profile-header {
+  @apply px-4 sm:px-0;
+}
+
+.profile-title {
+  @apply text-pcos-pink tracking-tight text-4xl font-bold leading-tight pb-4;
+}
+
+.profile-grid {
+  @apply mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2;
+}
+
+/* Profile Cards */
+.profile-card {
+  @apply bg-white p-6 rounded-lg shadow-sm min-h-[300px];
+}
+
+.profile-card-header {
+  @apply flex justify-between items-center mb-4;
+}
+
+.profile-card-title {
+  @apply text-xl font-bold text-dark-text;
+}
+
+.btn-add {
+  @apply flex items-center gap-2 rounded-lg bg-pcos-pink px-4 py-2 text-sm font-bold text-white hover:scale-105 transition-all duration-200;
+}
+
+/* Modal Styles */
+.profile-modal {
+  @apply fixed inset-0 z-50 hidden overflow-y-auto bg-black bg-opacity-50;
+}
+
+.profile-modal-container {
+  @apply flex items-center justify-center min-h-screen p-4;
+}
+
+.profile-modal-content {
+  @apply bg-white rounded-lg shadow-xl w-full max-w-md p-6;
+}
+
+.profile-modal-header {
+  @apply flex justify-between items-center pb-3 border-b border-gray-200;
+}
+
+.profile-modal-title {
+  @apply text-xl font-bold text-dark-text;
+}
+
+.modal-close-btn {
+  @apply cursor-pointer text-light-text hover:text-dark-text text-2xl transition-colors duration-200;
+}
+
+/* Form Styles */
+.profile-form {
+  @apply mt-4 space-y-4;
+}
+
+.form-group {
+  @apply block;
+}
+
+.form-label {
+  @apply text-dark-text text-base font-medium leading-normal pb-2;
+}
+
+.form-select {
+  @apply block w-full rounded-lg border border-gray-300 bg-white focus:border-pcos-pink focus:ring-pcos-pink text-dark-text;
+}
+
+.form-input {
+  @apply block w-full rounded-lg border border-gray-300 bg-white focus:border-pcos-pink focus:ring-pcos-pink text-dark-text placeholder-light-text p-[10px];
+}
+
+.form-submit {
+  @apply w-full cursor-pointer rounded-lg h-10 px-5 bg-pcos-pink text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-pcos-pink-700 transition-colors duration-200;
+}
+
+/* List Styles */
+.profile-list {
+  @apply mt-6;
+}
+
+.profile-list-title {
+  @apply text-lg font-semibold text-dark-text mb-3;
+}
+
+.profile-list-items {
+  @apply space-y-4;
+}
+
+.profile-list-item {
+  @apply flex gap-4 py-3 justify-between items-center border-b border-gray-100 last:border-b-0;
+}
+
+.profile-item-content {
+  @apply flex items-start gap-4;
+}
+
+.profile-item-icon {
+  @apply flex items-center justify-center rounded-lg shrink-0 size-12;
+}
+
+.profile-item-icon-problem {
+  @apply text-pcos-pink bg-pcos-light-pink;
+}
+
+.profile-item-icon-treatment {
+  @apply text-[#347474] bg-[#B2E0C3]/40;
+}
+
+.profile-item-details {
+  @apply flex flex-1 flex-col justify-center;
+}
+
+.profile-item-name {
+  @apply text-dark-text text-base font-medium leading-normal;
+}
+
+.profile-item-description {
+  @apply text-light-text text-sm font-medium leading-normal;
+}
+
+.profile-item-date {
+  @apply text-gray-400 text-xs font-medium leading-normal mt-1;
+}
+
+.profile-empty-state {
+  @apply text-light-text text-base;
+}
+
+
 /* Animations */
 @keyframes modalSlideIn {
   from {
