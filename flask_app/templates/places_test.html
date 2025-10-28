@@ -4,29 +4,31 @@
 <div class="relative flex h-auto min-h-screen w-full flex-col bg-white group/design-root overflow-x-hidden">
   <div class="layout-container flex h-full grow flex-col">
 
-    <div class="flex flex-1">
+    <div class="flex flex-1 flex-col md:flex-row">
+      
       <!-- Map Section -->
-      <div class="flex-1 relative">
-        <div class="bg-cover bg-center flex h-full min-h-[calc(100vh-69px)] flex-1 flex-col justify-between items-center">
-          <div id="map" class="absolute inset-0 w-full h-full"></div>
-          <!-- Search Bar -->
-          <div class="absolute top-4 left-1/2 -translate-x-1/2 w-1/3 min-w-[300px] max-w-lg">
-            <form id="search-form" class="flex items-stretch rounded-lg shadow-md bg-white overflow-hidden">
-              <div class="text-[#886388] flex items-center justify-center px-3 border-r border-gray-200">
-                <span class="material-symbols-outlined">search</span>
-              </div>
-              <input type="text" name="address" placeholder="Search places" required
-                class="flex-1 px-3 py-2 text-base text-[#181118] placeholder:text-[#886388] focus:outline-none focus:ring-0">
-              <button type="submit" class="bg-[var(--brand-color)] text-white px-4 py-2 hover:opacity-90">Search</button>
-            </form>
-          </div>
+      <div class="relative w-full h-[50vh] md:flex-1 md:h-auto">
+        <div id="map" class="absolute inset-0 w-full h-full"></div>
+
+        <!-- Search Bar -->
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 w-[90%] md:w-1/3 min-w-[300px] max-w-lg z-10">
+          <form id="search-form" class="flex items-stretch rounded-lg shadow-md bg-white overflow-hidden">
+            <div class="text-[#886388] flex items-center justify-center px-3 border-r border-gray-200">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <input type="text" name="address" placeholder="Search places" required
+              class="flex-1 px-3 py-2 text-base text-[#181118] placeholder:text-[#886388] focus:outline-none focus:ring-0">
+            <button type="submit" class="bg-[var(--brand-color)] text-white px-4 py-2 hover:opacity-90">Search</button>
+          </form>
         </div>
       </div>
 
+
       <!-- Results Sidebar -->
-      <aside class="w-[480px] bg-white border-l border-l-[#f4f0f4] flex flex-col p-6 overflow-y-auto h-[calc(100vh-69px)]">
+      <aside class="w-full md:w-[480px] bg-white border-t md:border-t-0 md:border-l border-[#f4f0f4] flex flex-col p-4 md:p-6 overflow-y-auto h-auto md:h-[calc(100vh-69px)]">
         <div id="results-list" class="flex flex-col gap-6"></div>
       </aside>
+
     </div>
   </div>
 </div>
@@ -74,48 +76,73 @@ document.querySelector('#search-form').addEventListener('submit', async (e) => {
     markers.push(marker);
 
     // Add to sidebar
-    const placeEl = document.createElement('div');
-    placeEl.className = 'p-4 bg-[#fde8fd] rounded-lg shadow-sm cursor-pointer hover:bg-pink-50';
-    placeEl.innerHTML = `
-      <h3 class="text-[#181118] font-bold text-lg">${place.name}</h3>
-      <p class="text-[#886388] text-sm mt-1">${place.formatted_address}</p>
-          <p class="flex items-center gap-2 mt-1">
-            <span class="text-[#181118]">PCOS Rating: ${place.user_rating || 'N/A'}</span>
-            <span class="text-[#886388] text-sm">(${place.user_ratings_total || 0} reviews)</span>
-          </p>
-          <p class="flex items-center gap-2 mt-1">
-            <span class="text-[#181118]">Google Rating: ${place.google_rating || 'N/A'}</span>
-            <span class="text-[#886388] text-sm">(${place.google_user_ratings_total || 0} reviews)</span>
-          </p>
-      <div class="mt-2 flex gap-2">
-        <a href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" 
-          target="_blank" 
-          class="text-[var(--brand-color)] hover:underline">
-          View on Google Maps
-        </a>
-        <button class="leave-review-btn flex items-center gap-1 px-3 py-1 bg-[var(--brand-color)] text-[#181118] rounded-lg hover:underline">
-          <span class="material-symbols-outlined text-sm">edit</span>
-          Leave a Review
-        </button>
+const placeEl = document.createElement('div');
+placeEl.className = `
+  bg-white border border-[#f4dff4] rounded-2xl p-5 mb-5 shadow-sm 
+  hover:shadow-md hover:border-[var(--brand-color)] transition-all duration-200 cursor-pointer
+`;
+
+placeEl.innerHTML = `
+  <div class="flex flex-col gap-2">
+    <h3 class="text-lg font-semibold text-[#181118] leading-snug">${place.name}</h3>
+    <p class="text-sm text-[#886388]">${place.formatted_address}</p>
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-2 gap-1">
+      <div class="flex flex-wrap gap-4 text-sm">
+        <span class="text-[#181118]">
+          <strong>PCOS Rating:</strong> ${place.user_rating || 'N/A'}
+          <span class="text-[#886388]">(${place.user_ratings_total || 0} reviews)</span>
+        </span>
+        <span class="text-[#181118]">
+          <strong>Google Rating:</strong> ${place.google_rating || 'N/A'}
+          <span class="text-[#886388]">(${place.google_user_ratings_total || 0} reviews)</span>
+        </span>
       </div>
-      <!-- Existing Reviews -->
-      <h3 class="text-md font-semibold mb-2">Reviews</h3>
-      <div id="reviews-list" class="space-y-4">
-        ${place.reviews && place.reviews.length > 0
-          ? place.reviews.map(r => `
-            <div class="p-2 border rounded">
-              <div class="flex justify-between items-center">
-                <span class="font-semibold">${r.user}</span>
-                <span class="text-yellow-500">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
-              </div>
-              <p class="text-sm text-gray-600">${r.date}</p>
-              <p class="mt-1">${r.comment}</p>
-            </div>
-          `).join('')
-          : `<p class="text-gray-500">No reviews yet.</p>`
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3 mt-3">
+      <a 
+        href="https://www.google.com/maps/place/?q=place_id:${place.place_id}" 
+        target="_blank" 
+        class="underline font-medium hover:underline"
+      >
+        View on Google Maps
+      </a>
+      <button 
+        class="leave-review-btn flex items-center gap-1 px-4 py-1.5 rounded-full 
+        bg-[#E618E7] text-white font-medium text-sm shadow-sm 
+        hover:opacity-90 transition-all duration-150"
+      >
+        <span class="material-symbols-outlined text-sm">edit</span>
+        Leave Review
+      </button>
+    </div>
+
+    <div class="mt-4 border-t border-[#f4f0f4] pt-3">
+      <h3 class="text-md font-semibold text-[#181118] mb-2">Reviews</h3>
+      <div id="reviews-list" class="space-y-3">
+        ${
+          place.reviews && place.reviews.length > 0
+            ? place.reviews
+                .map(
+                  (r) => `
+              <div class="p-3 border border-gray-200 rounded-lg bg-[#fdf9fd]">
+                <div class="flex justify-between items-center">
+                  <span class="font-semibold text-[#181118]">${r.user}</span>
+                  <span class="text-yellow-500 text-sm">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                </div>
+                <p class="text-xs text-[#886388]">${r.date}</p>
+                <p class="mt-1 text-sm text-[#181118]">${r.comment}</p>
+              </div>`
+                )
+                .join('')
+            : `<p class="text-sm text-[#886388] italic">No reviews yet.</p>`
         }
       </div>
-    `;
+    </div>
+  </div>
+`;
+
 
     // Click sidebar card -> pan to marker + open info window
     placeEl.addEventListener('click', () => {
