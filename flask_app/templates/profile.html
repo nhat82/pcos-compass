@@ -1,50 +1,49 @@
 {% extends "header.html" %}
 {% block content %}
 
-<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden bg-gray-50">
-    <main class="flex-1">
-        <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            <div class="px-4 sm:px-0">
-                <h1 class="text-[#E618E7] tracking-tight text-4xl font-bold leading-tight pb-4">
+<div class="profile-container">
+    <main class="profile-main">
+        <div class="profile-content">
+            <div class="profile-header">
+                <h1 class="profile-title">
                     {{current_user.username}}'s Profile
                 </h1>
             </div>
 
-            <div class="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-2">
-
+            <div class="profile-grid">
                 <!-- Problems Card -->
-                <div class="bg-white p-6 rounded-lg shadow-sm min-h-[300px]">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold text-gray-800">Problems</h2>
-                        <button class="btn-add flex items-center gap-2 rounded-lg bg-[#E618E7] px-4 py-2 text-sm font-bold text-[#f5f5f5] hover:scale-105 transition-colors" data-modal="problemModal">
+                <div class="profile-card">
+                    <div class="profile-card-header">
+                        <h2 class="profile-card-title">Problems</h2>
+                        <button class="btn-add" data-modal="problemModal">
                             <span class="material-symbols-outlined">add</span>
                             Add
                         </button>
                     </div>
 
                     <!-- Problem Modal -->
-                    <div id="problemModal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
-                        <div class="flex items-center justify-center min-h-screen p-4">
-                            <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-                                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
-                                    <h2 class="text-xl font-bold text-gray-800">Add a Problem</h2>
-                                    <span class="modal-close-btn cursor-pointer text-gray-400 hover:text-gray-600 text-2xl" data-close="problemModal">&times;</span>
+                    <div id="problemModal" class="profile-modal">
+                        <div class="profile-modal-container">
+                            <div class="profile-modal-content">
+                                <div class="profile-modal-header">
+                                    <h2 class="profile-modal-title">Add a Problem</h2>
+                                    <span class="modal-close-btn" data-close="problemModal">&times;</span>
                                 </div>
-                                <form method="POST" class="mt-4 space-y-4">
+                                <form method="POST" class="profile-form">
                                     {{ problem_form.hidden_tag() }}
 
-                                    <label class="block">
-                                        <p class="text-gray-800 text-base font-medium leading-normal pb-2">Select Symptoms:</p>
-                                        {{ problem_form.symptoms(class="form-select block w-full rounded-lg border border-gray-300 bg-white focus:border-[#E618E7] focus:ring-[#E618E7]") }}
+                                    <label class="form-group">
+                                        <p class="form-label">Select Symptoms:</p>
+                                        {{ problem_form.symptoms(class="form-select") }}
                                     </label>
 
-                                    <label class="block">
-                                        <p class="text-gray-800 text-base font-medium leading-normal pb-2 pt-2">And/Or enter a custom symptom:</p>
-                                        {{ problem_form.custom_symptom(class="form-input block w-full rounded-lg text-gray-800 border border-gray-300 bg-white focus:border-[#E618E7] focus:ring-[#E618E7] placeholder:text-gray-500 p-[10px]", placeholder="e.g., Severe fatigue") }}
+                                    <label class="form-group">
+                                        <p class="form-label">And/Or enter a custom symptom:</p>
+                                        {{ problem_form.custom_symptom(class="form-input", placeholder="e.g., Severe fatigue") }}
                                     </label>
 
                                     <div class="pt-4">
-                                        {{ problem_form.submit(class="w-full cursor-pointer rounded-lg h-10 px-5 bg-[#E618E7] text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-colors") }}
+                                        {{ problem_form.submit(class="form-submit") }}
                                     </div>
                                 </form>
                             </div>
@@ -52,54 +51,54 @@
                     </div>
 
                     <!-- Problems List -->
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Your Logged Symptoms</h3>
-                        <div class="space-y-4">
+                    <div class="profile-list">
+                        <h3 class="profile-list-title">Your Logged Symptoms</h3>
+                        <div class="profile-list-items">
                             {% if user_symptoms %}
                                 {% for prob in user_symptoms %}
-                                    <div class="flex gap-4 py-3 justify-between items-center border-b border-gray-100 last:border-b-0">
-                                        <div class="flex items-start gap-4">
-                                            <div class="text-[#E618E7] flex items-center justify-center rounded-lg bg-[#E618E7]/40 shrink-0 size-12">
+                                    <div class="profile-list-item">
+                                        <div class="profile-item-content">
+                                            <div class="profile-item-icon profile-item-icon-problem">
                                                 <span class="material-symbols-outlined">error</span>
                                             </div>
-                                            <div class="flex flex-1 flex-col justify-center">
-                                                <p class="text-gray-800 text-base font-medium leading-normal">{{ prob.name }}</p>
+                                            <div class="profile-item-details">
+                                                <p class="profile-item-name">{{ prob.name }}</p>
                                                 {% if prob.details %}
-                                                    <p class="text-gray-500 text-sm font-medium leading-normal">{{ prob.details }}</p>
+                                                    <p class="profile-item-description">{{ prob.details }}</p>
                                                 {% endif %}
                                             </div>
                                         </div>
                                     </div>
                                 {% endfor %}
                             {% else %}
-                                <p class="text-gray-500 text-base">No symptoms logged yet.</p>
+                                <p class="profile-empty-state">No symptoms logged yet.</p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
 
                 <!-- Treatments Card -->
-                <div class="bg-white p-6 rounded-lg shadow-sm min-h-[300px]">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold text-gray-800">Treatments</h2>
+                <div class="profile-card">
+                    <div class="profile-card-header">
+                        <h2 class="profile-card-title">Treatments</h2>
                     </div>
 
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">Your Logged Treatments</h3>
-                        <div class="space-y-4">
+                    <div class="profile-list">
+                        <h3 class="profile-list-title">Your Logged Treatments</h3>
+                        <div class="profile-list-items">
                             {% if user_treatments %}
                                 {% for treat in user_treatments %}
-                                    <div class="flex gap-4 py-3 justify-between items-center border-b border-gray-100 last:border-b-0">
-                                        <div class="flex items-start gap-4">
-                                            <div class="text-[#347474] flex items-center justify-center rounded-lg bg-[#B2E0C3]/40 shrink-0 size-12">
+                                    <div class="profile-list-item">
+                                        <div class="profile-item-content">
+                                            <div class="profile-item-icon profile-item-icon-treatment">
                                                 <span class="material-symbols-outlined">pill</span>
                                             </div>
-                                            <div class="flex flex-1 flex-col justify-center">
-                                                <p class="text-gray-800 text-base font-medium leading-normal">{{ treat.treatment_name }}</p>
+                                            <div class="profile-item-details">
+                                                <p class="profile-item-name">{{ treat.treatment_name }}</p>
                                                 {% if treat.description %}
-                                                    <p class="text-gray-500 text-sm font-medium leading-normal">{{ treat.description }}</p>
+                                                    <p class="profile-item-description">{{ treat.description }}</p>
                                                 {% endif %}
-                                                <p class="text-gray-400 text-xs font-medium leading-normal mt-1">
+                                                <p class="profile-item-date">
                                                     {% if treat.start_date %}{{ treat.start_date.strftime('%Y-%m-%d') }}{% endif %}
                                                     {% if treat.end_date %} to {{ treat.end_date.strftime('%Y-%m-%d') }}{% endif %}
                                                 </p>
@@ -108,7 +107,7 @@
                                     </div>
                                 {% endfor %}
                             {% else %}
-                                <p class="text-gray-500 text-base">No treatments logged yet.</p>
+                                <p class="profile-empty-state">No treatments logged yet.</p>
                             {% endif %}
                         </div>
                     </div>
@@ -118,6 +117,7 @@
     </main>
 </div>
 
+<!-- Keep your existing JavaScript as is -->
 <script>
     // MODAL TOGGLE FUNCTIONS
     document.addEventListener('DOMContentLoaded', function() {
@@ -147,7 +147,7 @@
 
         // Close modal when clicking outside
         window.addEventListener("click", (event) => {
-            document.querySelectorAll(".modal").forEach(modal => {
+            document.querySelectorAll(".profile-modal").forEach(modal => {
                 if (event.target === modal) {
                     modal.style.display = "none";
                 }

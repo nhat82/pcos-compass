@@ -6,7 +6,7 @@ SYMPTOMS = [
     "Insulin Resistance",
     "Fatigue",
     "Hirsutism (Excess Hair Growth)",
-    "Mood Swings"
+    "Mood Swings",
     "Cysts on Ovaries",
     "Thinning Hair",
     "Sleep Apnea",
@@ -18,7 +18,7 @@ SYMPTOMS = [
     "Skin Tags",
     "Darkened Skin Patches (Acanthosis Nigricans)",
     "Headaches",
-    "Water Retention"
+    "Water Retention",
     "Weight Loss Difficulty", 
     "Heavy Menstrual Bleeding",
     "High Blood Pressure",
