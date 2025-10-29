@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "fullcalendar": "^6.1.19"
   },
   "devDependencies": {
